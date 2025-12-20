@@ -1,0 +1,1 @@
+import{u as r,c,b as o}from"./index-z4YXot-9.js";const n={__name:"Redirect",setup(u){const e=useRouter();return r(),onMounted(()=>{const t=e.currentRoute.value.query.redirect||"/";e.replace(t)}),(t,a)=>(o(),c("div"))}};export{n as default};

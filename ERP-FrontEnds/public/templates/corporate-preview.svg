@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300" height="189" viewBox="0 0 300 189" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="300" height="189" fill="#ffffff" rx="8" ry="8"/>
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="300" height="40" fill="#1a1a1a"/>
+  <circle cx="20" cy="20" r="15" fill="#333" stroke="#666" stroke-width="2"/>
+  <text x="45" y="25" font-family="Arial" font-size="12" fill="#ffffff" font-weight="bold" text-transform="uppercase">School Name</text>
+  
+  <!-- Photo Area -->
+  <rect x="20" y="50" width="80" height="100" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
+  <text x="60" y="100" font-family="Arial" font-size="10" fill="#666" text-anchor="middle">Photo</text>
+  
+  <!-- Info Section -->
+  <g transform="translate(110, 50)">
+    <text x="0" y="15" font-family="Arial" font-size="8" fill="#666" font-weight="bold" text-transform="uppercase">Name:</text>
+    <text x="40" y="15" font-family="Arial" font-size="10" fill="#1a1a1a" font-weight="500">John Doe</text>
+    
+    <text x="0" y="35" font-family="Arial" font-size="8" fill="#666" font-weight="bold" text-transform="uppercase">Roll No:</text>
+    <text x="40" y="35" font-family="Arial" font-size="10" fill="#1a1a1a" font-weight="500">12345</text>
+    
+    <text x="0" y="55" font-family="Arial" font-size="8" fill="#666" font-weight="bold" text-transform="uppercase">Class:</text>
+    <text x="40" y="55" font-family="Arial" font-size="10" fill="#1a1a1a" font-weight="500">10th</text>
+    
+    <text x="0" y="75" font-family="Arial" font-size="8" fill="#666" font-weight="bold" text-transform="uppercase">Section:</text>
+    <text x="40" y="75" font-family="Arial" font-size="10" fill="#1a1a1a" font-weight="500">A</text>
+  </g>
+  
+  <!-- Barcode -->
+  <rect x="20" y="160" width="260" height="20" fill="#f5f5f5" stroke="#ddd" stroke-width="1"/>
+  <text x="150" y="175" font-family="Arial" font-size="8" fill="#666" text-anchor="middle">12345</text>
+  
+  <!-- Watermark -->
+  <text x="150" y="94.5" font-family="Arial" font-size="48" fill="#000000" opacity="0.03" text-anchor="middle" transform="rotate(-45, 150, 94.5)">SCHOOL NAME</text>
+</svg> 

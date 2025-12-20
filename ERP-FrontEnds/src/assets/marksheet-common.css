@@ -1,0 +1,125 @@
+/* Shared marksheet styles for AddMarksheet.vue and ViewMarksheet.vue */
+.marksheet-container {
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+  min-height: 100vh;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 16px 48px 16px;
+}
+
+.marksheet-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(64, 158, 255, 0.12), 0 1.5px 8px rgba(60,72,100,0.08);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid #e3eaf5;
+  overflow: hidden;
+  padding-bottom: 24px;
+  margin-top: 24px;
+  width: 100%;
+  transition: box-shadow 0.3s;
+}
+
+.card-header {
+  background: rgba(247, 248, 250, 0.85);
+  border-radius: 20px 20px 0 0;
+  border-bottom: 1.5px solid #e3eaf5;
+  box-shadow: 0 2px 8px rgba(64, 158, 255, 0.04);
+  padding: 28px 36px 18px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-actions {
+  display: flex;
+  gap: 14px;
+  align-items: flex-end;
+}
+
+.filter-select {
+  min-width: 160px;
+  border-radius: 12px;
+}
+
+.clear-filter-btn {
+  margin-left: 8px;
+  background: #fff;
+  border: 1.5px solid #e3eaf5;
+  transition: box-shadow 0.2s, border 0.2s;
+  box-shadow: 0 2px 8px rgba(64, 158, 255, 0.04);
+}
+.clear-filter-btn .el-icon {
+  color: #ff4d4f !important;
+  font-size: 18px !important;
+  transition: color 0.2s;
+}
+.clear-filter-btn:hover,
+.clear-filter-btn:focus {
+  border-color: #ff4d4f;
+  box-shadow: 0 4px 16px rgba(255, 77, 79, 0.08);
+  background: #fff0f0;
+}
+
+.marksheet-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  padding: 0;
+  -webkit-overflow-scrolling: touch;
+}
+.marksheet-table {
+  margin-top: 24px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(60,72,100,0.08);
+  overflow: hidden;
+  animation: fadeInUp 0.6s;
+  min-width: 900px;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+.el-table th, .el-table td {
+  border-radius: 8px;
+}
+.el-table th {
+  background: #f1f5ff;
+  color: #22223b;
+  font-weight: 700;
+  font-size: 1rem;
+}
+.el-table td {
+  font-size: 0.98rem;
+  color: #22223b;
+}
+.skeleton-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  width: 100%;
+}
+.header-title-wrap {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.filter-label {
+  font-size: 13px;
+  color: #6366f1;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.responsive-table-wrap {
+  overflow-x: auto;
+}
+.clear-btn-align {
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+} 

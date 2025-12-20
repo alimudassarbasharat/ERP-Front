@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300" height="189" viewBox="0 0 300 189" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="300" height="189" fill="#ffffff" rx="8" ry="8"/>
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="300" height="40" fill="#f8f9fa"/>
+  <circle cx="20" cy="20" r="15" fill="#e9ecef"/>
+  <text x="45" y="25" font-family="Arial" font-size="12" fill="#495057">School Name</text>
+  
+  <!-- Photo Area -->
+  <rect x="20" y="50" width="80" height="100" fill="#e9ecef" rx="4" ry="4"/>
+  <text x="60" y="100" font-family="Arial" font-size="10" fill="#6c757d" text-anchor="middle">Photo</text>
+  
+  <!-- Info Section -->
+  <g transform="translate(110, 50)">
+    <text x="0" y="15" font-family="Arial" font-size="10" fill="#6c757d">Name:</text>
+    <text x="40" y="15" font-family="Arial" font-size="10" fill="#212529">John Doe</text>
+    
+    <text x="0" y="35" font-family="Arial" font-size="10" fill="#6c757d">Roll No:</text>
+    <text x="40" y="35" font-family="Arial" font-size="10" fill="#212529">12345</text>
+    
+    <text x="0" y="55" font-family="Arial" font-size="10" fill="#6c757d">Class:</text>
+    <text x="40" y="55" font-family="Arial" font-size="10" fill="#212529">10th</text>
+    
+    <text x="0" y="75" font-family="Arial" font-size="10" fill="#6c757d">Section:</text>
+    <text x="40" y="75" font-family="Arial" font-size="10" fill="#212529">A</text>
+  </g>
+  
+  <!-- Barcode -->
+  <rect x="20" y="160" width="260" height="20" fill="#f8f9fa" rx="2" ry="2"/>
+  <text x="150" y="175" font-family="Arial" font-size="8" fill="#6c757d" text-anchor="middle">12345</text>
+</svg> 

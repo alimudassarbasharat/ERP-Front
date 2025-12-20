@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="300" height="189" viewBox="0 0 300 189" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="300" height="189" fill="#fff" rx="8" ry="8"/>
+  <rect x="2" y="2" width="296" height="185" fill="none" stroke="#8b7355" stroke-width="2" rx="6" ry="6"/>
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="300" height="40" fill="#f9f6f0"/>
+  <circle cx="20" cy="20" r="15" fill="#fff" stroke="#8b7355" stroke-width="2"/>
+  <text x="45" y="25" font-family="Georgia" font-size="12" fill="#5c4b3c">School Name</text>
+  
+  <!-- Photo Area -->
+  <rect x="20" y="50" width="80" height="100" fill="#fff" stroke="#8b7355" stroke-width="2"/>
+  <text x="60" y="100" font-family="Georgia" font-size="10" fill="#8b7355" text-anchor="middle">Photo</text>
+  
+  <!-- Info Section -->
+  <g transform="translate(110, 50)">
+    <text x="0" y="15" font-family="Georgia" font-size="10" fill="#8b7355" font-style="italic">Name:</text>
+    <text x="40" y="15" font-family="Georgia" font-size="10" fill="#5c4b3c">John Doe</text>
+    
+    <text x="0" y="35" font-family="Georgia" font-size="10" fill="#8b7355" font-style="italic">Roll No:</text>
+    <text x="40" y="35" font-family="Georgia" font-size="10" fill="#5c4b3c">12345</text>
+    
+    <text x="0" y="55" font-family="Georgia" font-size="10" fill="#8b7355" font-style="italic">Class:</text>
+    <text x="40" y="55" font-family="Georgia" font-size="10" fill="#5c4b3c">10th</text>
+    
+    <text x="0" y="75" font-family="Georgia" font-size="10" fill="#8b7355" font-style="italic">Section:</text>
+    <text x="40" y="75" font-family="Georgia" font-size="10" fill="#5c4b3c">A</text>
+  </g>
+  
+  <!-- Barcode -->
+  <rect x="20" y="160" width="260" height="20" fill="#f9f6f0" stroke="#8b7355" stroke-width="1"/>
+  <text x="150" y="175" font-family="Georgia" font-size="8" fill="#8b7355" text-anchor="middle">12345</text>
+  
+  <!-- Ornament -->
+  <text x="280" y="100" font-family="Georgia" font-size="24" fill="#8b7355" opacity="0.1">❦</text>
+</svg> 

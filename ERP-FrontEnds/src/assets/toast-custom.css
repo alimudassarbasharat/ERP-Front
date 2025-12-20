@@ -1,0 +1,48 @@
+/* Modern Toast Notification Styles - CLEANED & CORRECT */
+
+.my-toast {
+  font-family: 'Poppins', 'Inter', 'Segoe UI', Arial, sans-serif !important;
+  font-size: 0.75rem !important;
+  font-weight: 200 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(168, 85, 247, 0.10), 0 1.5px 6px rgba(236, 72, 153, 0.10) !important;
+  border: none !important;
+  min-width: 220px;
+  padding: 12px 18px !important;
+  color: #fff !important;
+}
+
+/* Error: Red gradient, white text */
+.my-toast.Vue-Toastification__toast--error {
+  background: linear-gradient(to right, #ef4444, #f87171) !important;
+  color: #fff !important;
+}
+
+/* Success: Green gradient, white text */
+.my-toast.Vue-Toastification__toast--success {
+  background: linear-gradient(to right, #22c55e, #4ade80) !important;
+  color: #fff !important;
+}
+
+/* Warning: Yellow/Orange gradient, dark text */
+.my-toast.Vue-Toastification__toast--warning {
+  background: linear-gradient(to right, #facc15, #f59e42) !important;
+  color: #7c4a00 !important;
+}
+
+/* Info: Purple/Pink gradient, white text (default) */
+.my-toast.Vue-Toastification__toast--info,
+.my-toast {
+  background: linear-gradient(to right, #a855f7, #ec4899) !important;
+  color: #fff !important;
+}
+
+/* Icon spacing */
+.my-toast .Vue-Toastification__icon {
+  margin-right: 10px;
+}
+
+/* Close button hover effect */
+.my-toast .Vue-Toastification__close-button:hover {
+  opacity: 1;
+} 
