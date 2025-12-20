@@ -10,7 +10,7 @@
       <!-- Grid Pattern Overlay -->
       <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.02] to-transparent"></div>
       <div class="absolute inset-0" style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 20px 20px;"></div>
-        </div>
+        </div> 
 
     <!-- Beast Mode Loading Screen -->
     <div v-if="initialLoading" class="fixed inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 z-50 flex items-center justify-center">
