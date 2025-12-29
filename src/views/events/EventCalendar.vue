@@ -103,11 +103,10 @@
       </div>
               <span class="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Quick Navigation</span>
             </h4>
-            <input 
+            <CompactDatePicker 
               v-model="selectedDateInput"
-              type="date"
+              placeholder=""
               @change="onDateSelect"
-              class="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-300 bg-white/80 backdrop-blur-sm"
             />
       </div>
         </div>
@@ -345,6 +344,7 @@ import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import axios from 'axios'
+import CompactDatePicker from '@/components/CompactDatePicker.vue'
 
 const router = useRouter()
 const toast = useToast()

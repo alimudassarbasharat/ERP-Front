@@ -61,13 +61,10 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <el-date-picker
+            <CompactDatePicker
               v-model="dateRange"
-              type="daterange"
-              range-separator="to"
-              start-placeholder="Start date"
-              end-placeholder="End date"
-              @change="handleFilter"
+              placeholder=""
+              @change="handleDateRangeChange"
             />
           </el-col>
         </el-row>
@@ -204,13 +201,9 @@
         </el-form-item>
 
         <el-form-item label="Due Date" prop="due_date">
-          <el-date-picker
+          <CompactDatePicker
             v-model="feeForm.due_date"
-            type="date"
-            placeholder="Select due date"
-            style="width: 100%"
-            format="MM/DD/YYYY"
-            value-format="YYYY-MM-DD"
+            placeholder=""
           />
         </el-form-item>
 
@@ -260,13 +253,9 @@
         </el-form-item>
 
         <el-form-item label="Payment Date" prop="payment_date">
-          <el-date-picker
+          <CompactDatePicker
             v-model="paymentForm.payment_date"
-            type="date"
-            placeholder="Select payment date"
-            style="width: 100%"
-            format="MM/DD/YYYY"
-            value-format="YYYY-MM-DD"
+            placeholder=""
           />
         </el-form-item>
 
@@ -313,6 +302,7 @@
 import { useToast } from 'vue-toastification'
 import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import CompactDatePicker from '@/components/CompactDatePicker.vue'
 import { 
   Plus, 
   Download, 
@@ -335,8 +325,14 @@ const loading = ref(false)
 const searchQuery = ref('')
 const selectedClass = ref('')
 const selectedStatus = ref('')
-const dateRange = ref([])
+const dateRange = ref(null)
 const currentPage = ref(1)
+
+// Handle date range change from CompactDatePicker
+const handleDateRangeChange = (value) => {
+  dateRange.value = value
+  handleFilter()
+}
 const pageSize = ref(10)
 const totalFees = ref(0)
 const addFeeDialogVisible = ref(false)

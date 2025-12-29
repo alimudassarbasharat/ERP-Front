@@ -42,12 +42,10 @@
 
         <div class="form-group">
           <label for="dueDate">Due Date</label>
-          <input 
-            type="date" 
-            id="dueDate" 
+          <CompactDatePicker 
             v-model="feeData.dueDate"
-            required
-          >
+            placeholder=""
+          />
         </div>
 
         <div class="form-group">
@@ -80,8 +78,13 @@
 </template>
 
 <script>
+import CompactDatePicker from '@/components/CompactDatePicker.vue'
+
 export default {
   name: 'CreateFee',
+  components: {
+    CompactDatePicker
+  },
   data() {
     return {
       feeData: {

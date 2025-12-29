@@ -3,14 +3,10 @@
     <div class="page-header">
       <h2>Financial Reports</h2>
       <div class="header-actions">
-        <el-date-picker
+        <CompactDatePicker
           v-model="dateRange"
-          type="daterange"
-          range-separator="To"
-          start-placeholder="Start date"
-          end-placeholder="End date"
-          :shortcuts="dateShortcuts"
-          @change="generateReport"
+          placeholder=""
+          @change="handleDateRangeChange"
         />
         <el-button type="primary" @click="exportReport">
           <el-icon><Download /></el-icon>
@@ -189,56 +185,23 @@
 
 <script setup>
 import { useToast } from 'vue-toastification'
+import CompactDatePicker from '@/components/CompactDatePicker.vue'
 
 // State
 const toast = useToast()
 const loading = ref(false)
-const dateRange = ref([])
+const dateRange = ref(null)
 const chartType = ref('monthly')
 const reportType = ref('income')
 const currentPage = ref(1)
 const pageSize = ref(10)
 const totalItems = ref(0)
 
-// Date shortcuts
-const dateShortcuts = [
-  {
-    text: 'Last week',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
-      return [start, end]
-    }
-  },
-  {
-    text: 'Last month',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
-      return [start, end]
-    }
-  },
-  {
-    text: 'Last 3 months',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
-      return [start, end]
-    }
-  },
-  {
-    text: 'Last year',
-    value: () => {
-      const end = new Date()
-      const start = new Date()
-      start.setTime(start.getTime() - 3600 * 1000 * 24 * 365)
-      return [start, end]
-    }
-  }
-]
+// Handle date range change from CompactDatePicker
+const handleDateRangeChange = (value) => {
+  dateRange.value = value
+  generateReport()
+}
 
 // Mock data (replace with API calls)
 const reportData = ref([

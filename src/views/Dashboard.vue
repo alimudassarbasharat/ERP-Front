@@ -1,75 +1,76 @@
 <template>
-  <div class="relative w-full min-h-screen pl-0 pr-0 sm:pl-0 sm:pr-0 lg:pl-1 lg:pr-0 py-2 sm:py-3 lg:py-4">
-    <!-- Enhanced Background Effects -->
-    <div class="absolute left-0 bottom-0 w-[700px] h-[500px] bg-gradient-to-r from-purple-400/20 to-pink-400/20 blur-3xl rounded-full z-0 pointer-events-none animate-pulse"></div>
-    <div class="absolute right-0 top-0 w-[600px] h-[400px] bg-gradient-to-r from-blue-400/20 to-cyan-400/20 blur-3xl rounded-full z-0 pointer-events-none animate-pulse" style="animation-delay: 2s;"></div>
-    <div class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] bg-gradient-to-r from-green-400/10 to-emerald-400/10 blur-2xl rounded-full z-0 pointer-events-none animate-pulse" style="animation-delay: 4s;"></div>
+  <div class="relative w-full min-h-screen px-2 sm:px-4 lg:px-6 py-3 sm:py-4">
+    <!-- Subtle Background Effects -->
+    <div class="absolute left-0 bottom-0 w-[500px] h-[400px] bg-gradient-to-r from-purple-400/10 to-pink-400/10 blur-3xl rounded-full z-0 pointer-events-none"></div>
+    <div class="absolute right-0 top-0 w-[400px] h-[300px] bg-gradient-to-r from-blue-400/10 to-cyan-400/10 blur-3xl rounded-full z-0 pointer-events-none"></div>
     
-    <!-- Enhanced Header Section -->
-    <div class="relative z-10 mb-6 rounded-xl border border-gray-200/50 bg-white/60 px-6 py-8 shadow-lg backdrop-filter backdrop-blur-xl">
-      <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-        <div class="header-content">
-          <div class="flex items-center gap-3 mb-2">
-            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-            <span class="text-sm text-green-600 font-medium">System Online</span>
-          </div>
-          <h1 class="text-base font-bold text-gray-900 tracking-tight">
-            Good {{ timeOfDay }}, <span class="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{{ userName }}</span>
-          </h1>
-          <p class="text-gray-600 mt-3 font-medium text-sm">{{ greetingMessage }}</p>
-          <div class="flex items-center gap-4 mt-4">
-            <div class="flex items-center gap-2 text-sm text-gray-500">
-              <Clock :size="16" class="animate-icon-bounce" />
-              <span>{{ currentTime }}</span>
+    <!-- Compact Header Section -->
+    <div class="relative z-10 mb-4 rounded-2xl border border-gray-200/60 bg-white/90 backdrop-blur-xl px-4 sm:px-6 py-4 shadow-sm">
+      <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
+        <div class="header-content flex-1">
+          <div class="flex items-center gap-2 mb-2">
+            <div class="relative">
+              <div class="w-2 h-2 bg-green-500 rounded-full"></div>
             </div>
-            <div class="flex items-center gap-2 text-sm text-gray-500">
-              <Calendar :size="16" class="animate-icon-bounce" style="animation-delay: 0.5s;" />
-              <span>{{ currentDate }}</span>
+            <span class="text-[10px] sm:text-xs text-green-600 font-medium">System Online</span>
+          </div>
+          <h1 class="text-lg sm:text-xl font-bold text-gray-900 tracking-tight mb-1">
+            Good {{ timeOfDay }}, 
+            <span class="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">{{ userName }}</span>
+          </h1>
+          <p class="text-gray-500 text-xs mb-3">{{ greetingMessage }}</p>
+          <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+            <div class="flex items-center gap-1.5 text-[10px] sm:text-xs text-gray-600 bg-gray-50 px-2 py-1 rounded-md">
+              <IconClock :size="12" class="text-indigo-600" stroke-width="2" />
+              <span class="font-medium">{{ currentTime }}</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-[10px] sm:text-xs text-gray-600 bg-gray-50 px-2 py-1 rounded-md">
+              <IconCalendar :size="12" class="text-indigo-600" stroke-width="2" />
+              <span class="font-medium">{{ currentDate }}</span>
             </div>
           </div>
         </div>
-        <div class="flex items-center gap-4">
-          <button @click="refreshData" :disabled="refreshing" class="flex items-center gap-2 h-12 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
-            <RefreshCw :size="18" :class="refreshing ? 'animate-spin' : ''" />
-            {{ refreshing ? 'Refreshing...' : 'Refresh Data' }}
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <button 
+            @click="refreshData" 
+            :disabled="refreshing" 
+            class="flex items-center justify-center gap-1.5 h-9 px-4 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white text-xs font-semibold shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <IconRefresh :size="14" :class="refreshing ? 'animate-spin' : ''" stroke-width="2" />
+            <span>{{ refreshing ? 'Refreshing...' : 'Refresh' }}</span>
           </button>
-          <button @click="exportReport" class="flex items-center gap-2 h-12 px-6 rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
-            <Download :size="18" class="animate-bounce-slow" />
-            Export Report
+          <button 
+            @click="exportReport" 
+            class="flex items-center justify-center gap-1.5 h-9 px-4 rounded-lg bg-gradient-to-r from-green-600 to-emerald-600 text-white text-xs font-semibold shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 active:scale-95"
+          >
+            <IconDownload :size="14" stroke-width="2" />
+            <span>Export</span>
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Main Date Filter -->
-    <div class="relative z-10 mb-6 rounded-xl border border-gray-200/50 bg-white/60 px-6 py-4 shadow-lg backdrop-filter backdrop-blur-xl">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div class="flex items-center gap-3">
-          <CalendarDays :size="20" class="text-indigo-600 animate-icon-bounce" />
-          <span class="text-sm font-medium text-gray-900">Main Date Filter</span>
+    <!-- Compact Date Filter -->
+    <div class="relative z-10 mb-4 rounded-2xl border border-gray-200/60 bg-white/90 backdrop-blur-xl px-4 sm:px-5 py-3 shadow-sm">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-indigo-100 flex items-center justify-center">
+            <IconCalendarEvent :size="16" class="text-indigo-600" stroke-width="2" />
+          </div>
+          <div>
+            <h3 class="text-xs sm:text-sm font-semibold text-gray-900">Date Range Filter</h3>
+            <p class="text-[10px] text-gray-500 hidden sm:block">Filter all dashboard data</p>
+          </div>
         </div>
-        <div class="flex items-center gap-4">
-          <div class="flex items-center gap-2">
-            <label class="text-xs font-medium text-gray-600">From:</label>
-            <input 
-              v-model="mainDateFilter.startDate" 
-              type="date" 
-              class="h-8 px-3 rounded-lg border border-gray-200 text-xs focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300"
-              @change="applyMainDateFilter"
-            />
-          </div>
-          <div class="flex items-center gap-2">
-            <label class="text-xs font-medium text-gray-600">To:</label>
-            <input 
-              v-model="mainDateFilter.endDate" 
-              type="date" 
-              class="h-8 px-3 rounded-lg border border-gray-200 text-xs focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300"
-              @change="applyMainDateFilter"
-            />
-          </div>
+        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <CompactDatePicker
+            v-model="mainDateFilter.startDate"
+            placeholder=""
+            @change="handleMainDateChange"
+          />
           <button 
             @click="clearMainDateFilter" 
-            class="h-8 px-3 rounded-lg bg-white text-gray-600 text-xs font-medium hover:bg-white transition-colors"
+            class="h-7 px-3 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-[10px] font-medium transition-all duration-200 hover:scale-105 active:scale-95 border border-gray-200"
           >
             Clear
           </button>
@@ -77,310 +78,233 @@
       </div>
     </div>
 
-    <!-- Enhanced Statistics Cards with Lucide Animated Icons -->
-    <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-      <div v-for="(stat, index) in statisticsCards" :key="index" 
-           class="group relative overflow-hidden rounded-2xl border border-gray-200/50 bg-white/60 p-7 shadow-lg backdrop-filter backdrop-blur-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] cursor-pointer"
-           @click="showStatDetails(stat)">
-        <div class="absolute top-0 left-0 right-0 h-1.5" :class="stat.gradient"></div>
-        
-        <!-- Animated Background Particles -->
-        <div class="absolute inset-0 overflow-hidden pointer-events-none">
-          <div class="absolute w-20 h-20 rounded-full opacity-20 blur-2xl animate-float" :class="stat.particleBg" style="top: -10px; right: -10px;"></div>
-          <div class="absolute w-16 h-16 rounded-full opacity-15 blur-xl animate-float-delayed" :class="stat.particleBg" style="bottom: -8px; left: -8px;"></div>
-        </div>
-        
-        <div class="flex items-center relative z-10">
-          <div class="flex-shrink-0">
-            <div class="relative w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-xl transition-all duration-500 group-hover:scale-110 group-hover:rotate-6" :class="stat.iconBg">
-              <!-- Lucide Animated Icons -->
-              <component :is="stat.icon" :size="32" :stroke-width="2.5" class="animate-icon-bounce" />
-              
-              <!-- Pulse Ring Effect -->
-              <div class="absolute inset-0 rounded-2xl animate-ping opacity-20" :class="stat.iconBg"></div>
-            </div>
-          </div>
-          <div class="ml-5 flex-1">
-            <p class="text-xs font-medium text-gray-500 tracking-wide uppercase">{{ stat.label }}</p>
-            <p class="text-base font-extrabold text-gray-900 tracking-tight mt-1 transition-all duration-300 group-hover:scale-105">
-              {{ stat.prefix }}{{ formatNumber(stat.value) }}{{ stat.suffix }}
-            </p>
-            <div class="flex items-center text-sm mt-2">
-              <div class="flex items-center gap-1.5 px-2 py-0.5 rounded-full" :class="stat.trend === 'up' ? 'bg-green-50' : 'bg-red-50'">
-                <TrendingUp v-if="stat.trend === 'up'" :size="14" class="text-green-500 animate-bounce-slow" />
-                <TrendingDown v-else :size="14" class="text-red-500 animate-bounce-slow" />
-                <span :class="stat.trend === 'up' ? 'text-green-600' : 'text-red-600'" class="font-semibold text-xs">{{ stat.change }}</span>
-            </div>
-          </div>
-        </div>
-        </div>
-        
-        <!-- Enhanced Hover Gradient Overlay -->
-        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" :class="stat.hoverGradient"></div>
-      </div>
+    <!-- Compact Statistics Cards -->
+    <div class="relative z-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
+      <StatCard
+        v-for="(stat, index) in statisticsCards"
+        :key="index"
+        :stat="stat"
+        @click="showStatDetails"
+      />
     </div>
 
-    <!-- Enhanced Charts Section -->
-    <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Compact Charts Section -->
+    <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-4">
       <!-- Charts -->
-      <div class="lg:col-span-2 space-y-8">
-        <!-- Enhanced Bar Chart -->
-        <div class="rounded-2xl border border-gray-200/50 bg-white/60 p-8 shadow-lg backdrop-filter backdrop-blur-xl">
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-5 mb-8">
+      <div class="lg:col-span-2 space-y-4">
+        <!-- Compact Bar Chart -->
+        <div class="relative overflow-hidden rounded-xl border border-gray-200/80 bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-all duration-300">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
             <div>
-                          <h3 class="text-base font-extrabold text-gray-900 tracking-tight">Monthly Income Overview</h3>
-            <p class="text-gray-600 mt-2 font-normal text-xs">Fee collection trends over time</p>
+              <h3 class="text-sm font-bold text-gray-900 mb-0.5">Monthly Income Overview</h3>
+              <p class="text-[10px] text-gray-500">Fee collection trends</p>
             </div>
-            <div class="flex items-center gap-4">
-              <div class="flex items-center gap-2">
-                <label class="text-xs font-medium text-gray-600">Chart Date Range:</label>
-                <input 
-                  v-model="chartDateFilter.startDate" 
-                  type="date" 
-                  class="h-8 px-2 rounded-lg border border-gray-200 text-xs focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300"
-                  @change="updateChartData"
-                />
-                <span class="text-xs text-gray-500">to</span>
-                <input 
-                  v-model="chartDateFilter.endDate" 
-                  type="date" 
-                  class="h-8 px-2 rounded-lg border border-gray-200 text-xs focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300"
-                  @change="updateChartData"
+            <div class="flex items-center gap-2 flex-wrap">
+              <div class="flex items-center gap-1.5">
+                <label class="text-[10px] font-medium text-gray-600">Date:</label>
+                <CompactDatePicker
+                  v-model="chartDateFilter.startDate"
+                  placeholder=""
+                  @change="handleChartDateChange"
                 />
               </div>
-              <select v-model="selectedPeriod" @change="updateChartData" class="h-8 rounded-lg border border-indigo-100 bg-white px-3 pr-8 text-xs font-medium text-gray-900 focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300 transition-all duration-200 appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath fill=\'%233b3b4f\' d=\'M6 8.825L1.175 4 2.05 3.125 6 7.075 9.95 3.125 10.825 4z\'/%3E%3C/svg%3E')] bg-no-repeat bg-[length:12px] bg-[position:calc(100%-0.75rem)_center]">
-                <option value="6">Last 6 Months</option>
-                <option value="12">Last Year</option>
-                <option value="24">Last 2 Years</option>
+              <!-- Chart Type Dropdown - Right side below date -->
+              <div class="relative">
+                <select 
+                  v-model="selectedChartType" 
+                  @change="handleChartTypeChange" 
+                  class="h-7 rounded-lg border border-gray-200 bg-white px-3 pr-8 text-[10px] font-medium text-gray-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-300 transition-all duration-200 appearance-none cursor-pointer hover:border-indigo-300 bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath fill=\'%236366f1\' d=\'M6 9L2 5h8z\'/%3E%3C/svg%3E')] bg-no-repeat bg-[length:12px] bg-[position:calc(100%-0.5rem)_center] shadow-sm hover:shadow"
+                >
+                  <option value="bar">Bar Chart</option>
+                  <option value="line">Line Chart</option>
+                  <option value="area">Area Chart</option>
+                  <option value="doughnut">Doughnut Chart</option>
+                  <option value="radar">Radar Chart</option>
+                </select>
+              </div>
+              <select v-model="selectedPeriod" @change="updateChartData" class="h-7 rounded-lg border border-gray-200 bg-white px-2 pr-6 text-[10px] font-medium text-gray-900 focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-300 transition-all duration-200 appearance-none cursor-pointer hover:border-indigo-300 bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'10\' height=\'10\' viewBox=\'0 0 10 10\'%3E%3Cpath fill=\'%233b3b4f\' d=\'M5 7.35L1.65 4 2.35 3.3 5 5.95 7.65 3.3 8.35 4z\'/%3E%3C/svg%3E')] bg-no-repeat bg-[length:10px] bg-[position:calc(100%-0.5rem)_center] shadow-sm hover:shadow">
+                <option value="6">6M</option>
+                <option value="12">1Y</option>
+                <option value="24">2Y</option>
               </select>
-              <button @click="toggleChartView" class="h-8 w-8 rounded-lg border border-indigo-100 bg-white flex items-center justify-center text-gray-500 hover:bg-indigo-50 transition-all duration-200 hover:scale-105">
-                <i :class="chartView === 'bar' ? 'fas fa-chart-line' : 'fas fa-chart-bar'"></i>
+              <button @click="toggleChartView" class="h-7 w-7 rounded-lg border border-gray-200 bg-white flex items-center justify-center text-gray-500 hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 transition-all duration-200 shadow-sm hover:shadow">
+                <component :is="chartView === 'bar' ? IconChartLine : IconChartBar" :size="14" :stroke-width="2" />
               </button>
             </div>
           </div>
-          <div class="h-80 relative">
-            <div v-if="chartLoading" class="absolute inset-0 flex items-center justify-center bg-white/50 backdrop-blur-sm rounded-lg">
-              <div class="flex items-center gap-3">
-                <i class="fas fa-spinner fa-spin text-indigo-600"></i>
-                <span class="text-indigo-600 font-medium">Loading chart...</span>
-              </div>
-            </div>
-            <canvas ref="incomeChart"></canvas>
+          <div class="h-64 relative">
+            <ChartJsWrapper
+              ref="incomeChart"
+              :type="chartView"
+              :data="incomeData"
+              :options="incomeChartOptions"
+              :loading="chartLoading"
+              height="256px"
+            />
           </div>
         </div>
 
-        <!-- Enhanced Doughnut Chart -->
-        <div class="rounded-2xl border border-gray-200/50 bg-white/60 p-8 shadow-lg backdrop-filter backdrop-blur-xl">
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-5 mb-8">
-            <div>
-                          <h3 class="text-base font-extrabold text-gray-900 tracking-tight">Fee Collection Distribution</h3>
-            <p class="text-gray-600 mt-2 font-normal text-xs">Breakdown by fee categories</p>
-            </div>
-            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <div class="flex items-center gap-2">
-                <label class="text-xs font-medium text-gray-600">Pie Chart Date Range:</label>
-                <input 
-                  v-model="pieChartDateFilter.startDate" 
-                  type="date" 
-                  class="h-8 px-2 rounded-lg border border-gray-200 text-xs focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300"
-                  @change="updatePieChartData"
-                />
-                <span class="text-xs text-gray-500">to</span>
-                <input 
-                  v-model="pieChartDateFilter.endDate" 
-                  type="date" 
-                  class="h-8 px-2 rounded-lg border border-gray-200 text-xs focus:ring-2 focus:ring-indigo-200 focus:border-indigo-300"
-                  @change="updatePieChartData"
-                />
+        <!-- Compact Pie Chart -->
+        <div class="group relative rounded-xl border border-gray-200/60 bg-white/90 p-4 sm:p-5 shadow-sm backdrop-blur-xl hover:shadow-md transition-all duration-300 overflow-hidden">
+          <!-- Animated gradient overlay on hover -->
+          <div class="absolute inset-0 bg-gradient-to-br from-pink-50/0 via-purple-50/0 to-indigo-50/0 group-hover:from-pink-50/30 group-hover:via-purple-50/20 group-hover:to-indigo-50/30 transition-all duration-500 pointer-events-none"></div>
+          
+          <div class="relative z-10">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+              <div>
+                <h3 class="text-sm font-bold text-gray-900 mb-0.5">Fee Distribution</h3>
+                <p class="text-[10px] text-gray-500">By categories</p>
               </div>
-              <div class="flex items-center bg-indigo-50 rounded-xl p-1.5">
-                <button v-for="period in ['Daily', 'Weekly', 'Monthly']" :key="period"
-                        :class="['px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200', feeDistributionPeriod === period ? 'bg-white text-indigo-700 shadow-sm' : 'text-indigo-600 hover:text-indigo-700']" 
-                        @click="feeDistributionPeriod = period; updatePieChart()">
-                  {{ period }}
+              <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                <div class="flex items-center gap-1.5">
+                  <label class="text-[10px] font-medium text-gray-600">Date:</label>
+                  <CompactDatePicker
+                    v-model="pieChartDateFilter.startDate"
+                    placeholder=""
+                    @change="handlePieChartDateChange"
+                  />
+                </div>
+                <!-- Chart Type Dropdown - Right side below date -->
+                <div class="relative">
+                  <select 
+                    v-model="selectedPieChartType" 
+                    @change="handlePieChartTypeChange" 
+                    class="h-7 rounded-lg border border-gray-200 bg-white px-3 pr-8 text-[10px] font-medium text-gray-900 focus:ring-2 focus:ring-purple-500/20 focus:border-purple-300 transition-all duration-200 appearance-none cursor-pointer hover:border-purple-300 bg-[url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'12\' height=\'12\' viewBox=\'0 0 12 12\'%3E%3Cpath fill=\'%23a855f7\' d=\'M6 9L2 5h8z\'/%3E%3C/svg%3E')] bg-no-repeat bg-[length:12px] bg-[position:calc(100%-0.5rem)_center] shadow-sm hover:shadow"
+                  >
+                    <option value="pie">Pie Chart</option>
+                    <option value="doughnut">Doughnut Chart</option>
+                    <option value="bar">Bar Chart</option>
+                    <option value="column">Column Chart</option>
+                  </select>
+                </div>
+                <div class="flex items-center bg-indigo-50 rounded-lg p-1 shadow-sm">
+                  <button v-for="period in ['Daily', 'Weekly', 'Monthly']" :key="period"
+                          :class="['px-2 py-1 rounded text-[10px] font-medium transition-all duration-200', feeDistributionPeriod === period ? 'bg-white text-indigo-700 shadow-sm' : 'text-indigo-600 hover:text-indigo-700']" 
+                          @click="feeDistributionPeriod = period; updatePieChart()">
+                    {{ period }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="h-64 relative">
+              <HighchartsWrapper
+                ref="pieChart"
+                :options="pieChartOptions"
+                :loading="pieChartLoading"
+                height="256px"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Compact Sidebar -->
+      <div class="space-y-4 animate-fade-in-up" style="animation-delay: 500ms">
+        <!-- Compact Recent Activities -->
+        <div class="group relative rounded-xl border border-gray-200/60 bg-white/90 p-4 sm:p-5 shadow-sm backdrop-blur-xl hover:shadow-md transition-all duration-300 overflow-hidden">
+          <!-- Animated gradient overlay on hover -->
+          <div class="absolute inset-0 bg-gradient-to-br from-blue-50/0 via-indigo-50/0 to-purple-50/0 group-hover:from-blue-50/20 group-hover:via-indigo-50/15 group-hover:to-purple-50/20 transition-all duration-500 pointer-events-none"></div>
+          <div class="relative z-10">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+              <h3 class="text-sm font-bold text-gray-900">Recent Activities</h3>
+              <div class="flex items-center gap-2">
+                <CompactDatePicker
+                  v-model="mainDateFilter.startDate"
+                  placeholder=""
+                  @change="handleMainDateChange"
+                />
+                <button @click="viewAllActivities" class="h-7 px-3 rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 text-[10px] font-semibold text-white shadow-sm hover:shadow-md transition-all duration-200 hover:scale-105 active:scale-95">
+                  View All
                 </button>
               </div>
             </div>
-          </div>
-          <div class="h-80 relative">
-            <div v-if="pieChartLoading" class="absolute inset-0 flex items-center justify-center bg-white/50 backdrop-blur-sm rounded-lg">
-              <div class="flex items-center gap-3">
-                <i class="fas fa-spinner fa-spin text-indigo-600"></i>
-                <span class="text-indigo-600 font-medium">Loading chart...</span>
+            <div class="space-y-2 max-h-80 overflow-y-auto">
+              <div
+                v-for="(activity, index) in filteredActivities"
+                :key="index"
+                class="animate-slide-in-right"
+                :style="{ animationDelay: `${index * 50}ms` }"
+              >
+                <ActivityItem
+                  :activity="activity"
+                  size="sm"
+                  variant="minimal"
+                  :glow-color="activity.color"
+                  @click="handleActivityClick"
+                />
               </div>
             </div>
-            <canvas ref="pieChart"></canvas>
           </div>
         </div>
-      </div>
 
-      <!-- Enhanced Sidebar -->
-      <div class="space-y-8">
-        <!-- Enhanced Recent Activities -->
-        <div class="rounded-2xl border border-gray-200/50 bg-white/60 p-7 shadow-lg backdrop-filter backdrop-blur-xl">
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-            <h3 class="text-base font-extrabold text-gray-900 tracking-tight">Recent Activities</h3>
-            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
-              <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
-                <label class="text-xs font-semibold text-gray-600 uppercase tracking-wider #ffffffspace-nowrap">Activities Date Range:</label>
-                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
-                  <div class="relative">
-                    <input 
-                      v-model="activitiesDateFilter.startDate" 
-                      type="date" 
-                      class="h-10 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full appearance-none"
-                      @change="updateActivitiesData"
-                    />
-                    <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
-                  </div>
-                  <span class="text-xs text-gray-500 hidden sm:inline">to</span>
-                  <div class="relative">
-                    <input 
-                      v-model="activitiesDateFilter.endDate" 
-                      type="date" 
-                      class="h-10 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full appearance-none"
-                      @change="updateActivitiesData"
-                    />
-                    <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
-                  </div>
-                </div>
+        <!-- Compact Quick Stats -->
+        <div class="group relative rounded-xl border border-gray-200/60 bg-white/90 p-4 sm:p-5 shadow-sm backdrop-blur-xl hover:shadow-md transition-all duration-300 overflow-hidden">
+          <!-- Animated gradient overlay on hover -->
+          <div class="absolute inset-0 bg-gradient-to-br from-green-50/0 via-emerald-50/0 to-teal-50/0 group-hover:from-green-50/20 group-hover:via-emerald-50/15 group-hover:to-teal-50/20 transition-all duration-500 pointer-events-none"></div>
+          <div class="relative z-10">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+              <h3 class="text-sm font-bold text-gray-900">Quick Stats</h3>
+              <div class="flex items-center gap-2">
+                <CompactDatePicker
+                  v-model="quickStatsDateFilter.startDate"
+                  placeholder=""
+                  @change="handleQuickStatsDateChange"
+                />
               </div>
-              <button @click="viewAllActivities" class="h-9 px-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-sm font-bold text-white shadow hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 #ffffffspace-nowrap">
-                View All
-              </button>
             </div>
-          </div>
-          <div class="space-y-4 max-h-96 overflow-y-auto">
-            <div v-for="(activity, index) in filteredActivities" :key="index" 
-                 class="group relative flex items-start gap-4 p-4 rounded-xl hover:bg-white/60 transition-all duration-300 cursor-pointer overflow-hidden"
-                 @click="showActivityDetails(activity)">
-              <!-- Animated Background Glow -->
-              <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
-                   :style="{ background: `radial-gradient(circle at 0% 50%, ${activity.color}15 0%, transparent 70%)` }"></div>
-              
-              <div :style="{ background: `linear-gradient(135deg, ${activity.color}, ${activity.colorDark || activity.color})` }" 
-                   class="relative w-12 h-12 rounded-xl flex items-center justify-center text-white flex-shrink-0 shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                <!-- Lucide Icon Component -->
-                <component :is="activity.iconComponent" :size="20" :stroke-width="2.5" class="animate-icon-bounce" />
-                <!-- Pulse Ring -->
-                <div class="absolute inset-0 rounded-xl animate-ping opacity-20" :style="{ backgroundColor: activity.color }"></div>
-              </div>
-              
-              <div class="flex-1 min-w-0 relative z-10">
-                <p class="text-sm text-gray-900 font-semibold leading-relaxed">{{ activity.content }}</p>
-                <p class="text-xs text-gray-500 mt-1.5 font-medium flex items-center gap-1.5">
-                  <Clock :size="12" class="inline" />
-                  {{ activity.time }}
-                </p>
-                <div class="flex items-center gap-2 mt-2">
-                  <span :class="getStatusClass(activity.type)" class="px-2.5 py-1 rounded-full text-xs font-semibold shadow-sm">
-                    {{ activity.type }}
-                  </span>
+            <div class="grid grid-cols-2 gap-3">
+              <div
+                v-for="(stat, index) in filteredQuickStats"
+                :key="index"
+                class="relative bg-gradient-to-br p-3 rounded-lg border hover:shadow-md transition-all duration-300 cursor-pointer group overflow-hidden animate-scale-in"
+                :class="stat.bgClass"
+                :style="{ animationDelay: `${index * 100}ms` }"
+                @click="showQuickStatDetails(stat)"
+              >
+                <!-- Icon in top right corner -->
+                <div class="absolute top-2 right-2 opacity-20 group-hover:opacity-30 transition-opacity duration-200">
+                  <component :is="stat.iconComponent" :size="20" :stroke-width="1.5" />
+                </div>
+                
+                <p class="text-[10px] font-bold mb-1 tracking-wide uppercase relative z-10" :class="stat.textClass">{{ stat.label }}</p>
+                <p class="text-sm font-black tracking-tight relative z-10" :class="stat.valueClass">{{ stat.value }}</p>
+                <p class="text-[10px] font-semibold mt-0.5 relative z-10" :class="stat.changeClass">{{ stat.change }}</p>
+                <div class="mt-1.5 w-full bg-white/20 rounded-full h-0.5 relative z-10">
+                  <div class="h-0.5 rounded-full transition-all duration-300" :class="stat.progressClass" :style="{ width: stat.percentage + '%' }"></div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Enhanced Quick Stats -->
-        <div class="rounded-2xl border border-gray-200/50 bg-white/60 p-7 shadow-lg backdrop-filter backdrop-blur-xl">
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-            <h3 class="text-base font-extrabold text-gray-900 tracking-tight">Quick Stats</h3>
-            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
-              <label class="text-xs font-semibold text-gray-600 uppercase tracking-wider #ffffffspace-nowrap">Stats Date Range:</label>
-              <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
-                <div class="relative">
-                  <input 
-                    v-model="quickStatsDateFilter.startDate" 
-                    type="date" 
-                    class="h-10 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full appearance-none"
-                    @change="updateQuickStatsData"
-                  />
-                  <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
-                </div>
-                <span class="text-xs text-gray-500 hidden sm:inline">to</span>
-                <div class="relative">
-                  <input 
-                    v-model="quickStatsDateFilter.endDate" 
-                    type="date" 
-                    class="h-10 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full appearance-none"
-                    @change="updateQuickStatsData"
-                  />
-                  <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
-                </div>
+        <!-- Compact Upcoming Events -->
+        <div class="group relative rounded-xl border border-gray-200/60 bg-white/90 p-4 sm:p-5 shadow-sm backdrop-blur-xl hover:shadow-md transition-all duration-300 overflow-hidden">
+          <!-- Animated gradient overlay on hover -->
+          <div class="absolute inset-0 bg-gradient-to-br from-orange-50/0 via-amber-50/0 to-yellow-50/0 group-hover:from-orange-50/20 group-hover:via-amber-50/15 group-hover:to-yellow-50/20 transition-all duration-500 pointer-events-none"></div>
+          <div class="relative z-10">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+              <h3 class="text-sm font-bold text-gray-900">Upcoming Events</h3>
+              <div class="flex items-center gap-2">
+                <CompactDatePicker
+                  v-model="mainDateFilter.startDate"
+                  placeholder=""
+                  @change="handleMainDateChange"
+                />
               </div>
             </div>
-          </div>
-          <div class="grid grid-cols-2 gap-4">
-            <div v-for="(stat, index) in filteredQuickStats" :key="index"
-                 class="relative bg-gradient-to-br p-5 rounded-xl border hover:shadow-md transition-all duration-300 cursor-pointer group overflow-hidden"
-                 :class="stat.bgClass"
-                 @click="showQuickStatDetails(stat)">
-              <!-- Icon in top right corner -->
-              <div class="absolute top-3 right-3 opacity-20 group-hover:opacity-30 transition-opacity duration-300">
-                <component :is="stat.iconComponent" :size="32" :stroke-width="1.5" />
-              </div>
-              
-              <p class="text-xs font-bold mb-2 tracking-wide uppercase relative z-10" :class="stat.textClass">{{ stat.label }}</p>
-              <p class="text-base font-black tracking-tight relative z-10" :class="stat.valueClass">{{ stat.value }}</p>
-              <p class="text-xs font-semibold mt-1 relative z-10" :class="stat.changeClass">{{ stat.change }}</p>
-              <div class="mt-2 w-full bg-white/20 rounded-full h-1 relative z-10">
-                <div class="h-1 rounded-full transition-all duration-300" :class="stat.progressClass" :style="{ width: stat.percentage + '%' }"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- New: Upcoming Events -->
-        <div class="rounded-2xl border border-gray-200/50 bg-white/60 p-7 shadow-lg backdrop-filter backdrop-blur-xl">
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-            <h3 class="text-base font-extrabold text-gray-900 tracking-tight">Upcoming Events</h3>
-            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
-              <label class="text-xs font-semibold text-gray-600 uppercase tracking-wider #ffffffspace-nowrap">Events Date Range:</label>
-              <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
-                <div class="relative">
-                  <input 
-                    v-model="eventsDateFilter.startDate" 
-                    type="date" 
-                    class="h-10 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full appearance-none"
-                    @change="updateEventsData"
-                  />
-                  <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
-                </div>
-                <span class="text-xs text-gray-500 hidden sm:inline">to</span>
-                <div class="relative">
-                  <input 
-                    v-model="eventsDateFilter.endDate" 
-                    type="date" 
-                    class="h-10 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full appearance-none"
-                    @change="updateEventsData"
-                  />
-                  <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="space-y-4">
-            <div v-for="(event, index) in filteredEvents" :key="index" 
-                 class="group relative p-4 rounded-xl border border-gray-200 hover:border-indigo-200 hover:shadow-lg transition-all duration-300 cursor-pointer overflow-hidden">
-              <!-- Animated Background Glow -->
-              <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-r from-indigo-50/50 to-purple-50/50"></div>
-              
-              <div class="flex items-start gap-3 relative z-10">
-                <div class="relative w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300" :class="event.colorClass">
-                  <!-- Lucide Icon Component -->
-                  <component :is="event.iconComponent" :size="20" :stroke-width="2.5" class="animate-icon-bounce" />
-                  <!-- Pulse Ring -->
-                  <div class="absolute inset-0 rounded-xl animate-ping opacity-20" :class="event.colorClass"></div>
-                </div>
-                <div class="flex-1">
-                  <h4 class="font-bold text-gray-900 text-sm group-hover:text-indigo-600 transition-colors">{{ event.title }}</h4>
-                  <p class="text-xs text-gray-500 mt-1 flex items-center gap-1.5">
-                    <Calendar :size="12" class="inline" />
-                    {{ event.date }}
-                  </p>
-                  <p class="text-xs text-gray-600 mt-1.5">{{ event.description }}</p>
-                </div>
+            <div class="space-y-2">
+              <div
+                v-for="(event, index) in filteredEvents"
+                :key="index"
+                class="animate-slide-in-right"
+                :style="{ animationDelay: `${index * 50}ms` }"
+              >
+                <EventItem
+                  :event="event"
+                  size="sm"
+                  variant="default"
+                  @click="handleEventClick"
+                />
               </div>
             </div>
           </div>
@@ -388,117 +312,229 @@
       </div>
     </div>
 
-    <!-- Enhanced Notification Toast -->
-    <div v-if="showNotification" 
-         class="fixed top-4 right-4 z-50 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-4 rounded-xl shadow-2xl transform transition-all duration-300 border border-green-200"
-         :class="showNotification ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'">
-      <div class="flex items-center gap-3">
-        <i class="fas fa-check-circle text-lg"></i>
-        <span class="font-medium">{{ notificationMessage }}</span>
-        <button @click="showNotification = false" class="ml-4 text-white/80 hover:text-white transition-colors">
-          <i class="fas fa-times"></i>
-        </button>
+    <!-- Compact Notification Toast -->
+    <Transition name="slide-fade">
+      <div v-if="showNotification" 
+           class="fixed top-3 right-3 z-50 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-3 rounded-xl shadow-lg border border-green-200/50 backdrop-blur-sm max-w-xs">
+        <div class="flex items-center gap-2">
+          <IconCircleCheck :size="16" class="flex-shrink-0" stroke-width="2" />
+          <span class="font-semibold text-xs flex-1">{{ notificationMessage }}</span>
+          <button @click="showNotification = false" class="ml-1 text-white/80 hover:text-white transition-colors p-0.5 hover:bg-white/20 rounded">
+            <IconX :size="14" stroke-width="2" />
+          </button>
+        </div>
       </div>
-    </div>
+    </Transition>
 
-    <!-- Quick Actions Floating Button -->
-    <div class="fixed bottom-6 right-6 z-40">
+    <!-- Compact Quick Actions Floating Button -->
+    <div class="fixed bottom-4 right-4 z-40">
       <div class="relative group">
-        <button @click="toggleQuickActions" class="w-14 h-14 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 flex items-center justify-center">
-          <i :class="showQuickActions ? 'fas fa-times' : 'fas fa-plus'" class="text-xl transition-transform duration-300"></i>
+        <button 
+          @click="toggleQuickActions" 
+          class="w-12 h-12 bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-110 active:scale-95 flex items-center justify-center backdrop-blur-sm border border-white/20"
+        >
+          <component 
+            :is="showQuickActions ? IconX : IconSparkles" 
+            :size="20" 
+            :stroke-width="2"
+            class="transition-transform duration-200"
+            :class="showQuickActions ? 'rotate-90' : ''"
+          />
         </button>
         
-        <!-- Quick Actions Menu -->
-        <div v-if="showQuickActions" class="absolute bottom-16 right-0 bg-white rounded-xl shadow-2xl border border-gray-200 p-2 min-w-[200px]">
-          <div class="space-y-1">
-            <button @click="quickAction('addStudent')" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white transition-colors text-left">
-              <i class="fas fa-user-plus text-blue-600"></i>
-              <span class="text-gray-900 font-medium">Add Student</span>
+        <Transition name="slide-up">
+          <div v-if="showQuickActions" class="absolute bottom-16 right-0 bg-white/95 backdrop-blur-xl rounded-xl shadow-xl border border-gray-200/50 p-2 min-w-[180px] space-y-1.5">
+            <button @click="quickAction('addStudent')" class="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-50 transition-all duration-200 text-left group">
+              <div class="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                <IconUserPlus :size="14" class="text-blue-600" stroke-width="2" />
+              </div>
+              <span class="text-gray-900 font-semibold text-xs">Add Student</span>
             </button>
-            <button @click="quickAction('addTeacher')" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white transition-colors text-left">
-              <i class="fas fa-chalkboard-teacher text-green-600"></i>
-              <span class="text-gray-900 font-medium">Add Teacher</span>
+            <button @click="quickAction('addTeacher')" class="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-green-50 transition-all duration-200 text-left group">
+              <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                <IconSchool :size="14" class="text-green-600" stroke-width="2" />
+              </div>
+              <span class="text-gray-900 font-semibold text-xs">Add Teacher</span>
             </button>
-            <button @click="quickAction('generateReport')" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white transition-colors text-left">
-              <i class="fas fa-file-alt text-purple-600"></i>
-              <span class="text-gray-900 font-medium">Generate Report</span>
+            <button @click="quickAction('generateReport')" class="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-purple-50 transition-all duration-200 text-left group">
+              <div class="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                <IconFileText :size="14" class="text-purple-600" stroke-width="2" />
+              </div>
+              <span class="text-gray-900 font-semibold text-xs">Generate Report</span>
             </button>
-            <button @click="quickAction('scheduleEvent')" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-white transition-colors text-left">
-              <i class="fas fa-calendar-plus text-orange-600"></i>
-              <span class="text-gray-900 font-medium">Schedule Event</span>
+            <button @click="quickAction('scheduleEvent')" class="w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-orange-50 transition-all duration-200 text-left group">
+              <div class="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center group-hover:bg-orange-200 transition-colors">
+                <IconCalendarPlus :size="14" class="text-orange-600" stroke-width="2" />
+              </div>
+              <span class="text-gray-900 font-semibold text-xs">Schedule Event</span>
             </button>
           </div>
-        </div>
+        </Transition>
       </div>
     </div>
   </div>
 </template>
 
+<style scoped>
+/* Modern Transitions */
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.2s ease-in;
+}
+
+.slide-fade-enter-from {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.slide-fade-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.slide-up-enter-active {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.slide-up-leave-active {
+  transition: all 0.2s ease-in;
+}
+
+.slide-up-enter-from {
+  transform: translateY(20px) scale(0.9);
+  opacity: 0;
+}
+
+.slide-up-leave-to {
+  transform: translateY(20px) scale(0.9);
+  opacity: 0;
+}
+
+/* Icon Bounce Animation */
+@keyframes icon-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-icon-bounce {
+  animation: icon-bounce 2s ease-in-out infinite;
+}
+
+/* Float Animation */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-20px) translateX(10px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 6s ease-in-out infinite;
+  animation-delay: 2s;
+}
+</style>
+
 <script>
-import { Chart, registerables } from 'chart.js'
 import { ref, onMounted, onBeforeUnmount, computed, nextTick } from 'vue'
 import dayjs from 'dayjs'
 import axios from 'axios'
 import { useStatistics } from '@/composables/useStatistics'
-import { 
-  Wallet, 
-  CheckCircle2, 
-  Users, 
-  UserX,
-  TrendingUp,
-  TrendingDown,
-  Clock,
-  Calendar,
-  RefreshCw,
-  Download,
-  CalendarDays,
-  UserPlus,
-  DollarSign,
-  GraduationCap,
-  Award,
-  AlertCircle,
-  UserCheck,
-  CreditCard,
-  BookOpen,
-  School,
-  Trophy,
-  Music,
-  PartyPopper
-} from 'lucide-vue-next'
-
-Chart.register(...registerables)
+import ActivityItem from '@/components/dashboard/ActivityItem.vue'
+import EventItem from '@/components/dashboard/EventItem.vue'
+import StatCard from '@/components/dashboard/StatCard.vue'
+import ChartJsWrapper from '@/components/charts/ChartJsWrapper.vue'
+import HighchartsWrapper from '@/components/charts/HighchartsWrapper.vue'
+import CompactDatePicker from '@/components/CompactDatePicker.vue'
+import {
+  IconWallet,
+  IconCircleCheck,
+  IconUsers,
+  IconUserX,
+  IconTrendingUp,
+  IconTrendingDown,
+  IconClock,
+  IconCalendar,
+  IconRefresh,
+  IconDownload,
+  IconCalendarEvent,
+  IconUserPlus,
+  IconCurrencyDollar,
+  IconSchool,
+  IconAward,
+  IconAlertCircle,
+  IconUserCheck,
+  IconCreditCard,
+  IconBook,
+  IconTrophy,
+  IconMusic,
+  IconSparkles,
+  IconChartBar,
+  IconChartLine,
+  IconLoader2,
+  IconX,
+  IconFileText,
+  IconCalendarPlus,
+  IconStars
+} from '@tabler/icons-vue'
 
 export default {
   name: 'Dashboard',
   components: {
-    Wallet,
-    CheckCircle2,
-    Users,
-    UserX,
-    TrendingUp,
-    TrendingDown,
-    Clock,
-    Calendar,
-    RefreshCw,
-    Download,
-    CalendarDays,
-    UserPlus,
-    DollarSign,
-    GraduationCap,
-    Award,
-    AlertCircle,
-    UserCheck,
-    CreditCard,
-    BookOpen,
-    School,
-    Trophy,
-    Music,
-    PartyPopper
+    StatCard,
+    ChartJsWrapper,
+    HighchartsWrapper,
+    CompactDatePicker,
+    ActivityItem,
+    EventItem,
+    IconWallet,
+    IconCircleCheck,
+    IconUsers,
+    IconUserX,
+    IconTrendingUp,
+    IconTrendingDown,
+    IconClock,
+    IconCalendar,
+    IconRefresh,
+    IconDownload,
+    IconCalendarEvent,
+    IconUserPlus,
+    IconCurrencyDollar,
+    IconSchool,
+    IconAward,
+    IconAlertCircle,
+    IconUserCheck,
+    IconCreditCard,
+    IconBook,
+    IconTrophy,
+    IconMusic,
+    IconSparkles,
+    IconChartBar,
+    IconChartLine,
+    IconLoader2,
+    IconX,
+    IconFileText,
+    IconCalendarPlus,
+    IconStars
   },
   setup() {
     const selectedPeriod = ref('6')
     const feeDistributionPeriod = ref('Monthly')
     const chartView = ref('bar')
+    const selectedChartType = ref('bar')
+    const selectedPieChartType = ref('pie')
     const chartLoading = ref(false)
     const pieChartLoading = ref(false)
     const refreshing = ref(false)
@@ -511,32 +547,27 @@ export default {
     // Date filters
     const mainDateFilter = ref({
       startDate: '',
-      endDate: ''
+      endDate: '' // For shortcuts (Today, Yesterday, Week, Month)
     })
     
     const chartDateFilter = ref({
-      startDate: '',
-      endDate: ''
+      startDate: ''
     })
     
     const pieChartDateFilter = ref({
-      startDate: '',
-      endDate: ''
+      startDate: ''
     })
     
     const activitiesDateFilter = ref({
-      startDate: '',
-      endDate: ''
+      startDate: ''
     })
     
     const quickStatsDateFilter = ref({
-      startDate: '',
-      endDate: ''
+      startDate: ''
     })
     
     const eventsDateFilter = ref({
-      startDate: '',
-      endDate: ''
+      startDate: ''
     })
     
     // Use statistics composable
@@ -582,7 +613,7 @@ export default {
       }, 30000) // Update every 30 seconds
     }
     
-    // Enhanced activities with Lucide icon components
+    // Enhanced activities with Tabler SVG icon components
     const recentActivities = ref([
       {
         content: 'New student registration completed for Riya Sharma',
@@ -590,16 +621,16 @@ export default {
         type: 'success',
         color: '#10B981',
         colorDark: '#059669',
-        iconComponent: UserPlus,
-        details: 'Student ID: STU001, Class: 10th A, Registration Fee: ₹5000'
+        iconComponent: IconUserPlus,
+        details: 'Student ID: STU001, Class: 10th A, Registration Fee: PKR 5,000'
       },
       {
-        content: 'Fee payment received from John Doe (₹12,500)',
+        content: 'Fee payment received from John Doe (PKR 12,500)',
         time: '30 minutes ago',
         type: 'primary',
         color: '#3B82F6',
         colorDark: '#2563EB',
-        iconComponent: DollarSign,
+        iconComponent: IconCurrencyDollar,
         details: 'Payment Method: Online, Transaction ID: TXN123456'
       },
       {
@@ -608,7 +639,7 @@ export default {
         type: 'warning',
         color: '#F59E0B',
         colorDark: '#D97706',
-        iconComponent: GraduationCap,
+        iconComponent: IconSchool,
         details: 'Teacher ID: TCH001, Experience: 5 years, Qualification: M.Sc'
       },
       {
@@ -617,21 +648,21 @@ export default {
         type: 'info',
         color: '#6366F1',
         colorDark: '#4F46E5',
-        iconComponent: AlertCircle,
+        iconComponent: IconAlertCircle,
         details: 'Maintenance Type: Electrical, Duration: 4 hours, Affected Area: Block A'
       }
     ])
 
-    // Enhanced statistics cards with Lucide animated icons
+    // Enhanced statistics cards with Tabler SVG icons
     const statisticsCards = ref([
       {
         label: 'Total Fee',
         value: 1850000,
-        prefix: '₹',
+        prefix: 'PKR ',
         suffix: '',
         trend: 'up',
         change: '12% from last month',
-        icon: Wallet,
+        icon: IconWallet,
         iconBg: 'bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-600',
         gradient: 'bg-gradient-to-r from-blue-500 to-indigo-600',
         particleBg: 'bg-blue-400',
@@ -641,11 +672,11 @@ export default {
       {
         label: 'Received Fee',
         value: 1520000,
-        prefix: '₹',
+        prefix: 'PKR ',
         suffix: '',
         trend: 'up',
         change: '8% from last month',
-        icon: CheckCircle2,
+        icon: IconCircleCheck,
         iconBg: 'bg-gradient-to-br from-green-500 via-emerald-600 to-teal-600',
         gradient: 'bg-gradient-to-r from-green-500 to-emerald-600',
         particleBg: 'bg-green-400',
@@ -659,7 +690,7 @@ export default {
         suffix: '',
         trend: 'up',
         change: '5% from last month',
-        icon: Users,
+        icon: IconUsers,
         iconBg: 'bg-gradient-to-br from-amber-500 via-orange-500 to-orange-600',
         gradient: 'bg-gradient-to-r from-amber-500 to-orange-600',
         particleBg: 'bg-amber-400',
@@ -673,7 +704,7 @@ export default {
         suffix: '',
         trend: 'down',
         change: '3% from last month',
-        icon: UserX,
+        icon: IconUserX,
         iconBg: 'bg-gradient-to-br from-pink-500 via-rose-500 to-red-600',
         gradient: 'bg-gradient-to-r from-pink-500 to-rose-600',
         particleBg: 'bg-pink-400',
@@ -701,7 +732,7 @@ export default {
         valueClass: 'text-blue-800',
         changeClass: 'text-green-600',
         progressClass: 'bg-blue-500',
-        iconComponent: UserCheck
+        iconComponent: IconUserCheck
       },
       {
         label: 'Pending Fees',
@@ -715,7 +746,7 @@ export default {
         valueClass: 'text-rose-800',
         changeClass: 'text-red-600',
         progressClass: 'bg-rose-500',
-        iconComponent: CreditCard
+        iconComponent: IconCreditCard
       },
       {
         label: 'Subjects',
@@ -729,7 +760,7 @@ export default {
         valueClass: 'text-purple-800',
         changeClass: 'text-purple-600',
         progressClass: 'bg-purple-500',
-        iconComponent: BookOpen
+        iconComponent: IconBook
       },
       {
         label: 'Classes',
@@ -743,7 +774,7 @@ export default {
         valueClass: 'text-gray-900',
         changeClass: 'text-gray-600',
         progressClass: 'bg-gray-500',
-        iconComponent: School
+        iconComponent: IconSchool
       }
     ])
 
@@ -753,21 +784,21 @@ export default {
         title: 'Annual Sports Day',
         date: 'Dec 15, 2024',
         description: 'Annual sports competition for all classes',
-        iconComponent: Trophy,
+        iconComponent: IconTrophy,
         colorClass: 'bg-gradient-to-br from-yellow-500 to-orange-500'
       },
       {
         title: 'Parent-Teacher Meeting',
         date: 'Dec 20, 2024',
         description: 'Quarterly parent-teacher meeting',
-        iconComponent: Users,
+        iconComponent: IconUsers,
         colorClass: 'bg-gradient-to-br from-blue-500 to-indigo-500'
       },
       {
         title: 'Annual Function',
         date: 'Dec 25, 2024',
         description: 'Annual cultural function and prize distribution',
-        iconComponent: Music,
+        iconComponent: IconMusic,
         colorClass: 'bg-gradient-to-br from-purple-500 to-pink-500'
       }
     ])
@@ -776,6 +807,8 @@ export default {
       selectedPeriod,
       feeDistributionPeriod,
       chartView,
+      selectedChartType,
+      selectedPieChartType,
       chartLoading,
       pieChartLoading,
       refreshing,
@@ -804,6 +837,142 @@ export default {
       activitiesDateFilter,
       quickStatsDateFilter,
       eventsDateFilter
+    }
+  },
+  computed: {
+    incomeChartOptions() {
+      return {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top',
+            align: 'end',
+            labels: {
+              usePointStyle: true,
+              padding: 20,
+              font: {
+                size: 12
+              }
+            }
+          },
+          tooltip: {
+            backgroundColor: '#1F2937',
+            padding: 12,
+            titleFont: { size: 14, weight: 'bold' },
+            bodyFont: { size: 13 },
+            titleColor: '#F9FAFB',
+            bodyColor: '#F9FAFB',
+            cornerRadius: 8,
+            displayColors: true,
+            callbacks: {
+              label: (context) => `${context.dataset.label}: PKR ${this.formatNumber(context.raw)}`,
+              title: (context) => `${context[0].label}`
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: { color: 'rgba(229, 231, 235, 0.5)', drawTicks: false },
+            ticks: {
+              padding: 10,
+              color: '#6B7280',
+              callback: value => 'PKR ' + this.formatNumber(value)
+            },
+            border: { display: false }
+          },
+          x: {
+            grid: { display: false },
+            ticks: { color: '#6B7280' },
+            border: { display: false }
+          }
+        },
+        animation: { duration: 1500, easing: 'easeOutQuart' },
+        layout: { padding: { top: 10, right: 10 } }
+      }
+    },
+    pieChartOptions() {
+      const pieData = [
+        { name: 'Tuition Fee', y: 55, color: '#3B82F6' },
+        { name: 'Examination Fee', y: 20, color: '#10B981' },
+        { name: 'Library Fee', y: 10, color: '#F59E0B' },
+        { name: 'Transport Fee', y: 10, color: '#6366F1' },
+        { name: 'Other Fees', y: 5, color: '#EC4899' }
+      ]
+      
+      // Determine chart type based on selection
+      const chartType = this.selectedPieChartType === 'doughnut' ? 'pie' : 
+                       this.selectedPieChartType === 'column' ? 'column' :
+                       this.selectedPieChartType === 'bar' ? 'bar' : 'pie'
+      
+      return {
+        chart: {
+          type: chartType,
+          backgroundColor: 'transparent',
+          animation: {
+            duration: 1000,
+            easing: 'easeOutQuart'
+          }
+        },
+        title: {
+          text: null
+        },
+        tooltip: {
+          pointFormat: '<b>{point.percentage:.1f}%</b><br/>Amount: PKR {point.customAmount}',
+          backgroundColor: 'rgba(31, 41, 55, 0.95)',
+          style: {
+            color: '#F9FAFB'
+          }
+        },
+        plotOptions: {
+          pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            innerSize: this.selectedPieChartType === 'doughnut' ? '50%' : '0%',
+            dataLabels: {
+              enabled: true,
+              format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+              style: {
+                fontSize: '12px',
+                fontWeight: '500'
+              }
+            },
+            showInLegend: true,
+            animation: {
+              duration: 1000
+            }
+          },
+          bar: {
+            animation: {
+              duration: 1000
+            }
+          },
+          column: {
+            animation: {
+              duration: 1000
+            }
+          }
+        },
+        series: [{
+          name: 'Fee Distribution',
+          colorByPoint: true,
+          data: pieData.map(item => ({
+            ...item,
+            customAmount: this.formatNumber((item.y / 100) * this.receivedFee)
+          }))
+        }],
+        legend: {
+          align: 'center',
+          verticalAlign: 'bottom',
+          layout: 'horizontal',
+          itemStyle: {
+            fontSize: '12px',
+            fontWeight: '500'
+          }
+        }
+      }
     }
   },
   data() {
@@ -837,23 +1006,6 @@ export default {
           }
         ]
       },
-      pieData: {
-        labels: ['Tuition Fee', 'Examination Fee', 'Library Fee', 'Transport Fee', 'Other Fees'],
-        datasets: [{
-          data: [55, 20, 10, 10, 5],
-          backgroundColor: [
-            '#3B82F6',
-            '#10B981',
-            '#F59E0B',
-            '#6366F1',
-            '#EC4899'
-          ],
-          borderWidth: 0
-        }]
-      },
-      incomeChart: null,
-      pieChart: null,
-      chartRendered: false,
       loading: false
     }
   },
@@ -890,7 +1042,11 @@ export default {
   },
   methods: {
     formatNumber(number) {
-      return new Intl.NumberFormat('en-IN').format(number)
+      // Pakistan number format with commas
+      return new Intl.NumberFormat('en-PK', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      }).format(number)
     },
     
     showNotification(message, duration = 3000) {
@@ -918,14 +1074,28 @@ export default {
       // Implement export functionality
     },
     
-    showStatDetails(stat) {
-      this.showNotification(`Viewing details for ${stat.label}`)
-      // Implement modal or navigation to detailed view
+    showStatDetails(payload) {
+      const stat = payload?.data || payload || payload?.stat
+      if (stat) {
+        this.showNotification(`Viewing details for ${stat.label}`)
+        // Implement modal or navigation to detailed view
+      }
     },
     
     showActivityDetails(activity) {
       this.showNotification(`Viewing activity: ${activity.content}`)
       // Implement modal with activity details
+    },
+    
+    handleActivityClick(payload) {
+      const activity = payload.data || payload
+      this.showActivityDetails(activity)
+    },
+    
+    handleEventClick(payload) {
+      const event = payload.data || payload
+      this.showNotification(`Viewing event: ${event.title}`)
+      // Implement modal with event details
     },
     
     showQuickStatDetails(stat) {
@@ -946,6 +1116,17 @@ export default {
     toggleChartView() {
       this.chartView = this.chartView === 'bar' ? 'line' : 'bar'
       this.updateChartData()
+    },
+    
+    handleChartTypeChange() {
+      // Update chart view based on selected chart type
+      this.chartView = this.selectedChartType
+      this.updateChartData()
+    },
+    
+    handlePieChartTypeChange() {
+      // Update pie chart type (this will be handled by HighchartsWrapper)
+      this.updatePieChartData()
     },
     
     updateChartData() {
@@ -1026,20 +1207,59 @@ export default {
     },
     
     // Date filter methods
+    // Date filter methods - Each section has independent date filter
+    handleMainDateChange(value) {
+      this.setDateFilter(this.mainDateFilter, value)
+      this.updateActivitiesData()
+      this.updateEventsData()
+    },
+    
+    handleChartDateChange(value) {
+      this.setDateFilter(this.chartDateFilter, value)
+      this.updateChartData()
+    },
+    
+    handlePieChartDateChange(value) {
+      this.setDateFilter(this.pieChartDateFilter, value)
+      this.updatePieChartData()
+    },
+    
+    handleQuickStatsDateChange(value) {
+      this.setDateFilter(this.quickStatsDateFilter, value)
+      this.updateQuickStatsData()
+    },
+    
+    setDateFilter(filter, value) {
+      // If value is array (range from shortcuts like Today, Yesterday, Week, Month)
+      if (Array.isArray(value) && value.length === 2) {
+        // Store as array so CompactDatePicker can show both dates
+        filter.startDate = value // Store array [startDate, endDate]
+        filter.endDate = value[1]   // Keep endDate for backward compatibility
+      } else {
+        // Single date selected - always set start date and end date to same date with times
+        if (value) {
+          // Remove time if present, get only date part
+          let dateStr = value
+          if (value.includes(' ')) {
+            dateStr = value.split(' ')[0]
+          } else if (value.includes('T')) {
+            dateStr = value.split('T')[0]
+          }
+          
+          // Set as array format so CompactDatePicker shows both dates
+          const startDateStr = `${dateStr} 00:00:00`
+          const endDateStr = `${dateStr} 23:59:59`
+          filter.startDate = [startDateStr, endDateStr] // Store as array
+          filter.endDate = endDateStr // Keep for backward compatibility
+        } else {
+          filter.startDate = null
+          filter.endDate = ''
+        }
+      }
+    },
+    
     applyMainDateFilter() {
-      // Apply main date filter to all sections
-      this.chartDateFilter.startDate = this.mainDateFilter.startDate
-      this.chartDateFilter.endDate = this.mainDateFilter.endDate
-      this.pieChartDateFilter.startDate = this.mainDateFilter.startDate
-      this.pieChartDateFilter.endDate = this.mainDateFilter.endDate
-      this.activitiesDateFilter.startDate = this.mainDateFilter.startDate
-      this.activitiesDateFilter.endDate = this.mainDateFilter.endDate
-      this.quickStatsDateFilter.startDate = this.mainDateFilter.startDate
-      this.quickStatsDateFilter.endDate = this.mainDateFilter.endDate
-      this.eventsDateFilter.startDate = this.mainDateFilter.startDate
-      this.eventsDateFilter.endDate = this.mainDateFilter.endDate
-      
-      // Update all data
+      // Apply main date filter to all sections (optional - can be removed if not needed)
       this.updateChartData()
       this.updatePieChartData()
       this.updateActivitiesData()
@@ -1052,18 +1272,8 @@ export default {
     clearMainDateFilter() {
       this.mainDateFilter.startDate = ''
       this.mainDateFilter.endDate = ''
-      this.chartDateFilter.startDate = ''
-      this.chartDateFilter.endDate = ''
-      this.pieChartDateFilter.startDate = ''
-      this.pieChartDateFilter.endDate = ''
-      this.activitiesDateFilter.startDate = ''
-      this.activitiesDateFilter.endDate = ''
-      this.quickStatsDateFilter.startDate = ''
-      this.quickStatsDateFilter.endDate = ''
-      this.eventsDateFilter.startDate = ''
-      this.eventsDateFilter.endDate = ''
       
-      // Update all data
+      // Update all data (all sections use mainDateFilter now)
       this.updateChartData()
       this.updatePieChartData()
       this.updateActivitiesData()
@@ -1085,7 +1295,22 @@ export default {
     },
     
     updatePieChartData() {
-      // Update pie chart data based on date filter
+      // Update pie chart data based on pie chart date filter
+      if (this.pieChartDateFilter.startDate) {
+        let startDate, endDate
+        
+        // Handle array format (from shortcuts or single date)
+        if (Array.isArray(this.pieChartDateFilter.startDate)) {
+          startDate = new Date(this.pieChartDateFilter.startDate[0]?.split(' ')[0] || this.pieChartDateFilter.startDate[0])
+          endDate = new Date(this.pieChartDateFilter.startDate[1]?.split(' ')[0] || this.pieChartDateFilter.startDate[1] || this.pieChartDateFilter.endDate?.split(' ')[0])
+        } else {
+          startDate = new Date(this.pieChartDateFilter.startDate?.split(' ')[0] || this.pieChartDateFilter.startDate)
+          endDate = new Date(this.pieChartDateFilter.endDate?.split(' ')[0] || this.pieChartDateFilter.endDate || this.pieChartDateFilter.startDate)
+        }
+        
+        // Use dates for filtering if needed
+      }
+      
       this.pieChartLoading = true
       setTimeout(() => {
         this.pieChartLoading = false
@@ -1096,10 +1321,18 @@ export default {
     },
     
     updateActivitiesData() {
-      // Filter activities based on date range
-      if (this.activitiesDateFilter.startDate && this.activitiesDateFilter.endDate) {
-        const startDate = new Date(this.activitiesDateFilter.startDate)
-        const endDate = new Date(this.activitiesDateFilter.endDate)
+      // Filter activities based on main date filter (activities use main filter)
+      if (this.mainDateFilter.startDate) {
+        let startDate, endDate
+        
+        // Handle array format (from shortcuts or single date)
+        if (Array.isArray(this.mainDateFilter.startDate)) {
+          startDate = new Date(this.mainDateFilter.startDate[0]?.split(' ')[0] || this.mainDateFilter.startDate[0])
+          endDate = new Date(this.mainDateFilter.startDate[1]?.split(' ')[0] || this.mainDateFilter.startDate[1] || this.mainDateFilter.endDate?.split(' ')[0])
+        } else {
+          startDate = new Date(this.mainDateFilter.startDate?.split(' ')[0] || this.mainDateFilter.startDate)
+          endDate = new Date(this.mainDateFilter.endDate?.split(' ')[0] || this.mainDateFilter.endDate || this.mainDateFilter.startDate)
+        }
         
         // Filter activities based on their time (simulating date-based filtering)
         this.filteredActivities = this.recentActivities.filter((activity, index) => {
@@ -1116,12 +1349,20 @@ export default {
     },
     
     updateQuickStatsData() {
-      // Filter quick stats based on date range
-      if (this.quickStatsDateFilter.startDate && this.quickStatsDateFilter.endDate) {
-        const startDate = new Date(this.quickStatsDateFilter.startDate)
-        const endDate = new Date(this.quickStatsDateFilter.endDate)
+      // Filter quick stats based on quick stats date filter
+      if (this.quickStatsDateFilter.startDate) {
+        let startDate, endDate
         
-        // Simulate filtering by adjusting values based on date range
+        // Handle array format (from shortcuts or single date)
+        if (Array.isArray(this.quickStatsDateFilter.startDate)) {
+          startDate = new Date(this.quickStatsDateFilter.startDate[0]?.split(' ')[0] || this.quickStatsDateFilter.startDate[0])
+          endDate = new Date(this.quickStatsDateFilter.startDate[1]?.split(' ')[0] || this.quickStatsDateFilter.startDate[1] || this.quickStatsDateFilter.endDate?.split(' ')[0])
+        } else {
+          startDate = new Date(this.quickStatsDateFilter.startDate?.split(' ')[0] || this.quickStatsDateFilter.startDate)
+          endDate = new Date(this.quickStatsDateFilter.endDate?.split(' ')[0] || this.quickStatsDateFilter.endDate || this.quickStatsDateFilter.startDate)
+        }
+        
+        // Simulate filtering by adjusting values based on date
         this.filteredQuickStats = this.quickStats.map(stat => {
           const daysDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24))
           const multiplier = Math.max(0.5, Math.min(1.5, daysDiff / 30)) // Adjust based on date range
@@ -1140,10 +1381,18 @@ export default {
     },
     
     updateEventsData() {
-      // Filter events based on date range
-      if (this.eventsDateFilter.startDate && this.eventsDateFilter.endDate) {
-        const startDate = new Date(this.eventsDateFilter.startDate)
-        const endDate = new Date(this.eventsDateFilter.endDate)
+      // Filter events based on main date filter (events use main filter)
+      if (this.mainDateFilter.startDate) {
+        let startDate, endDate
+        
+        // Handle array format (from shortcuts or single date)
+        if (Array.isArray(this.mainDateFilter.startDate)) {
+          startDate = new Date(this.mainDateFilter.startDate[0]?.split(' ')[0] || this.mainDateFilter.startDate[0])
+          endDate = new Date(this.mainDateFilter.startDate[1]?.split(' ')[0] || this.mainDateFilter.startDate[1] || this.mainDateFilter.endDate?.split(' ')[0])
+        } else {
+          startDate = new Date(this.mainDateFilter.startDate?.split(' ')[0] || this.mainDateFilter.startDate)
+          endDate = new Date(this.mainDateFilter.endDate?.split(' ')[0] || this.mainDateFilter.endDate || this.mainDateFilter.startDate)
+        }
         
         // Filter events based on their date
         this.filteredEvents = this.upcomingEvents.filter(event => {
@@ -1208,120 +1457,9 @@ export default {
       this.absentStudents = 42
     },
     
-    async initCharts() {
-      try {
-        // Initialize Bar Chart for Monthly Income Overview
-        const incomeCtx = this.$refs.incomeChart?.getContext('2d')
-        if (incomeCtx && !this.incomeChart) {
-          this.incomeChart = new Chart(incomeCtx, {
-            type: this.chartView,
-            data: this.incomeData,
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: {
-                  display: true,
-                  position: 'top',
-                  align: 'end',
-                  labels: {
-                    usePointStyle: true,
-                    padding: 20,
-                    font: {
-                      size: 12
-                    }
-                  }
-                },
-                tooltip: {
-                  backgroundColor: '#1F2937',
-                  padding: 12,
-                  titleFont: { size: 14, weight: 'bold' },
-                  bodyFont: { size: 13 },
-                  titleColor: '#F9FAFB',
-                  bodyColor: '#F9FAFB',
-                  cornerRadius: 8,
-                  displayColors: true,
-                  callbacks: {
-                    label: (context) => `${context.dataset.label}: ₹${this.formatNumber(context.raw)}`,
-                    title: (context) => `${context[0].label}`
-                  }
-                }
-              },
-              scales: {
-                y: {
-                  beginAtZero: true,
-                  grid: { color: 'rgba(229, 231, 235, 0.5)', drawTicks: false },
-                  ticks: {
-                    padding: 10,
-                    color: '#6B7280',
-                    callback: value => '₹' + this.formatNumber(value)
-                  },
-                  border: { display: false }
-                },
-                x: {
-                  grid: { display: false },
-                  ticks: { color: '#6B7280' },
-                  border: { display: false }
-                }
-              },
-              animation: { duration: 1500, easing: 'easeOutQuart' },
-              layout: { padding: { top: 10, right: 10 } }
-            }
-          })
-        }
-
-        // Initialize Pie Chart for Fee Collection Distribution
-        const pieCtx = this.$refs.pieChart?.getContext('2d')
-        if (pieCtx && !this.pieChart) {
-          this.pieChart = new Chart(pieCtx, {
-            type: 'pie',
-            data: this.pieData,
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                legend: {
-                  position: 'bottom',
-                  labels: {
-                    padding: 20,
-                    usePointStyle: true,
-                    pointStyle: 'circle',
-                    color: '#374151',
-                    font: { size: 12 }
-                  }
-                },
-                tooltip: {
-                  backgroundColor: '#1F2937',
-                  padding: 12,
-                  bodyFont: { size: 13 },
-                  titleColor: '#F9FAFB',
-                  bodyColor: '#F9FAFB',
-                  cornerRadius: 8,
-                  callbacks: {
-                    label: (context) => {
-                      const label = context.label || ''
-                      const value = context.raw || 0
-                      const total = context.dataset.data.reduce((a, b) => a + b, 0)
-                      const percentage = Math.round((value / total) * 100)
-                      return `${label}: ${percentage}% (₹${this.formatNumber((value/100)*this.receivedFee)})`
-                    }
-                  }
-                }
-              },
-              animation: {
-                animateRotate: true,
-                animateScale: true,
-                duration: 1500,
-                easing: 'easeOutQuart'
-              }
-            }
-          })
-        }
-        
-        this.chartRendered = true
-      } catch (error) {
-        console.error('Error initializing charts:', error)
-      }
+    initCharts() {
+      // Charts are now handled by ChartJsWrapper and HighchartsWrapper components
+      // No manual initialization needed
     },
     
     async fetchDashboardData() {
@@ -1358,13 +1496,11 @@ export default {
         this.absentStudents = incomeResponse.data.data.absentStudents
         
         // Update charts with new data
-        if (this.incomeChart) {
-          this.incomeChart.data = this.incomeData
-          this.incomeChart.update()
+        if (this.$refs.incomeChart) {
+          this.$refs.incomeChart.update()
         }
-        if (this.pieChart) {
-          this.pieChart.data = this.pieData
-          this.pieChart.update()
+        if (this.$refs.pieChart) {
+          this.$refs.pieChart.update()
         }
       } catch (error) {
         console.error('Error fetching dashboard data:', error)
@@ -1376,15 +1512,8 @@ export default {
     },
     
     destroyCharts() {
-      if (this.incomeChart) {
-        this.incomeChart.destroy()
-        this.incomeChart = null
-      }
-      if (this.pieChart) {
-        this.pieChart.destroy()
-        this.pieChart = null
-      }
-      this.chartRendered = false
+      // Charts are now handled by ChartJsWrapper and HighchartsWrapper components
+      // They will auto-destroy on component unmount
     },
     
     handleResize() {
@@ -1465,6 +1594,39 @@ export default {
   }
 }
 
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .animate-icon-bounce {
   animation: icon-bounce 2s ease-in-out infinite;
 }
@@ -1480,6 +1642,36 @@ export default {
 
 .animate-bounce-slow {
   animation: bounce-slow 2s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s ease-out forwards;
+  opacity: 0;
 }
 
 /* Chart container adjustments for better responsive behavior */

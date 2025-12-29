@@ -385,11 +385,9 @@
               <div class="flex flex-col w-full">
                 <label class="mb-1 text-xs font-semibold text-gray-600 uppercase tracking-wider">Date</label>
                 <div class="relative">
-                  <input 
-                    v-model="examForm.date" 
-            type="date"
-                    required
-                    class="h-10 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full"
+                  <CompactDatePicker 
+                    v-model="examForm.date"
+                    placeholder=""
                   />
                   <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
                 </div>
@@ -487,6 +485,7 @@
 <script setup>
 import { useToast } from 'vue-toastification'
 import { ref, onMounted, computed } from 'vue'
+import CompactDatePicker from '@/components/CompactDatePicker.vue'
 
 // Reactive data
 const toast = useToast()

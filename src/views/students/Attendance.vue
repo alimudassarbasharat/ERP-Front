@@ -377,7 +377,7 @@
             </div>
             <div v-if="selectedReportType === 'daily'" class="w-full">
               <label class="block text-sm font-medium text-gray-900 mb-1">Date</label>
-              <input v-model="reportFilters.date" type="date" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500">
+              <CompactDatePicker v-model="reportFilters.date" placeholder="" />
             </div>
             <div v-if="['monthly', 'subject', 'comparison'].includes(selectedReportType)" class="w-full">
               <label class="block text-sm font-medium text-gray-900 mb-1">Month</label>
@@ -393,11 +393,11 @@
             </div>
             <div v-if="selectedReportType === 'trends'" class="w-full">
               <label class="block text-sm font-medium text-gray-900 mb-1">Date From</label>
-              <input v-model="reportFilters.date_from" type="date" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500">
+              <CompactDatePicker v-model="reportFilters.date_from" placeholder="" />
             </div>
             <div v-if="selectedReportType === 'trends'" class="w-full">
               <label class="block text-sm font-medium text-gray-900 mb-1">Date To</label>
-              <input v-model="reportFilters.date_to" type="date" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-green-500">
+              <CompactDatePicker v-model="reportFilters.date_to" placeholder="" />
             </div>
           </div>
           <div class="flex justify-end mt-4 gap-2">
@@ -833,7 +833,7 @@
           <div class="w-full">
             <label class="mb-1 text-base font-normal text-black modern-font">Date</label>
             <div class="relative">
-              <input v-model="selectedDate" type="date" class="h-9 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full">
+              <CompactDatePicker v-model="selectedDate" placeholder="" />
               <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
             </div>
           </div>
@@ -1400,6 +1400,7 @@ import { useToast } from 'vue-toastification'
 import { ref, computed, onMounted, watch } from 'vue'
 import api from '@/utils/axios'
 import { Chart, registerables } from 'chart.js'
+import CompactDatePicker from '@/components/CompactDatePicker.vue'
 
 Chart.register(...registerables)
 

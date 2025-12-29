@@ -236,7 +236,7 @@
                 <div class="filter-input-group">
                   <label class="filter-label">Date of Birth</label>
                   <div class="filter-input-container">
-                    <input v-model="formData.date_of_birth" type="date" :class="['filter-input', validationErrors.date_of_birth ? 'border-red-500 text-red-600' : '']">
+                    <CompactDatePicker v-model="formData.date_of_birth" placeholder="" />
                     <div :class="['filter-underline', validationErrors.date_of_birth ? 'bg-red-500' : '']"></div>
                     </div>
                   <p v-if="validationErrors.date_of_birth" class="text-red-500 text-xs mt-1">{{ validationErrors.date_of_birth }}</p>
@@ -409,7 +409,7 @@
                 <div class="filter-input-group">
                   <label class="filter-label">Joining Date</label>
                   <div class="filter-input-container">
-                    <input v-model="formData.joining_date" type="date" :class="['filter-input', validationErrors.joining_date ? 'border-red-500 text-red-600' : '']">
+                    <CompactDatePicker v-model="formData.joining_date" placeholder="" />
                     <div :class="['filter-underline', validationErrors.joining_date ? 'bg-red-500' : '']"></div>
                     </div>
                   <p v-if="validationErrors.joining_date" class="text-red-500 text-xs mt-1">{{ validationErrors.joining_date }}</p>

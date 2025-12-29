@@ -17,13 +17,10 @@
         </el-form-item>
         
         <el-form-item label="Date of Birth" prop="dateOfBirth">
-          <el-date-picker
+          <CompactDatePicker
             v-model="registrationForm.dateOfBirth"
-            type="date"
-            placeholder="Select date of birth"
-            format="YYYY-MM-DD"
-            value-format="YYYY-MM-DD">
-          </el-date-picker>
+            placeholder=""
+          />
         </el-form-item>
         
         <el-form-item label="Gender" prop="gender">
@@ -65,6 +62,7 @@
 
 <script setup>
 import { useToast } from 'vue-toastification'
+import CompactDatePicker from '@/components/CompactDatePicker.vue'
 
 const toast = useToast()
 const registrationFormRef = ref(null)

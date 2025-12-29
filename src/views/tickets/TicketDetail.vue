@@ -100,23 +100,17 @@
                 <span>Dates</span>
               </div>
               <div class="dates-merged">
-                <CustomDatePicker v-model="ticket.started_at" placeholder="Start" @change="handleStartDateChange">
-                  <template #trigger="{ formattedDate }">
-                    <div class="date-btn">
-                      <Clock :size="12" />
-                      <span>{{ formattedDate || 'Start' }}</span>
-                    </div>
-                  </template>
-                </CustomDatePicker>
+                <CompactDatePicker
+                  v-model="ticket.started_at"
+                  placeholder="Start"
+                  @change="handleStartDateChange"
+                />
                 <span class="arrow">→</span>
-                <CustomDatePicker v-model="ticket.due_date" placeholder="Due" @change="handleDueDateChange">
-                  <template #trigger="{ formattedDate }">
-                    <div class="date-btn">
-                      <Calendar :size="12" />
-                      <span>{{ formattedDate || 'Due' }}</span>
-                    </div>
-                  </template>
-                </CustomDatePicker>
+                <CompactDatePicker
+                  v-model="ticket.due_date"
+                  placeholder="Due"
+                  @change="handleDueDateChange"
+                />
               </div>
             </div>
 
@@ -788,25 +782,17 @@
       <div class="date-modal-content">
         <div class="date-section">
           <label>Start Date</label>
-          <el-date-picker
+          <CompactDatePicker
             v-model="ticket.started_at"
-            type="date"
             placeholder="Select start date"
-            size="large"
-            format="MMM DD, YYYY"
-            value-format="YYYY-MM-DD"
             @change="handleStartDateChange"
           />
         </div>
         <div class="date-section">
           <label>Due Date</label>
-          <el-date-picker
+          <CompactDatePicker
             v-model="ticket.due_date"
-            type="date"
             placeholder="Select due date"
-            size="large"
-            format="MMM DD, YYYY"
-            value-format="YYYY-MM-DD"
             @change="handleDueDateChange"
           />
         </div>
@@ -993,7 +979,7 @@ import { useRoute } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import Swal from 'sweetalert2'
 import ticketService from '@/services/ticketService'
-import CustomDatePicker from '@/components/CustomDatePicker.vue'
+import CompactDatePicker from '@/components/CompactDatePicker.vue'
 import VoiceRecorder from '@/components/VoiceRecorder.vue'
 import EmojiPicker from '@/components/EmojiPicker.vue'
 import MentionsList from '@/components/MentionsList.vue'
@@ -1009,7 +995,7 @@ import {
 export default {
   name: 'TicketDetail',
   components: {
-    CustomDatePicker,
+    CompactDatePicker,
     VoiceRecorder,
     EmojiPicker,
     MentionsList,

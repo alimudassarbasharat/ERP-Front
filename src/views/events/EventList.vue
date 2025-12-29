@@ -111,28 +111,14 @@
         </div>
 
         <!-- Date Range Filter -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+        <div class="mt-4">
           <div class="flex flex-col w-full">
-            <label class="mb-1 text-xs font-semibold text-gray-600 uppercase tracking-wider">Start Date</label>
-            <div class="relative">
-              <input 
-                v-model="filters.startDate"
-                type="date"
-                class="h-10 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full"
-              />
-              <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
-            </div>
-          </div>
-          <div class="flex flex-col w-full">
-            <label class="mb-1 text-xs font-semibold text-gray-600 uppercase tracking-wider">End Date</label>
-            <div class="relative">
-              <input 
-                v-model="filters.endDate"
-                type="date"
-                class="h-10 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full"
-              />
-              <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
-            </div>
+            <label class="mb-1 text-xs font-semibold text-gray-600 uppercase tracking-wider">Date Range</label>
+            <CompactDatePicker
+              :model-value="dateRangeValue"
+              placeholder=""
+              @change="handleDateRangeChange"
+            />
           </div>
         </div>
 
@@ -513,6 +499,7 @@ import { useToast } from 'vue-toastification'
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import api from '@/utils/axios'
+import CompactDatePicker from '@/components/CompactDatePicker.vue'
 
 const router = useRouter()
 const toast = useToast()
@@ -527,6 +514,37 @@ const filters = ref({
   startDate: '',
   endDate: ''
 })
+
+// Date range computed property for CompactDatePicker
+const dateRangeValue = computed({
+  get: () => {
+    if (filters.value.startDate && filters.value.endDate) {
+      return [filters.value.startDate, filters.value.endDate]
+    }
+    return null
+  },
+  set: (value) => {
+    if (Array.isArray(value) && value.length === 2) {
+      filters.value.startDate = value[0]?.split(' ')[0] || ''
+      filters.value.endDate = value[1]?.split(' ')[0] || ''
+    } else {
+      filters.value.startDate = ''
+      filters.value.endDate = ''
+    }
+  }
+})
+
+// Handle date range change from CompactDatePicker
+const handleDateRangeChange = (value) => {
+  if (Array.isArray(value) && value.length === 2) {
+    filters.value.startDate = value[0]?.split(' ')[0] || ''
+    filters.value.endDate = value[1]?.split(' ')[0] || ''
+  } else {
+    filters.value.startDate = ''
+    filters.value.endDate = ''
+  }
+}
+
 const sortOrder = ref('date_desc')
 const currentPage = ref(1)
 const itemsPerPage = ref(20)

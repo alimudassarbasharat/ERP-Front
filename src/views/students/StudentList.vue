@@ -110,16 +110,9 @@
           <div class="flex flex-col w-full sm:w-auto sm:min-w-[160px] sm:max-w-[200px] lg:flex-1">
             <label class="mb-1 text-base font-normal text-black modern-font">Date</label>
             <div class="relative">
-              <el-date-picker
+              <CompactDatePicker
                 v-model="selectedDate"
-                type="date"
-                placeholder="MM/DD/YYYY"
-                format="MM/DD/YYYY"
-                value-format="YYYY-MM-DD"
-                :editable="false"
-                :clearable="true"
-                class="custom-date-input w-full"
-                popper-class="modern-datepicker"
+                placeholder=""
               />
               <div class="absolute left-0 right-0 bottom-0 h-[1.5px] bg-purple-200 pointer-events-none"></div>
             </div>
@@ -729,6 +722,7 @@ import { useToast } from 'vue-toastification'
 import { View, Edit, Delete, ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 import api from '@/utils/axios'
 import LoadingStudents from '@/components/LoadingStudents.vue'
+import CompactDatePicker from '@/components/CompactDatePicker.vue'
 
 // Use centralized axios instance
 const axios = api

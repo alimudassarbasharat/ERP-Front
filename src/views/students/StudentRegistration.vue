@@ -199,7 +199,7 @@
                 <div class="filter-input-group">
                   <label class="filter-label">Date of Birth *</label>
                   <div class="filter-input-container">
-                    <input v-model="formData.date_of_birth" type="date" :class="['filter-input', validationErrors.date_of_birth ? 'border-red-500 text-red-600' : '']" required>
+                    <CompactDatePicker v-model="formData.date_of_birth" placeholder="" />
                     <div :class="['filter-underline', validationErrors.date_of_birth ? 'bg-red-500' : '']"></div>
                   </div>
                   <p v-if="validationErrors.date_of_birth" class="text-red-500 text-xs mt-1">{{ validationErrors.date_of_birth }}</p>
@@ -404,7 +404,7 @@
                 <div class="filter-input-group">
                   <label class="filter-label">Admission Date *</label>
                   <div class="filter-input-container">
-                    <input v-model="formData.admission_date" type="date" :class="['filter-input', validationErrors.admission_date ? 'border-red-500 text-red-600' : '']" required>
+                    <CompactDatePicker v-model="formData.admission_date" placeholder="" />
                     <div :class="['filter-underline', validationErrors.admission_date ? 'bg-red-500' : '']"></div>
                   </div>
                   <p v-if="validationErrors.admission_date" class="text-red-500 text-xs mt-1">{{ validationErrors.admission_date }}</p>
@@ -1115,6 +1115,7 @@ button:active {
 
 <script setup>
 import { useToast } from 'vue-toastification'
+import CompactDatePicker from '@/components/CompactDatePicker.vue'
 
 // Use centralized axios instance
 const axios = api

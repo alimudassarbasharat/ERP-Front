@@ -14,7 +14,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="Date">
-        <el-date-picker v-model="event.date" type="date" placeholder="Pick a date" />
+        <CompactDatePicker v-model="event.date" placeholder="" />
       </el-form-item>
       <el-form-item label="Time">
         <el-time-picker v-model="event.time" placeholder="Pick a time" />
@@ -31,6 +31,7 @@
 
 <script setup>
 import { useToast } from 'vue-toastification'
+import CompactDatePicker from '@/components/CompactDatePicker.vue'
 
 const toast = useToast()
 const event = ref({

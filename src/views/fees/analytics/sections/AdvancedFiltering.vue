@@ -88,21 +88,11 @@
         <div class="filter-grid">
           <div class="filter-group">
             <label class="filter-label">Date Range</label>
-            <div class="date-range">
-              <input 
-                type="date" 
-                v-model="filters.startDate" 
-                class="date-input"
-                placeholder="Start Date"
-              />
-              <span class="date-separator">to</span>
-              <input 
-                type="date" 
-                v-model="filters.endDate" 
-                class="date-input"
-                placeholder="End Date"
-              />
-            </div>
+            <CompactDatePicker
+              :model-value="dateRangeValue"
+              placeholder=""
+              @change="handleDateRangeChange"
+            />
           </div>
 
           <div class="filter-group">
@@ -368,8 +358,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useToast } from 'vue-toastification'
+import CompactDatePicker from '@/components/CompactDatePicker.vue'
 
 // Reactive data
 const toast = useToast()

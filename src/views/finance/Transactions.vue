@@ -98,13 +98,9 @@
           <el-option label="Pending" value="pending" />
           <el-option label="Cancelled" value="cancelled" />
         </el-select>
-        <el-date-picker
+        <CompactDatePicker
           v-model="dateRange"
-          type="daterange"
-          range-separator="To"
-          start-placeholder="Start date"
-          end-placeholder="End date"
-          :shortcuts="dateShortcuts"
+          placeholder=""
         />
       </div>
 
@@ -223,10 +219,9 @@
         </el-form-item>
         
         <el-form-item label="Date" prop="date">
-          <el-date-picker
+          <CompactDatePicker
             v-model="transactionForm.date"
-            type="date"
-            placeholder="Select date"
+            placeholder=""
             style="width: 100%"
           />
         </el-form-item>
@@ -288,6 +283,7 @@ import { ref, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Edit, Delete, Search, View, Money, Timer } from '@element-plus/icons-vue'
 import axios from 'axios'
+import CompactDatePicker from '@/components/CompactDatePicker.vue'
 
 // State
 const toast = useToast()

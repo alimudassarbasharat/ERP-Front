@@ -13,74 +13,78 @@
       </nav>
     </div>
 
-    <!-- Quick Stats Cards -->
-    <div class="w-full">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <!-- Quick Stats Cards - Compact Design -->
+    <div class="w-full max-w-7xl mx-auto mb-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         <!-- Total Revenue Card -->
-        <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-          <div class="flex items-center justify-between mb-4">
-            <div class="w-12 h-12 bg-gradient-to-r from-green-100 to-emerald-100 rounded-full flex items-center justify-center">
-              <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <div class="relative overflow-hidden rounded-xl border border-gray-200/80 bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-all duration-300">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
               </svg>
             </div>
-            <span class="text-xs font-semibold text-green-600 bg-green-100 px-2 py-1 rounded-full">+12.5%</span>
-          </div>
-          <h3 class="text-lg font-bold text-gray-900 mb-1">{{ formatCurrency(totalRevenue) }}</h3>
-          <p class="text-sm text-gray-600">Total Revenue</p>
-          <div class="mt-3 w-full bg-white rounded-full h-2">
-            <div class="bg-gradient-to-r from-green-500 to-emerald-500 h-2 rounded-full" :style="`width: ${(collectedAmount / totalRevenue) * 100}%`"></div>
+            <div class="flex-1 min-w-0">
+              <p class="text-[10px] sm:text-xs font-semibold text-gray-500 tracking-wide uppercase mb-1">Total Revenue</p>
+              <p class="text-base sm:text-lg font-black text-gray-900 tracking-tight mb-1.5">{{ formatCurrency(totalRevenue) }}</p>
+              <div class="flex items-center gap-1.5">
+                <span class="text-[10px] font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-full">+12.5%</span>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Pending Amount Card -->
-        <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-          <div class="flex items-center justify-between mb-4">
-            <div class="w-12 h-12 bg-gradient-to-r from-red-100 to-pink-100 rounded-full flex items-center justify-center">
-              <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <div class="relative overflow-hidden rounded-xl border border-gray-200/80 bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-all duration-300">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-red-100 to-pink-100 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
             </div>
-            <span class="text-xs font-semibold text-red-600 bg-red-100 px-2 py-1 rounded-full">-5.2%</span>
-          </div>
-          <h3 class="text-lg font-bold text-gray-900 mb-1">{{ formatCurrency(pendingAmount) }}</h3>
-          <p class="text-sm text-gray-600">Pending Amount</p>
-          <div class="mt-3 w-full bg-white rounded-full h-2">
-            <div class="bg-gradient-to-r from-red-500 to-pink-500 h-2 rounded-full" :style="`width: ${(pendingAmount / totalRevenue) * 100}%`"></div>
+            <div class="flex-1 min-w-0">
+              <p class="text-[10px] sm:text-xs font-semibold text-gray-500 tracking-wide uppercase mb-1">Pending Amount</p>
+              <p class="text-base sm:text-lg font-black text-gray-900 tracking-tight mb-1.5">{{ formatCurrency(pendingAmount) }}</p>
+              <div class="flex items-center gap-1.5">
+                <span class="text-[10px] font-bold text-red-600 bg-red-100 px-2 py-0.5 rounded-full">-5.2%</span>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Collection Rate Card -->
-        <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-          <div class="flex items-center justify-between mb-4">
-            <div class="w-12 h-12 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-full flex items-center justify-center">
-              <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <div class="relative overflow-hidden rounded-xl border border-gray-200/80 bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-all duration-300">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
               </svg>
             </div>
-            <span class="text-xs font-semibold text-blue-600 bg-blue-100 px-2 py-1 rounded-full">+8.3%</span>
-          </div>
-          <h3 class="text-lg font-bold text-gray-900 mb-1">{{ collectionRate }}%</h3>
-          <p class="text-sm text-gray-600">Collection Rate</p>
-          <div class="mt-3 w-full bg-white rounded-full h-2">
-            <div class="bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full" :style="`width: ${collectionRate}%`"></div>
+            <div class="flex-1 min-w-0">
+              <p class="text-[10px] sm:text-xs font-semibold text-gray-500 tracking-wide uppercase mb-1">Collection Rate</p>
+              <p class="text-base sm:text-lg font-black text-gray-900 tracking-tight mb-1.5">{{ collectionRate }}%</p>
+              <div class="flex items-center gap-1.5">
+                <span class="text-[10px] font-bold text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full">+8.3%</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Active Students Card -->
-        <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-          <div class="flex items-center justify-between mb-4">
-            <div class="w-12 h-12 bg-gradient-to-r from-purple-100 to-pink-100 rounded-full flex items-center justify-center">
-              <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <!-- Total Classes Card -->
+        <div class="relative overflow-hidden rounded-xl border border-gray-200/80 bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-all duration-300">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-purple-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
               </svg>
             </div>
-            <span class="text-xs font-semibold text-purple-600 bg-purple-100 px-2 py-1 rounded-full">+3.7%</span>
-          </div>
-          <h3 class="text-lg font-bold text-gray-900 mb-1">{{ statsLoading ? '...' : statistics.classes }}</h3>
-          <p class="text-sm text-gray-600">Total Classes</p>
-          <div class="mt-3 w-full bg-white rounded-full h-2">
-            <div class="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full" style="width: 85%"></div>
+            <div class="flex-1 min-w-0">
+              <p class="text-[10px] sm:text-xs font-semibold text-gray-500 tracking-wide uppercase mb-1">Total Classes</p>
+              <p class="text-base sm:text-lg font-black text-gray-900 tracking-tight mb-1.5">{{ statsLoading ? '...' : statistics.classes }}</p>
+              <div class="flex items-center gap-1.5">
+                <span class="text-[10px] font-bold text-purple-600 bg-purple-100 px-2 py-0.5 rounded-full">+3.7%</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

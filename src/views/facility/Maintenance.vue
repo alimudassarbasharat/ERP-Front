@@ -49,12 +49,10 @@
             </el-select>
           </el-col>
           <el-col :span="6">
-            <el-date-picker
+            <CompactDatePicker
               v-model="selectedDate"
-              type="date"
-              placeholder="Select Date"
-              format="DD/MM/YYYY"
-              value-format="YYYY-MM-DD"
+              placeholder=""
+            />
               @change="handleDateChange"
             />
           </el-col>
@@ -161,6 +159,7 @@ import { useToast } from 'vue-toastification'
 import { ref, computed } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus, Download, Edit, Delete } from '@element-plus/icons-vue'
+import CompactDatePicker from '@/components/CompactDatePicker.vue'
 
 // Mock data - Replace with actual API calls
 const toast = useToast()
