@@ -1,73 +1,70 @@
-# SweetAlert Configuration
+# Utils Directory
 
-This project uses a standardized SweetAlert configuration for consistent UI/UX across all dialogs.
+This directory contains reusable utility functions that can be used across multiple projects.
+
+## Structure
+
+### dateHelper.js
+- `formatDatePk()` - Format date to Pakistan standard (DD-MM-YYYY)
+- `formatDateIso()` - Format date to ISO format (YYYY-MM-DD)
+- `formatDateTime()` - Format date with time
+- `formatHumanReadable()` - Format date to human readable (e.g., "2 days ago")
+- `getDateRange()` - Get date range for a period
+- `isWithinRange()` - Check if date is within range
+- `getCurrentDate()` - Get current date in ISO format
+- `getCurrentDateTime()` - Get current datetime in ISO format
+
+### stringHelper.js
+- `snakeToTitle()` - Convert snake_case to Title Case
+- `camelToTitle()` - Convert camelCase to Title Case
+- `capitalizeWords()` - Capitalize all words
+- `getInitials()` - Generate initials from full name
+- `truncate()` - Truncate string with ellipsis
+- `sanitize()` - Sanitize string (remove HTML, trim, etc.)
+- `extractMentions()` - Extract mentions from text
+- `slugify()` - Generate slug from string
+- `formatFileSize()` - Format file size
+
+### responseHelper.js
+- `isSuccessResponse()` - Check if response is successful
+- `extractData()` - Extract data from response
+- `extractErrorMessage()` - Extract error message from response
+- `handleApiError()` - Handle API error
+- `handleApiSuccess()` - Handle API success
+
+### axios.js
+- Centralized Axios instance with interceptors
+- Automatic token attachment
+- Token refresh logic
+- Error handling
 
 ## Usage
 
-### Import the configuration
 ```javascript
-import { sweetAlertConfig } from '@/utils/sweetalert'
-```
+import { formatDatePk, getDateRange } from '@/utils/dateHelper'
+import { getInitials, truncate } from '@/utils/stringHelper'
+import { handleApiError, handleApiSuccess } from '@/utils/responseHelper'
+import api from '@/utils/axios'
 
-### Available Methods
+// Date formatting
+const formatted = formatDatePk(new Date(), true)
 
-#### 1. Delete Confirmation
-```javascript
-const result = await sweetAlertConfig.delete(
-  'Delete Item?', 
-  'Are you sure you want to delete this item?', 
-  'Item Name'
-)
-if (result.isConfirmed) {
-  // Handle deletion
+// String manipulation
+const initials = getInitials('John Doe', 2)
+
+// API calls
+try {
+  const response = await api.get('/users')
+  handleApiSuccess(response, toast)
+} catch (error) {
+  handleApiError(error, toast)
 }
 ```
 
-#### 2. Success Message
-```javascript
-await sweetAlertConfig.success('Success!', 'Operation completed successfully.')
-```
+## Best Practices
 
-#### 3. Error Message
-```javascript
-sweetAlertConfig.error('Error!', 'Something went wrong.')
-```
-
-#### 4. Confirmation Dialog
-```javascript
-const result = await sweetAlertConfig.confirm(
-  'Confirm Action', 
-  'Are you sure you want to proceed?',
-  'Yes, Proceed',
-  'Cancel'
-)
-```
-
-#### 5. Info Message
-```javascript
-sweetAlertConfig.info('Information', 'Please note this information.')
-```
-
-## Features
-
-- **Consistent Design**: All dialogs use the same styling
-- **Compact Size**: Optimized for smaller screens
-- **Modern Buttons**: Purple-pink gradient for actions, gray for cancel
-- **Smooth Animations**: Fade in/out effects
-- **Responsive**: Works on all screen sizes
-- **No "No" Button**: Only shows Delete and Cancel buttons
-
-## Button Styles
-
-- **Delete/Confirm Button**: Purple-pink gradient (`#8b5cf6` to `#ec4899`)
-- **Cancel Button**: Gray gradient (`#6b7280` to `#4b5563`)
-- **Size**: 100px min-width, 32px height
-- **Border Radius**: Fully rounded (9999px)
-- **Hover Effects**: Scale up with enhanced shadows
-
-## CSS Classes
-
-The configuration uses these CSS classes defined in `base.css`:
-- `.swal-modern` - Main popup styling
-- `.swal-delete-btn` - Delete button styling
-- `.swal-cancel-btn` - Cancel button styling 
+1. **Keep utilities generic** - Don't add project-specific logic
+2. **Single responsibility** - Each utility should have one clear purpose
+3. **Reusability** - Write functions that can be used across multiple projects
+4. **Documentation** - Always document parameters and return types
+5. **Type safety** - Use JSDoc comments for better IDE support

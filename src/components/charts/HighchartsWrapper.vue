@@ -67,6 +67,9 @@ const defaultOptions = {
   credits: {
     enabled: false
   },
+  accessibility: {
+    enabled: false // Disable accessibility module to remove warning
+  },
   title: {
     style: {
       fontSize: '16px',

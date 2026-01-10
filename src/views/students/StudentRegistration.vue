@@ -109,7 +109,7 @@
     </div>
 
     <!-- Single Student Form -->
-    <div v-if="!isMultipleMode" class="relative z-10 w-full">
+    <div v-if="!isMultipleMode && !loadingStudent && !error" class="relative z-10 w-full">
       <div class="bg-white/90 rounded-lg shadow-lg border border-gray-200 overflow-hidden">
         <!-- Step Content -->
         <div class="p-8">
@@ -198,8 +198,17 @@
 
                 <div class="filter-input-group">
                   <label class="filter-label">Date of Birth *</label>
-                  <div class="filter-input-container">
-                    <CompactDatePicker v-model="formData.date_of_birth" placeholder="" />
+                  <div class="filter-input-container relative">
+                    <CompactDatePicker
+                      v-model="formData.date_of_birth"
+                      placeholder="Select date of birth"
+                      :min-date="new Date(1950, 0, 1)"
+                      :max-date="new Date()"
+                      dateFormat="YYYY-MM-DD"
+                      :range="false"
+                      :class="['date-picker-input', validationErrors.date_of_birth ? 'error' : '']"
+                      @update:model-value="handleDateOfBirthChange"
+                    />
                     <div :class="['filter-underline', validationErrors.date_of_birth ? 'bg-red-500' : '']"></div>
                   </div>
                   <p v-if="validationErrors.date_of_birth" class="text-red-500 text-xs mt-1">{{ validationErrors.date_of_birth }}</p>
@@ -1114,8 +1123,11 @@ button:active {
 </style>
 
 <script setup>
+import { ref, reactive, computed, onMounted, onUnmounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useToast } from 'vue-toastification'
 import CompactDatePicker from '@/components/CompactDatePicker.vue'
+import api from '@/utils/axios'
 
 // Use centralized axios instance
 const axios = api
@@ -1127,6 +1139,8 @@ const route = useRoute()
 // State
 const currentStep = ref(0)
 const loading = ref(false)
+const loadingStudent = ref(false)
+const error = ref(null)
 const showSuccessModal = ref(false)
 const classes = ref([])
 const sections = ref([])
@@ -1308,20 +1322,17 @@ const closeImageModal = () => {
 const zoomIn = () => {
   const newZoom = Math.min(zoomLevel.value * 1.25, 5)
   zoomLevel.value = newZoom
-  console.log('Zoom In:', newZoom)
 }
 
 const zoomOut = () => {
   const newZoom = Math.max(zoomLevel.value / 1.25, 0.2)
   zoomLevel.value = newZoom
-  console.log('Zoom Out:', newZoom)
 }
 
 const resetZoom = () => {
   zoomLevel.value = 1
   panX.value = 0
   panY.value = 0
-  console.log('Reset Zoom')
 }
 
 // Mouse wheel zoom with better handling
@@ -1334,8 +1345,6 @@ const handleWheel = (event) => {
   const delta = event.deltaY > 0 ? 0.9 : 1.1
   const newZoom = Math.max(0.2, Math.min(5, zoomLevel.value * delta))
   zoomLevel.value = newZoom
-  
-  console.log('Mouse Wheel Zoom:', newZoom)
 }
 
 // Enhanced drag functionality
@@ -1347,8 +1356,6 @@ const startDrag = (event) => {
     x: event.clientX - panX.value, 
     y: event.clientY - panY.value 
   }
-  
-  console.log('Start Drag')
 }
 
 const drag = (event) => {
@@ -1360,17 +1367,12 @@ const drag = (event) => {
 }
 
 const endDrag = () => {
-  if (isDragging.value) {
-    console.log('End Drag')
-  }
   isDragging.value = false
 }
 
 // Enhanced keyboard controls
 const handleKeydown = (event) => {
   if (!showImageModal.value) return
-  
-  console.log('Key pressed:', event.key)
   
   switch (event.key) {
     case 'Escape':
@@ -1380,22 +1382,18 @@ const handleKeydown = (event) => {
     case 'ArrowUp':
       event.preventDefault()
       panY.value += 30
-      console.log('Scroll Up')
       break
     case 'ArrowDown':
       event.preventDefault()
       panY.value -= 30
-      console.log('Scroll Down')
       break
     case 'ArrowLeft':
       event.preventDefault()
       panX.value += 30
-      console.log('Scroll Left')
       break
     case 'ArrowRight':
       event.preventDefault()
       panX.value -= 30
-      console.log('Scroll Right')
       break
     case '+':
     case '=':
@@ -1416,7 +1414,7 @@ const handleKeydown = (event) => {
 
 const loadClasses = async () => {
   try {
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/classes`)
+    const response = await axios.get('/classes')
     if (response.data.success && Array.isArray(response.data.result)) {
       classes.value = response.data.result
     } else {
@@ -1431,7 +1429,7 @@ const loadClasses = async () => {
 
 const loadSections = async () => {
   try {
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/sections`)
+    const response = await axios.get('/sections')
     if (response.data.success && Array.isArray(response.data.result)) {
       sections.value = response.data.result
     } else {
@@ -1591,7 +1589,7 @@ const submitMultipleStudents = async () => {
         father_cnic: student.fatherCnic,
         mother_name: student.motherName
       }
-      return axios.post(`${import.meta.env.VITE_API_URL}/students/store`, payload)
+      return axios.post('/students/store', payload)
     })
 
     const responses = await Promise.all(promises)
@@ -1655,9 +1653,9 @@ const handleSubmit = async () => {
 
     let response
     if (isEditMode.value) {
-      response = await axios.post(`${import.meta.env.VITE_API_URL}/students/update/${route.params.id}`, payload)
+      response = await axios.post(`/students/update/${route.params.id}`, payload)
     } else {
-      response = await axios.post(`${import.meta.env.VITE_API_URL}/students/store`, payload)
+      response = await axios.post('/students/store', payload)
     }
     
     if (response.data.success) {
@@ -1691,13 +1689,93 @@ const resetForm = () => {
 const loadStudentData = async () => {
   if (!isEditMode.value) return
   
+  loadingStudent.value = true
+  error.value = null
+  
   try {
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/students/${route.params.id}`)
-    if (response.data.success) {
-      Object.assign(formData, response.data.data)
+    const studentId = route.params.id
+    
+    if (!studentId) {
+      throw new Error('Student ID is missing from URL')
     }
-  } catch (error) {
-    console.error('Error loading student data:', error)
+    
+    const response = await axios.get(`/students/${studentId}`)
+    
+    if (response.data.status || response.data.success) {
+      const studentData = response.data.result || response.data.data || response.data
+      
+      if (!studentData) {
+        throw new Error('Student data not found in response')
+      }
+      
+      // Map the student data to formData structure
+      formData.first_name = studentData.first_name || ''
+      formData.last_name = studentData.last_name || ''
+      formData.date_of_birth = studentData.date_of_birth || studentData.DOB || ''
+      formData.gender = studentData.gender || ''
+      formData.cnic = studentData.cnic_number || studentData.cnic || ''
+      formData.bloodGroup = studentData.blood_group || ''
+      formData.religion = studentData.religion || ''
+      formData.profilePicture = studentData.profile_picture || studentData.photo_path || ''
+      
+      formData.email = studentData.email || ''
+      formData.phone = studentData.phone || studentData.contact_info?.phone || ''
+      formData.address = studentData.address || studentData.contact_info?.address || ''
+      formData.city = studentData.city || ''
+      formData.province = studentData.province || ''
+      formData.postalCode = studentData.postal_code || ''
+      
+      // Load student_id with prefix - check multiple possible field names
+      formData.studentId = studentData.student_id || 
+                          studentData.studentId || 
+                          studentData.id || 
+                          (studentData.prefix ? `${studentData.prefix}${studentData.id}` : '') ||
+                          ''
+      
+      formData.roll_number = studentData.roll_number || ''
+      formData.classId = studentData.class_id || ''
+      formData.sectionId = studentData.section_id || ''
+      formData.admission_date = studentData.admission_date || studentData.DOA || ''
+      formData.academicSession = studentData.academic_session || ''
+      formData.previousSchool = studentData.previous_school || ''
+      
+      formData.fatherName = studentData.family_info?.father_name || studentData.father_name || ''
+      formData.fatherCnic = studentData.family_info?.father_cnic || studentData.father_cnic || ''
+      formData.fatherOccupation = studentData.family_info?.father_occupation || studentData.father_occupation || ''
+      formData.fatherPhone = studentData.family_info?.father_phone || studentData.father_phone || ''
+      formData.motherName = studentData.family_info?.mother_name || studentData.mother_name || ''
+      formData.motherCnic = studentData.family_info?.mother_cnic || studentData.mother_cnic || ''
+      formData.motherOccupation = studentData.family_info?.mother_occupation || studentData.mother_occupation || ''
+      formData.motherPhone = studentData.family_info?.mother_phone || studentData.mother_phone || ''
+      formData.emergencyContactName = studentData.family_info?.emergency_contact_name || studentData.emergency_contact_name || ''
+      formData.emergencyContactPhone = studentData.family_info?.emergency_contact_phone || studentData.emergency_contact_phone || ''
+      formData.emergencyContactRelation = studentData.family_info?.emergency_contact_relation || studentData.emergency_contact_relation || ''
+      
+      // Load sections after class is set
+      if (formData.classId) {
+        await loadSections()
+      }
+    } else {
+      const errorMsg = response.data.message || 'Failed to load student data'
+      error.value = errorMsg
+      toast.error(errorMsg)
+      console.error('API returned error:', response.data)
+    }
+  } catch (err) {
+    console.error('Error loading student data:', err)
+    const errorMsg = err.response?.data?.message || err.message || 'Failed to load student data. Please try again.'
+    error.value = errorMsg
+    toast.error(errorMsg)
+    
+    // If it's a 404, suggest going back
+    if (err.response?.status === 404) {
+      error.value = 'Student not found. The student may have been deleted or the ID is invalid.'
+      setTimeout(() => {
+        router.push('/students/list')
+      }, 3000)
+    }
+  } finally {
+    loadingStudent.value = false
   }
 }
 
@@ -1717,9 +1795,40 @@ const validateCNIC = (cnic) => {
   returncnic_numberRegex.test(cnic)
 }
 
+// Handle date of birth change from date picker (converts array to single date string)
+const handleDateOfBirthChange = (value) => {
+  if (Array.isArray(value) && value.length > 0) {
+    // Extract date part from first element (remove time if present)
+    let dateStr = value[0]
+    if (typeof dateStr === 'string' && dateStr.includes(' ')) {
+      dateStr = dateStr.split(' ')[0]
+    } else if (dateStr instanceof Date) {
+      dateStr = dateStr.toISOString().split('T')[0]
+    }
+    formData.date_of_birth = dateStr
+  } else if (value && !Array.isArray(value)) {
+    // Handle single date value
+    if (typeof value === 'string' && value.includes(' ')) {
+      formData.date_of_birth = value.split(' ')[0]
+    } else if (value instanceof Date) {
+      formData.date_of_birth = value.toISOString().split('T')[0]
+    } else {
+      formData.date_of_birth = value
+    }
+  } else {
+    formData.date_of_birth = ''
+  }
+  clearValidationError('date_of_birth')
+}
+
 const validateAge = (date_of_birth) => {
+  if (!date_of_birth) return false
+  // Handle array format if needed
+  const dateStr = Array.isArray(date_of_birth) ? date_of_birth[0] : date_of_birth
+  // Remove time if present
+  const cleanDate = typeof dateStr === 'string' && dateStr.includes(' ') ? dateStr.split(' ')[0] : dateStr
   const today = new Date()
-  const birthDate = new Date(date_of_birth)
+  const birthDate = new Date(cleanDate)
   let age = today.getFullYear() - birthDate.getFullYear()
   const monthDiff = today.getMonth() - birthDate.getMonth()
   if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
@@ -1729,8 +1838,11 @@ const validateAge = (date_of_birth) => {
 }
 
 const validateadmission_date = (admission_date, date_of_birth) => {
+  // Handle array format if needed
+  const dobStr = Array.isArray(date_of_birth) ? date_of_birth[0] : date_of_birth
+  const cleanDob = typeof dobStr === 'string' && dobStr.includes(' ') ? dobStr.split(' ')[0] : dobStr
   const admission = new Date(admission_date)
-  const birth = new Date(date_of_birth)
+  const birth = new Date(cleanDob)
   const today = new Date()
   
   // Admission date should be after birth date and not in future
@@ -1957,17 +2069,36 @@ const clearValidationError = (field) => {
   }
 }
 
+// Watch for route changes (when navigating between edit pages)
+watch(() => route.params.id, async (newId, oldId) => {
+  if (isEditMode.value && newId && newId !== oldId) {
+    await loadStudentData()
+  }
+}, { immediate: false })
+
 // Lifecycle
-onMounted(() => {
-  loadClasses()
-  loadSections()
-  fetchSessions()
+onMounted(async () => {
+  await Promise.all([
+    loadClasses(),
+    loadSections(),
+    fetchSessions()
+  ])
+  
   if (isEditMode.value) {
-    loadStudentData()
+    // Validate route parameter
+    if (!route.params.id) {
+      error.value = 'Student ID is missing from URL'
+      toast.error('Invalid student ID')
+      setTimeout(() => {
+        router.push('/students/list')
+      }, 2000)
+      return
+    }
+    await loadStudentData()
   } else {
     generateStudentId()
   }
-  })
+})
   
   // Lifecycle hooks
   onMounted(() => {
@@ -1975,12 +2106,6 @@ onMounted(() => {
     loadClasses()
     loadSections()
     generateStudentId()
-    
-    // Test zoom functionality
-    console.log('Component mounted - zoom functionality ready')
-    console.log('Zoom level:', zoomLevel.value)
-    console.log('Pan X:', panX.value)
-    console.log('Pan Y:', panY.value)
   })
 
   onUnmounted(() => {
@@ -2028,7 +2153,7 @@ watch(() => formData.date_of_birth, (val) => {
 
 const fetchSessions = async () => {
   try {
-    const response = await axios.get(`${import.meta.env.VITE_API_URL}/sessions`)
+    const response = await axios.get('/sessions')
     if (response.data.success && Array.isArray(response.data.result)) {
       sessions.value = response.data.result
     } else {
@@ -2175,4 +2300,6 @@ const fetchSessions = async () => {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* CompactDatePicker styling is handled by the component itself */
 </style> 

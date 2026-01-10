@@ -681,19 +681,24 @@
           Back to Selection
         </button>
       </div>
+
     <!-- View Mode Tabs -->
-    <div class="w-full">
-      <div class="flex bg-white rounded-full shadow-lg p-1 border border-purple-100">
+    <div class="relative z-10 w-full mb-6 flex justify-end">
+      <div class="flex bg-white rounded-full shadow-lg p-1 border border-gray-200">
         <button
           @click="setViewMode('daily')"
           :class="[
-            'px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ease-in-out transform relative overflow-hidden',
+            (viewMode === 'daily' ? 'px-3' : 'px-4'),
+            'py-2 rounded-full text-sm font-medium transition-all duration-300 ease-in-out transform relative overflow-hidden',
             viewMode === 'daily' 
               ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md scale-105'
               : 'text-purple-600 hover:text-purple-700 hover:bg-purple-50 hover:scale-102'
           ]"
         >
           <span class="relative z-10 flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
             Daily Attendance
             <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-white text-purple-700 border border-purple-200 ml-1">{{ todayCount }}</span>
           </span>
@@ -703,13 +708,17 @@
         <button
           @click="setViewMode('monthly')"
           :class="[
-            'px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ease-in-out transform relative overflow-hidden',
+            (viewMode === 'monthly' ? 'px-3' : 'px-4'),
+            'py-2 rounded-full text-sm font-medium transition-all duration-300 ease-in-out transform relative overflow-hidden',
             viewMode === 'monthly' 
               ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md scale-105'
               : 'text-purple-600 hover:text-purple-700 hover:bg-purple-50 hover:scale-102'
           ]"
         >
           <span class="relative z-10 flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 00-2-2z"/>
+            </svg>
             Monthly Report
             <span class="px-2 py-0.5 rounded-full text-xs font-bold bg-white text-purple-700 border border-purple-200 ml-1">{{ monthlyCount }}</span>
           </span>
@@ -719,36 +728,34 @@
     </div>
 
           <!-- Top Bar Header -->
-    <div class="w-full max-w-7xl mx-auto mt-2 mb-4 flex items-center justify-between bg-white/90 rounded-lg shadow-lg py-2 px-5 transition-all duration-500 border border-gray-200">
-        <h2 class="text-base font-medium text-gray-600 tracking-tight flex items-center gap-2">
+    <div class="relative z-10 w-full mt-2 mb-4 flex items-center justify-between bg-white/90 rounded-lg shadow-lg py-2 px-5 transition-all duration-500 border border-gray-200">
+        <h2 class="text-base font-medium text-gray-900 tracking-tight flex items-center gap-2">
           <div class="w-2 h-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-pulse"></div>
           {{ selectedAttendanceType === 'subject' ? 'Subject-wise Attendance' : 'Class-wise Attendance' }}
         </h2>
-      <nav class="flex items-center gap-2 text-base font-medium text-gray-500">
+      <nav class="flex items-center gap-2 text-base font-medium text-gray-600">
         <span class="hover:text-purple-600 cursor-pointer transition-colors duration-200">Dashboard</span>
         <span class="mx-2">|</span>
-        <span class="hover:text-purple-600 cursor-pointer transition-colors duration-200">Students</span>
+        <span class="hover:text-purple-600 cursor-pointer transition-colors duration-200">Academic</span>
         <span class="mx-2">|</span>
         <span class="text-gray-900 font-bold">Attendance</span>
       </nav>
     </div>
 
           <!-- Select Criteria Label -->
-      <div class="w-full">
+      <div class="relative z-10 w-full mb-2">
         <div class="flex flex-col items-start">
-          <h3 class="text-base font-medium text-gray-900 tracking-tight">
-            {{ selectedAttendanceType === 'subject' ? 'Mark Subject Attendance' : 'Mark Class Attendance' }}
-          </h3>
-          <div class="h-[2px] bg-purple-200 w-full transition-all duration-300" :style="`max-width: ${selectedAttendanceType === 'subject' ? '160px' : '140px'}`"></div>
+          <h3 class="text-base font-medium text-gray-900 tracking-tight">Filter Attendance</h3>
+          <div class="h-[2px] bg-purple-200 w-full transition-all duration-300" style="max-width: 110px"></div>
         </div>
       </div>
 
     <!-- Filter Bar in Card -->
-    <div class="w-full">
-      <form class="w-full" @submit.prevent="fetchStudents">
+    <div class="relative z-10 w-full rounded-lg transition-all duration-500 ease-in-out transform hover:shadow-lg bg-white p-4 mb-6">
+      <form class="w-full" @submit.prevent="handleSearch">
         <div class="flex flex-wrap items-end gap-x-4 gap-y-3">
           <!-- Search Field -->
-          <div class="w-full">
+          <div class="flex flex-col w-full sm:w-auto sm:min-w-[160px] sm:max-w-[200px] lg:flex-1">
             <label class="mb-1 text-base font-normal text-black modern-font">Search</label>
             <div class="relative">
               <input 
@@ -762,10 +769,10 @@
           </div>
           
           <!-- Session Field -->
-          <div class="w-full">
+          <div class="flex flex-col w-full sm:w-auto sm:min-w-[160px] sm:max-w-[200px] lg:flex-1">
             <label class="mb-1 text-base font-normal text-black modern-font">Session</label>
             <div class="relative">
-              <select v-model="selectedSession" @change="fetchClasses" class="h-9 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full appearance-none pr-8">
+              <select v-model="selectedSession" class="h-9 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full appearance-none pr-8">
                 <option value="">All Sessions</option>
                 <option v-for="session in sessionOptions" :key="session.value" :value="session.value">{{ session.label }}</option>
               </select>
@@ -779,10 +786,10 @@
           </div>
           
           <!-- Class Field -->
-          <div class="w-full">
+          <div class="flex flex-col w-full sm:w-auto sm:min-w-[160px] sm:max-w-[200px] lg:flex-1">
             <label class="mb-1 text-base font-normal text-black modern-font">Class</label>
             <div class="relative">
-              <select v-model="selectedClass" @change="fetchSections" class="h-9 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full appearance-none pr-8">
+              <select v-model="selectedClass" class="h-9 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full appearance-none pr-8">
                 <option value="">All Classes</option>
                 <option v-for="cls in classOptions" :key="cls.value" :value="cls.value">{{ cls.label }}</option>
               </select>
@@ -796,7 +803,7 @@
           </div>
           
           <!-- Section Field -->
-          <div class="w-full">
+          <div class="flex flex-col w-full sm:w-auto sm:min-w-[160px] sm:max-w-[200px] lg:flex-1">
             <label class="mb-1 text-base font-normal text-black modern-font">Section</label>
             <div class="relative">
               <select v-model="selectedSection" class="h-9 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full appearance-none pr-8">
@@ -813,10 +820,10 @@
           </div>
           
           <!-- Subject Field (only for subject-wise) -->
-          <div v-if="selectedAttendanceType === 'subject'" class="w-full">
+          <div v-if="selectedAttendanceType === 'subject'" class="flex flex-col w-full sm:w-auto sm:min-w-[160px] sm:max-w-[200px] lg:flex-1">
             <label class="mb-1 text-base font-normal text-black modern-font">Subject</label>
             <div class="relative">
-              <select v-model="selectedSubject" @change="fetchTeachersForSubject" class="h-9 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full appearance-none pr-8">
+              <select v-model="selectedSubject" class="h-9 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full appearance-none pr-8">
                 <option value="">Select Subject</option>
                 <option v-for="subject in subjectOptions" :key="subject.value" :value="subject.value">{{ subject.label }}</option>
               </select>
@@ -830,7 +837,7 @@
           </div>
           
           <!-- Date Field -->
-          <div class="w-full">
+          <div class="flex flex-col w-full sm:w-auto sm:min-w-[160px] sm:max-w-[200px] lg:flex-1">
             <label class="mb-1 text-base font-normal text-black modern-font">Date</label>
             <div class="relative">
               <CompactDatePicker v-model="selectedDate" placeholder="" />
@@ -843,6 +850,16 @@
         <div class="flex justify-end mt-3">
           <div class="flex items-center gap-2">
             <button 
+              type="button"
+              @click="clearFilters"
+              class="h-9 px-6 bg-white hover:bg-white text-gray-900 text-sm font-medium rounded-full border border-gray-200 transition-all duration-300 shadow-sm hover:shadow-md transform origin-left hover:scale-105 flex items-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+              Clear
+            </button>
+            <button 
               type="submit"
               class="h-9 px-6 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-medium rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-sm hover:shadow-md transform origin-left hover:scale-105 flex items-center gap-2"
             >
@@ -852,175 +869,98 @@
               </svg>
               Search
             </button>
-            <button 
-              type="button"
-              @click="clearFilters"
-              class="h-9 px-6 bg-gradient-to-r from-gray-500 to-gray-600 text-white text-sm font-medium rounded-full hover:from-gray-600 hover:to-gray-700 transition-all duration-300 shadow-sm hover:shadow-md transform origin-left hover:scale-105 flex items-center gap-2"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-              </svg>
-              Clear
-            </button>
           </div>
         </div>
       </form>
     </div>
 
     <!-- Data List Header with Animation -->
-    <div class="w-full">
+    <div class="relative z-10 w-full flex items-center justify-between mb-6 mt-8">
       <div class="flex flex-col items-start">
         <h3 class="text-base font-medium text-gray-600 tracking-tight flex items-center gap-2">
           <div class="w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 animate-bounce"></div>
           {{ selectedAttendanceType === 'subject' ? 'Subject Students' : 'Class Students' }} ({{ total }})
         </h3>
-        <div class="h-[2px] bg-purple-200 w-full transition-all duration-500" style="max-width: 150px"></div>
-      </div>
-      <!-- Quick Search (center) -->
-      <div class="flex-1 flex justify-center">
-        <div class="w-full">
-          <span class="absolute left-0 top-1/2 -translate-y-1/2 pl-2 text-purple-400">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-          </span>
-          <input
-            v-model="searchQuery"
-            @keyup.enter="fetchStudents"
-            type="text"
-            placeholder="QUICK SEARCH"
-            class="w-full border-0 bg-transparent pl-10 pr-0 py-2 text-gray-900 font-medium text-xs tracking-wider uppercase focus:ring-0 focus:outline-none transition placeholder:text-gray-600 placeholder:font-medium placeholder:opacity-100 placeholder:text-xs shadow-none"
-            style="letter-spacing:0.08em;"
-          />
-          <div class="absolute left-0 right-0 bottom-0 h-[1.5px] bg-purple-200 pointer-events-none"></div>
-        </div>
+        <div class="h-[2px] bg-purple-200 w-full transition-all duration-500" style="max-width: 120px"></div>
       </div>
     </div>
-
-    <div class="w-full">
+    <div class="relative z-10 w-full">
       <div class="h-[2px] w-full bg-purple-200 mb-4"></div>
     </div>
 
     <!-- Loader -->
-    <div v-if="loading" class="w-full">
-      <div class="border border-gray-200 rounded-xl p-8 bg-white/40 shadow-sm">
-        <div class="flex flex-col items-center justify-center py-12">
-          <div class="relative mb-6">
-            <div class="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
-            <div class="absolute inset-0 w-16 h-16 border-4 border-transparent border-r-indigo-500 rounded-full animate-ping opacity-20"></div>
-          </div>
-          <div class="text-center">
-            <p class="text-gray-600 font-medium text-lg mb-1">Loading Attendance</p>
-            <p class="text-gray-500 text-sm font-normal">Please wait while we fetch the data...</p>
-            <div class="flex justify-center mt-3 space-x-1">
-              <div class="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
-              <div class="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
-              <div class="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
-            </div>
-          </div>
-        </div>
+    <div v-if="loading" class="relative z-10 w-full">
+      <div class="border border-gray-200 rounded-xl p-8 bg-white shadow-sm">
+        <TableLoader />
       </div>
     </div>
 
     <!-- No Data Found -->
-    <div v-else-if="!loading && filteredStudents.length === 0" class="w-full">
-      <div class="border border-gray-200 rounded-xl p-8 bg-white/40 shadow-sm">
+    <div v-else-if="!loading && filteredStudents.length === 0" class="relative z-10 w-full">
+      <div class="border border-gray-200 rounded-xl p-8 bg-white shadow-sm overflow-hidden">
         <div class="flex flex-col items-center justify-center py-12">
           <div class="relative mb-6">
             <div class="w-24 h-24 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center">
               <svg class="w-12 h-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
               </svg>
             </div>
             <div class="absolute -top-2 -right-2 w-4 h-4 bg-purple-300 rounded-full animate-ping opacity-30"></div>
             <div class="absolute -bottom-2 -left-2 w-3 h-3 bg-indigo-300 rounded-full animate-pulse"></div>
           </div>
-          <div class="w-full">
+          <div class="text-center max-w-sm">
             <h3 class="text-gray-600 font-medium text-xl mb-2">No Attendance Records</h3>
             <p class="text-gray-500 text-sm font-normal leading-relaxed mb-4">
-              Select class and section to view attendance records or start marking attendance for today.
+              {{ total === 0 ? 'No students found. Select class and section to view attendance records or start marking attendance for today.' : 'No students match your current filters. Try adjusting your search criteria.' }}
             </p>
-            <div class="flex flex-wrap justify-center gap-2 text-xs text-gray-500">
-              <span class="px-2 py-1 bg-white rounded-full font-normal">• Select class</span>
-              <span class="px-2 py-1 bg-white rounded-full font-normal">• Select section</span>
-              <span class="px-2 py-1 bg-white rounded-full font-normal">• Choose date</span>
-            </div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Attendance Table -->
-    <div v-else-if="!loading && filteredStudents.length > 0" class="w-full">
-      <div class="rounded-2xl bg-white/90 shadow-lg p-6">
-        <!-- Table Header -->
-        <div class="flex items-center justify-between mb-6">
-          <div>
-            <h3 class="text-lg font-semibold text-gray-900">
-              {{ selectedAttendanceType === 'subject' ? 'Subject-wise Attendance' : 'Class-wise Attendance' }}
-            </h3>
-            <p class="text-sm text-gray-500 mt-1">
-              {{ selectedAttendanceType === 'subject' ? 'Mark attendance for individual subjects' : 'Mark daily attendance for entire class' }}
-            </p>
-          </div>
-          <div class="text-right">
-            <div class="text-sm text-gray-600">Date: {{ formatDate(selectedDate) }}</div>
-            <div class="text-xs text-gray-500">
-              {{ classOptions.find(c => c.value == selectedClass)?.label || 'Class' }} - 
-              {{ sectionOptions.find(s => s.value == selectedSection)?.label || 'Section' }}
-            </div>
-            <div v-if="selectedAttendanceType === 'subject' && selectedSubject" class="text-xs text-gray-500">
-              Subject: {{ subjectOptions.find(s => s.value == selectedSubject)?.label }}
-            </div>
-          </div>
-        </div>
-
-        <!-- Summary Stats -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div class="bg-green-50 rounded-lg p-3 text-center">
-            <div class="text-lg font-bold text-green-600">{{ students.filter(s => s.status === 'present').length }}</div>
-            <div class="text-xs text-green-700">Present</div>
-          </div>
-          <div class="bg-red-50 rounded-lg p-3 text-center">
-            <div class="text-lg font-bold text-red-600">{{ students.filter(s => s.status === 'absent').length }}</div>
-            <div class="text-xs text-red-700">Absent</div>
-          </div>
-          <div class="bg-yellow-50 rounded-lg p-3 text-center">
-            <div class="text-lg font-bold text-yellow-600">{{ students.filter(s => s.status === 'late').length }}</div>
-            <div class="text-xs text-yellow-700">Late</div>
-          </div>
-          <div class="bg-blue-50 rounded-lg p-3 text-center">
-            <div class="text-lg font-bold text-blue-600">{{ students.length }}</div>
-            <div class="text-xs text-blue-700">Total</div>
-          </div>
-        </div>
-
+    <div v-else-if="!loading && filteredStudents.length > 0" class="relative z-10 w-full">
+      <div class="border border-gray-200 rounded-xl p-8 bg-white shadow-sm overflow-hidden">
         <!-- Table Container -->
         <div class="overflow-x-auto">
-          <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+          <table class="min-w-full">
             <!-- Table Header -->
-            <thead class="bg-white">
+            <thead class="bg-gradient-to-r from-indigo-50 to-purple-50">
               <tr>
-                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Student</th>
-                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Roll No</th>
-                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Class</th>
-                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Section</th>
-                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Time In</th>
-                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Remarks</th>
-                <th v-if="selectedAttendanceType === 'subject'" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Subject Attendance %</th>
-                <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                <th class="text-left py-2 px-2 font-medium text-gray-600 text-sm tracking-wider border-b-2 border-purple-400">#</th>
+                <th class="text-left py-2 px-2 font-medium text-gray-600 text-sm tracking-wider border-b-2 border-purple-400">Student</th>
+                <th class="text-left py-2 px-2 font-medium text-gray-600 text-sm tracking-wider border-b-2 border-purple-400">Roll No</th>
+                <th class="text-left py-2 px-2 font-medium text-gray-600 text-sm tracking-wider border-b-2 border-purple-400">Class</th>
+                <th class="text-left py-2 px-2 font-medium text-gray-600 text-sm tracking-wider border-b-2 border-purple-400">Section</th>
+                <th class="text-left py-2 px-2 font-medium text-gray-600 text-sm tracking-wider border-b-2 border-purple-400">Status</th>
+                <th class="text-left py-2 px-2 font-medium text-gray-600 text-sm tracking-wider border-b-2 border-purple-400">Time In</th>
+                <th class="text-left py-2 px-2 font-medium text-gray-600 text-sm tracking-wider border-b-2 border-purple-400">Remarks</th>
+                <th v-if="selectedAttendanceType === 'subject'" class="text-left py-2 px-2 font-medium text-gray-600 text-sm tracking-wider border-b-2 border-purple-400">Subject Attendance %</th>
+                <th class="text-center py-2 px-2 font-medium text-gray-600 text-sm tracking-wider border-b-2 border-purple-400">Actions</th>
               </tr>
             </thead>
             <!-- Table Body -->
-            <tbody class="divide-y divide-gray-200">
-              <tr v-for="(student, index) in filteredStudents" :key="student.id" class="hover:bg-white transition-colors">
-                <td class="px-4 py-2 text-sm text-gray-900">{{ student.name }}</td>
-                <td class="px-4 py-2 text-sm text-gray-900">{{ student.rollNumber }}</td>
-                <td class="px-4 py-2 text-sm text-gray-900">{{ student.class }}</td>
-                <td class="px-4 py-2 text-sm text-gray-900">{{ student.section || '-' }}</td>
-                <td class="px-4 py-2">
+            <tbody>
+              <tr v-for="(student, index) in filteredStudents" :key="student.id" class="hover:bg-indigo-50 transition-colors border-b border-purple-200">
+                <td class="py-2 px-2 text-gray-900 font-normal text-xs">{{ (currentPage - 1) * pageSize + index + 1 }}</td>
+                <td class="py-2 px-2">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-sm font-medium">
+                      {{ student.name.charAt(0).toUpperCase() }}
+                    </div>
+                    <div>
+                      <div class="text-sm font-medium text-gray-900">{{ student.name }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="py-2 px-2 text-gray-900 font-normal text-sm">{{ student.rollNumber }}</td>
+                <td class="py-2 px-2 text-gray-900 font-normal text-sm">{{ student.class }}</td>
+                <td class="py-2 px-2">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    {{ student.section || 'N/A' }}
+                  </span>
+                </td>
+                <td class="py-2 px-2">
                   <select v-model="student.status" class="text-xs border border-gray-200 rounded px-2 py-1 focus:ring-2 focus:ring-purple-500 focus:border-purple-500">
                     <option value="present">Present</option>
                     <option value="absent">Absent</option>
@@ -1028,29 +968,38 @@
                     <option value="excused">Excused</option>
                   </select>
                 </td>
-                <td class="px-4 py-2">
+                <td class="py-2 px-2 text-gray-900 font-normal text-sm">
                   <input v-model="student.timeIn" type="time" class="text-xs border border-gray-200 rounded px-2 py-1 focus:ring-2 focus:ring-purple-500 focus:border-purple-500" />
                 </td>
-                <td class="px-4 py-2">
+                <td class="py-2 px-2 text-gray-900 font-normal text-sm max-w-xs">
                   <input v-model="student.remarks" type="text" placeholder="Add remarks" class="text-xs border border-gray-200 rounded px-2 py-1 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 w-32" />
                 </td>
-                <td v-if="selectedAttendanceType === 'subject'" class="px-4 py-2">
+                <td v-if="selectedAttendanceType === 'subject'" class="py-2 px-2">
                   <span :class="getAttendancePercentageClass(student.attendancePercentage)" class="px-2 py-1 rounded-full text-xs font-medium">
                     {{ student.attendancePercentage || 0 }}%
                   </span>
                 </td>
-                <td class="px-4 py-2 text-sm font-medium">
-                  <div class="flex gap-2">
-                    <button
+                <td class="py-2 px-2">
+                  <div class="flex items-center justify-center gap-2">
+                    <button 
                       @click="viewStudentDetails(student)"
-                      class="text-blue-600 hover:text-blue-900 transition-colors text-xs"
+                      class="px-3 py-1.5 text-xs font-medium rounded-full flex items-center gap-1 transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-105 bg-gradient-to-r from-indigo-500 to-blue-600 text-white hover:from-indigo-600 hover:to-blue-700"
+                      title="View Details"
                     >
+                      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                      </svg>
                       View
                     </button>
-                    <button
+                    <button 
                       @click="editStudentAttendance(student)"
-                      class="text-green-600 hover:text-green-900 transition-colors text-xs"
+                      class="px-3 py-1.5 text-xs font-medium rounded-full flex items-center gap-1 transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-105 bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700"
+                      title="Edit Attendance"
                     >
+                      <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                      </svg>
                       Edit
                     </button>
                   </div>
@@ -1061,102 +1010,50 @@
         </div>
 
         <!-- Bulk Actions and Save -->
-        <div class="mt-6 pt-4 border-t border-gray-200">
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-3">
-              <button
-                class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium flex items-center gap-2"
-                @click="markAllPresent"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-                </svg>
-                Mark All Present
-              </button>
-              <button
-                class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors text-sm font-medium flex items-center gap-2"
-                @click="markAllAbsent"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-                Mark All Absent
-              </button>
-              <button
-                class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium flex items-center gap-2"
-                @click="saveAttendance"
-                :disabled="loading"
-              >
-                <svg v-if="loading" class="w-4 h-4 animate-spin" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                </svg>
-                <svg v-else class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
-                </svg>
-                {{ loading ? 'Saving...' : 'Save Attendance' }}
-              </button>
-            </div>
-            <div class="text-sm text-gray-600">
-              Total: {{ students.length }} students | 
-              Present: {{ students.filter(s => s.status === 'present').length }} | 
-              Absent: {{ students.filter(s => s.status === 'absent').length }}
-            </div>
-          </div>
-          <div class="text-xs text-gray-500 text-center">
-            Showing {{ (currentPage - 1) * pageSize + 1 }} to {{ Math.min(currentPage * pageSize, total) }} of {{ total }} students
-          </div>
-        </div>
-
-        <!-- Pagination -->
-        <div class="w-full">
-          <div class="text-gray-600 text-sm font-medium px-2">
-            Showing {{ (currentPage - 1) * pageSize + 1 }}
-            to {{ Math.min(currentPage * pageSize, total) }}
-            of {{ total }} entries
-          </div>
-          <div class="flex items-center gap-4">
-            <label class="text-sm text-gray-600 font-medium flex items-center gap-1">
-              Per page:
-              <select v-model="pageSize" @change="currentPage = 1; fetchStudents()" class="rounded-md border border-purple-200 bg-white px-2 py-1 text-xs font-semibold text-purple-700 focus:ring-2 focus:ring-purple-300">
-                <option v-for="size in [5, 10, 20, 50]" :key="size" :value="size">{{ size }}</option>
-              </select>
-            </label>
-            <label class="text-sm text-gray-600 font-medium flex items-center gap-1 mr-3">
-              Go to page:
-              <input v-model.number="pageInput" type="number" min="1" :max="totalPages" class="w-16 rounded-md border border-purple-200 px-2 py-1 text-xs font-semibold text-purple-700 focus:ring-2 focus:ring-purple-300" @keyup.enter="goToPage(pageInput)" />
-              <button @click="goToPage(pageInput)" class="ml-1 px-2 py-1 rounded-md bg-purple-500 text-white text-xs font-semibold hover:bg-purple-600 transition-all flex items-center gap-1">
-                <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                </svg>
-                Go
-              </button>
-            </label>
-          </div>
-        </div>
-        <div class="w-full">
-          <div class="flex items-center gap-2">
-            <button
-              class="w-9 h-9 flex items-center justify-center rounded-lg bg-purple-50 text-purple-500 text-xl font-bold shadow-sm transition-all duration-200 hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-300 disabled:opacity-40 disabled:cursor-not-allowed"
-              :disabled="currentPage === 1"
-              @click="prevPage"
-              aria-label="Previous"
-            >
-              <span>&larr;</span>
-            </button>
-            <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-purple-600 text-white text-base font-bold shadow-md">
-              {{ currentPage }}
-            </span>
-            <button
-              class="w-9 h-9 flex items-center justify-center rounded-lg bg-purple-50 text-purple-500 text-xl font-bold shadow-sm transition-all duration-200 hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-300 disabled:opacity-40 disabled:cursor-not-allowed"
-              :disabled="currentPage === totalPages"
-              @click="nextPage"
-              aria-label="Next"
-            >
-              <span>&rarr;</span>
-            </button>
-          </div>
+        <div class="px-4 py-3 border-t border-gray-200 flex gap-3 flex-shrink-0">
+          <button
+            class="px-3 py-1.5 text-xs font-medium rounded-full flex items-center gap-1 transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-105 bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700"
+            @click="markAllPresent"
+          >
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            Mark All Present
+          </button>
+          <button
+            class="px-3 py-1.5 text-xs font-medium rounded-full flex items-center gap-1 transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-105 bg-gradient-to-r from-red-500 to-rose-600 text-white hover:from-red-600 hover:to-rose-700"
+            @click="markAllAbsent"
+          >
+            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+            Mark All Absent
+          </button>
+          <button
+            class="ml-auto px-3 py-1.5 text-xs font-medium rounded-full flex items-center gap-1 transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-105 bg-gradient-to-r from-indigo-500 to-blue-600 text-white hover:from-indigo-600 hover:to-blue-700"
+            @click="saveAttendance"
+            :disabled="loading"
+          >
+            <svg v-if="loading" class="w-3 h-3 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            <svg v-else class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
+            </svg>
+            {{ loading ? 'Saving...' : 'Save Attendance' }}
+          </button>
         </div>
       </div>
+      
+      <!-- Pagination for Attendance -->
+      <Pagination
+        :current-page="currentPage"
+        :page-size="pageSize"
+        :total="total"
+        :show="!loading && filteredStudents.length > 0"
+        @page-change="(page) => { currentPage = page; fetchStudents() }"
+        @page-size-change="(size) => { pageSize = size; currentPage = 1; fetchStudents() }"
+      />
     </div>
 
     <!-- Students Data Table -->
@@ -1401,12 +1298,32 @@ import { ref, computed, onMounted, watch } from 'vue'
 import api from '@/utils/axios'
 import { Chart, registerables } from 'chart.js'
 import CompactDatePicker from '@/components/CompactDatePicker.vue'
+import TableLoader from '@/components/TableLoader.vue'
+import Pagination from '@/components/Pagination.vue'
+import { useAuthStore } from '@/stores/auth'
 
-Chart.register(...registerables)
+// Components are auto-registered with <script setup>
+
+// Register Chart.js components safely
+if (typeof Chart !== 'undefined' && registerables) {
+  try {
+    Chart.register(...registerables)
+  } catch (error) {
+    console.warn('Chart.js registration warning:', error)
+  }
+}
 
 // State
 const toast = useToast()
+const authStore = useAuthStore()
 const loading = ref(false)
+
+// Get merchant_id from auth store
+const getMerchantId = () => {
+  const user = authStore.user
+  if (!user) return null
+  return user.merchant_id || user.admin?.merchant_id || null
+}
 const sessionOptions = ref([])
 const classOptions = ref([])
 const sectionOptions = ref([])
@@ -1611,7 +1528,10 @@ const fetchSubjectsForClass = async () => {
   }
   
   try {
-    const response = await api.get(`/attendance/class/${classId}/subjects`)
+    const merchantId = getMerchantId()
+    const params = merchantId ? { merchant_id: merchantId } : {}
+    
+    const response = await api.get(`/attendance/class/${classId}/subjects`, { params })
     if (response.data.success) {
       subjectOptions.value = response.data.data.map(subject => ({
         value: subject.id,
@@ -1631,7 +1551,10 @@ const fetchTeachersForSubject = async () => {
   }
   
   try {
-    const response = await api.get(`/attendance/subject/${selectedSubject.value}/teachers`)
+    const merchantId = getMerchantId()
+    const params = merchantId ? { merchant_id: merchantId } : {}
+    
+    const response = await api.get(`/attendance/subject/${selectedSubject.value}/teachers`, { params })
     if (response.data.success) {
       teacherOptions.value = response.data.data.map(teacher => ({
         value: teacher.id,
@@ -2031,9 +1954,13 @@ const fetchClasses = async () => {
   }
   
   try {
-    const response = await api.get('/classes', {
-      params: { session_id: selectedSession.value }
-    })
+    const merchantId = getMerchantId()
+    const params = { session_id: selectedSession.value }
+    if (merchantId) {
+      params.merchant_id = merchantId
+    }
+    
+    const response = await api.get('/classes', { params })
     
     if (response.data.success && Array.isArray(response.data.result)) {
       classOptions.value = response.data.result.map(cls => ({
@@ -2055,9 +1982,13 @@ const fetchSections = async () => {
   }
   
   try {
-    const response = await api.get('/sections/select-options', {
-      params: { class_id: selectedClass.value }
-    })
+    const merchantId = getMerchantId()
+    const params = { class_id: selectedClass.value }
+    if (merchantId) {
+      params.merchant_id = merchantId
+    }
+    
+    const response = await api.get('/sections/select-options', { params })
     
     if (response.data.success && Array.isArray(response.data.result)) {
       sectionOptions.value = response.data.result.map(sec => ({
@@ -2070,9 +2001,13 @@ const fetchSections = async () => {
   } catch (error) {
     // Fallback to main sections endpoint
     try {
-      const fallbackResponse = await api.get('/sections', {
-        params: { class_id: selectedClass.value }
-      })
+      const merchantId = getMerchantId()
+      const params = { class_id: selectedClass.value }
+      if (merchantId) {
+        params.merchant_id = merchantId
+      }
+      
+      const fallbackResponse = await api.get('/sections', { params })
       
       if (fallbackResponse.data.success && Array.isArray(fallbackResponse.data.result)) {
         sectionOptions.value = fallbackResponse.data.result.map(sec => ({
@@ -2089,6 +2024,19 @@ const fetchSections = async () => {
 }
 
 const fetchStudents = async (page = 1) => {
+  // Load dependent dropdowns if needed (only when Search is clicked)
+  if (selectedSession.value && classOptions.value.length === 0) {
+    await fetchClasses()
+  }
+  
+  if (selectedClass.value && sectionOptions.value.length === 0) {
+    await fetchSections()
+  }
+  
+  if (selectedAttendanceType.value === 'subject' && selectedSubject.value && teacherOptions.value.length === 0) {
+    await fetchTeachersForSubject()
+  }
+  
   // Basic validation - at least class and section required
   if (!selectedClass.value || !selectedSection.value) {
     students.value = []
@@ -2114,6 +2062,9 @@ const fetchStudents = async (page = 1) => {
   loading.value = true
   
   try {
+    // Get merchant_id for scoping
+    const merchantId = getMerchantId()
+    
     // Use new comprehensive attendance API with pagination
     const params = {
       class_id: selectedClass.value,
@@ -2122,7 +2073,12 @@ const fetchStudents = async (page = 1) => {
       attendance_mode: selectedAttendanceType.value === 'subject' ? 'period_wise' : 'daily',
       page: page,
       per_page: pageSize.value,
-      search: searchQuery.value
+      search: searchQuery.value || ''
+    }
+    
+    // Always include merchant_id for proper scoping
+    if (merchantId) {
+      params.merchant_id = merchantId
     }
     
     // Add optional session filter
@@ -2299,6 +2255,12 @@ const handleFilter = () => {
   fetchStudents(1)
 }
 
+// Handle Search button click - reset to page 1 and apply filters
+const handleSearch = () => {
+  currentPage.value = 1
+  fetchStudents(1)
+}
+
 const goToPage = (page) => {
   if (page >= 1 && page <= totalPages.value) {
     currentPage.value = page
@@ -2400,9 +2362,13 @@ const fetchClassesForReports = async () => {
   if (!reportFilters.value.session_id) return
   
   try {
-    const response = await api.get('/classes', {
-      params: { session_id: reportFilters.value.session_id }
-    })
+    const merchantId = getMerchantId()
+    const params = { session_id: reportFilters.value.session_id }
+    if (merchantId) {
+      params.merchant_id = merchantId
+    }
+    
+    const response = await api.get('/classes', { params })
     if (response.data.success && Array.isArray(response.data.result)) {
       classOptions.value = response.data.result.map(cls => ({
         value: cls.id,
@@ -2458,13 +2424,16 @@ const markAllAbsent = () => {
 }
 
 const clearFilters = () => {
+  // Reset all filter values
   searchQuery.value = ''
   selectedSession.value = ''
   selectedClass.value = ''
   selectedSection.value = ''
   selectedSubject.value = ''
   selectedTeacher.value = ''
+  selectedPeriod.value = ''
   selectedDate.value = new Date().toISOString().split('T')[0]
+  selectedStatus.value = ''
   
   // Clear dependent data
   classOptions.value = []
@@ -2472,11 +2441,23 @@ const clearFilters = () => {
   subjectOptions.value = []
   teacherOptions.value = []
   students.value = []
+  filteredStudents.value = []
   
   // Reset pagination
   currentPage.value = 1
   total.value = 0
   totalPages.value = 0
+  paginationInfo.value = {
+    current_page: 1,
+    per_page: 10,
+    total: 0,
+    last_page: 1,
+    from: 0,
+    to: 0
+  }
+  
+  // Note: We don't auto-fetch after clear - user must select filters and click Search
+  // This ensures clear truly resets everything without unexpected data loads
 }
 
 const saveAttendance = async () => {
@@ -2532,45 +2513,43 @@ const saveAttendance = async () => {
 }
 
 // Watchers
-watch(selectedSession, (newSessionId, oldSessionId) => {
+// Watchers for populating dependent dropdowns (but NOT auto-fetching students)
+// Students are only fetched when Search button is clicked
+watch(selectedSession, (newSessionId) => {
+  // Clear dependent filters when session changes
   selectedClass.value = ''
   selectedSection.value = ''
   classOptions.value = []
   sectionOptions.value = []
-  students.value = []
+  // Don't clear students - let user click Search to fetch
   if (newSessionId) {
-    fetchClasses()
+    fetchClasses() // Populate classes dropdown
   }
 })
 
-watch(selectedClass, (newClassId, oldClassId) => {
+watch(selectedClass, (newClassId) => {
+  // Clear dependent filters when class changes
   selectedSection.value = ''
   sectionOptions.value = []
-  students.value = []
+  // Don't clear students - let user click Search to fetch
   if (newClassId) {
-    fetchSections()
+    fetchSections() // Populate sections dropdown
     if (selectedAttendanceType.value === 'subject') {
-      fetchSubjectsForClass()
+      fetchSubjectsForClass() // Populate subjects dropdown
     }
   }
 })
 
-watch([selectedSession, selectedClass, selectedSection], (newValues, oldValues) => {
-  const [newSession, newClass, newSection] = newValues
-  
-  // Only fetch students if we have the minimum required fields
-  if (newClass && newSection) {
-    fetchStudents()
-  } else {
-    students.value = []
-  }
-}, { deep: true })
-watch(selectedSubject, fetchTeachersForSubject)
-watch([selectedDate, selectedSubject], () => {
-  if (selectedAttendanceType.value === 'subject' && selectedClass.value && selectedSection.value) {
-    fetchStudents()
+watch(selectedSubject, () => {
+  // Populate teachers when subject changes
+  if (selectedSubject.value) {
+    fetchTeachersForSubject()
   }
 })
+
+// Removed auto-fetch watchers - students only fetched on Search button click
+// watch([selectedSession, selectedClass, selectedSection], ...) - removed
+// watch([selectedDate, selectedSubject], ...) - removed
 
 // Watch for reports filters
 watch(() => reportFilters.value.session_id, (newSessionId, oldSessionId) => {
@@ -2617,9 +2596,13 @@ const fetchSectionsForReports = async () => {
   }
   
   try {
-    const response = await api.get('/sections/select-options', {
-      params: { class_id: reportFilters.value.class_id }
-    })
+    const merchantId = getMerchantId()
+    const params = { class_id: reportFilters.value.class_id }
+    if (merchantId) {
+      params.merchant_id = merchantId
+    }
+    
+    const response = await api.get('/sections/select-options', { params })
     
     if (response.data.success && Array.isArray(response.data.result)) {
       sectionOptions.value = response.data.result.map(sec => ({

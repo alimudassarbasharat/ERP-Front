@@ -111,7 +111,6 @@ export const usePermissionsStore = defineStore('permissions', () => {
       facility: () => hasAnyPermission.value(['view-facilities', 'view-facility-management']),
       settings: () => hasAnyPermission.value(['view-general-settings', 'access-settings']),
       messaging: () => hasAnyPermission.value(['access-messaging', 'view-team-chat']),
-      slack: () => hasAnyPermission.value(['access-slack', 'access-messaging']),
       profile: () => hasAnyPermission.value(['view-profile', 'access-profile'])
     }
 

@@ -12,8 +12,8 @@
       <div class="flex items-center gap-1.5 flex-1 min-w-0">
         <IconCalendar 
           :size="14" 
-          class="text-indigo-600 flex-shrink-0 transition-colors"
-          :class="{ 'text-indigo-500': isOpen }"
+          class="text-indigo-600 dark:text-indigo-400 flex-shrink-0 transition-colors"
+          :class="{ 'text-indigo-500 dark:text-indigo-300': isOpen }"
           stroke-width="2" 
         />
         <input
@@ -35,7 +35,7 @@
           class="clear-btn"
           type="button"
         >
-          <IconX :size="12" class="text-gray-400 hover:text-gray-600" stroke-width="2" />
+          <IconX :size="12" class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300" stroke-width="2" />
         </button>
         <button
           @click.stop="togglePicker"
@@ -65,7 +65,7 @@
           <!-- Shortcuts Panel -->
           <div v-if="shortcuts && dateShortcuts.length > 0" class="shortcuts-panel">
             <div class="shortcuts-header">
-              <IconClock :size="12" class="text-indigo-600" stroke-width="2" />
+              <IconClock :size="12" class="text-indigo-600 dark:text-indigo-400" stroke-width="2" />
               <span class="shortcuts-title">Quick Select</span>
             </div>
             <div class="shortcuts-list">
@@ -784,8 +784,8 @@ onUnmounted(() => {
 }
 
 .custom-date-input {
-  @apply flex items-center justify-between gap-1.5 w-full bg-white border border-gray-300 rounded-md shadow-sm transition-all duration-200;
-  @apply hover:border-indigo-400 hover:shadow-md;
+  @apply flex items-center justify-between gap-1.5 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm transition-all duration-200;
+  @apply hover:border-indigo-400 dark:hover:border-indigo-500 hover:shadow-md;
   height: 32px;
   padding: 0 8px;
 }
@@ -799,56 +799,56 @@ onUnmounted(() => {
 }
 
 .custom-date-input.is-disabled {
-  @apply bg-gray-50 cursor-not-allowed opacity-60;
-  @apply hover:border-gray-300 hover:shadow-sm;
+  @apply bg-gray-50 dark:bg-gray-800 cursor-not-allowed opacity-60;
+  @apply hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-sm;
 }
 
 .date-input-field {
   @apply flex-1 min-w-0 bg-transparent border-0 outline-none;
-  @apply text-gray-900 placeholder:text-gray-400 text-xs;
+  @apply text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 text-xs;
   @apply disabled:cursor-not-allowed;
   font-size: 12px;
   line-height: 1.5;
 }
 
 .date-input-field::placeholder {
-  @apply text-gray-400;
+  @apply text-gray-400 dark:text-gray-500;
 }
 
 .clear-btn {
-  @apply p-0.5 rounded hover:bg-gray-100 transition-colors flex items-center justify-center;
+  @apply p-0.5 rounded hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors flex items-center justify-center;
 }
 
 .calendar-btn {
-  @apply p-0.5 rounded hover:bg-gray-100 transition-colors flex items-center justify-center;
+  @apply p-0.5 rounded hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors flex items-center justify-center;
   @apply disabled:cursor-not-allowed disabled:opacity-50;
 }
 
 .chevron-icon {
-  @apply text-gray-400 transition-transform duration-200 flex-shrink-0;
+  @apply text-gray-400 dark:text-gray-500 transition-transform duration-200 flex-shrink-0;
 }
 
 .custom-date-input.is-open .chevron-icon {
-  @apply text-indigo-600;
+  @apply text-indigo-600 dark:text-indigo-400;
 }
 
 .datepicker-dropdown {
-  @apply bg-white rounded-lg shadow-xl border border-gray-200 z-[9999] overflow-hidden;
+  @apply bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 z-[9999] overflow-hidden;
   @apply flex flex-col max-h-[380px];
   min-width: 280px;
   position: fixed;
 }
 
 .shortcuts-panel {
-  @apply border-b border-gray-200 bg-gradient-to-br from-indigo-50 to-purple-50;
+  @apply border-b border-gray-200 dark:border-gray-700 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/30;
 }
 
 .shortcuts-header {
-  @apply flex items-center gap-1 px-2 py-1.5 border-b border-indigo-100;
+  @apply flex items-center gap-1 px-2 py-1.5 border-b border-indigo-100 dark:border-indigo-800;
 }
 
 .shortcuts-title {
-  @apply text-[10px] font-semibold text-gray-700;
+  @apply text-[10px] font-semibold text-gray-700 dark:text-gray-300;
 }
 
 .shortcuts-list {
@@ -857,8 +857,8 @@ onUnmounted(() => {
 
 .shortcut-item {
   @apply w-full flex items-center justify-between gap-1 px-2 py-1 rounded-md;
-  @apply text-[10px] text-gray-700 hover:bg-white hover:shadow-sm transition-all duration-150;
-  @apply hover:text-indigo-600;
+  @apply text-[10px] text-gray-700 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-700 hover:shadow-sm transition-all duration-150;
+  @apply hover:text-indigo-600 dark:hover:text-indigo-400;
 }
 
 .shortcut-text {
@@ -870,7 +870,7 @@ onUnmounted(() => {
 }
 
 .custom-date-range-section {
-  @apply border-t border-gray-200 bg-gray-50 px-2 py-2;
+  @apply border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 px-2 py-2;
 }
 
 .custom-date-header {
@@ -878,12 +878,12 @@ onUnmounted(() => {
 }
 
 .back-to-shortcuts-btn {
-  @apply flex items-center gap-1 text-[10px] font-medium text-gray-600 hover:text-indigo-600;
+  @apply flex items-center gap-1 text-[10px] font-medium text-gray-600 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400;
   @apply transition-colors duration-200 cursor-pointer;
 }
 
 .custom-date-label {
-  @apply text-[10px] font-medium text-gray-600;
+  @apply text-[10px] font-medium text-gray-600 dark:text-gray-300;
 }
 
 .custom-date-range-wrapper {
@@ -895,13 +895,14 @@ onUnmounted(() => {
 }
 
 .custom-date-field-label {
-  @apply text-[10px] font-medium text-gray-600;
+  @apply text-[10px] font-medium text-gray-600 dark:text-gray-300;
 }
 
 .custom-date-text-input {
-  @apply w-full px-1.5 py-1 text-[10px] border border-gray-300 rounded-md;
-  @apply focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500;
-  @apply placeholder:text-gray-400;
+  @apply w-full px-1.5 py-1 text-[10px] border border-gray-300 dark:border-gray-600 rounded-md;
+  @apply bg-white dark:bg-gray-700 text-gray-900 dark:text-white;
+  @apply focus:outline-none focus:ring-1 focus:ring-indigo-500 dark:focus:ring-indigo-400 focus:border-indigo-500 dark:focus:border-indigo-400;
+  @apply placeholder:text-gray-400 dark:placeholder:text-gray-500;
 }
 
 .custom-date-actions {
@@ -909,7 +910,7 @@ onUnmounted(() => {
 }
 
 .cancel-custom-btn {
-  @apply px-2 py-1 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200;
+  @apply px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600;
   @apply transition-colors duration-200 text-[10px] font-medium;
 }
 
@@ -920,7 +921,7 @@ onUnmounted(() => {
 }
 
 .picker-actions {
-  @apply flex items-center justify-end gap-1 px-2 py-1.5 border-t border-gray-200 bg-gray-50;
+  @apply flex items-center justify-end gap-1 px-2 py-1.5 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50;
 }
 
 .action-btn {
@@ -929,8 +930,8 @@ onUnmounted(() => {
 }
 
 .cancel-btn {
-  @apply text-gray-700 bg-white border border-gray-300;
-  @apply hover:bg-gray-50 hover:border-gray-400;
+  @apply text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600;
+  @apply hover:bg-gray-50 dark:hover:bg-gray-600 hover:border-gray-400 dark:hover:border-gray-500;
 }
 
 .confirm-btn {
@@ -960,11 +961,15 @@ onUnmounted(() => {
 }
 
 :deep(.dp__calendar_header_item) {
-  @apply text-gray-600 font-semibold;
+  @apply text-gray-600 dark:text-gray-300 font-semibold;
 }
 
 :deep(.dp__cell_inner) {
-  @apply rounded-lg transition-all duration-150;
+  @apply rounded-lg transition-all duration-150 text-gray-700 dark:text-gray-300;
+}
+
+:deep(.dp__cell_inner:hover) {
+  @apply bg-gray-100 dark:bg-gray-700;
 }
 
 :deep(.dp__active_date) {

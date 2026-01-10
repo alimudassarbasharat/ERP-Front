@@ -100,7 +100,7 @@
 body {
   min-height: 100vh;
   color: var(--color-text);
-  background: var(--color-background);
+  background: linear-gradient(135deg, #fef2f2 0%, #fdf2f8 25%, #fce7f3 50%, #fdf2f8 75%, #fef2f2 100%);
   transition: color 0.5s, background-color 0.5s;
   line-height: 1.6;
   font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -110,8 +110,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.dark body {
+  background: linear-gradient(135deg, #1e1b2e 0%, #1a1625 25%, #181422 50%, #1a1625 75%, #1e1b2e 100%);
+}
+
 #app {
   /* Removed legacy constraints to avoid conflicting with application layout */
+  background: linear-gradient(135deg, #fef2f2 0%, #fdf2f8 25%, #fce7f3 50%, #fdf2f8 75%, #fef2f2 100%);
+  min-height: 100vh;
+  transition: background 0.3s ease;
+}
+
+.dark #app {
+  background: linear-gradient(135deg, #1e1b2e 0%, #1a1625 25%, #181422 50%, #1a1625 75%, #1e1b2e 100%);
 }
 
 /* Removed default green anchor styles to avoid clashing with app theme */
@@ -350,4 +361,283 @@ body {
   color: var(--text-primary) !important;
   transform: translateY(-1px) !important;
   box-shadow: var(--shadow-md) !important;
+}
+
+/* Global Dark Mode Utilities */
+.dark body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.dark .bg-white {
+  background-color: var(--bg-card) !important;
+}
+
+.dark .bg-white\/90 {
+  background-color: rgba(var(--bg-card-rgb, 30, 41, 59), 0.9) !important;
+}
+
+.dark .bg-white\/70 {
+  background-color: rgba(var(--bg-card-rgb, 30, 41, 59), 0.7) !important;
+}
+
+.dark .bg-white\/95 {
+  background-color: rgba(var(--bg-card-rgb, 30, 41, 59), 0.95) !important;
+}
+
+.dark .text-gray-900 {
+  color: var(--text-primary) !important;
+}
+
+.dark .text-gray-700 {
+  color: var(--text-primary) !important;
+}
+
+.dark .text-gray-500 {
+  color: var(--text-secondary) !important;
+}
+
+.dark .text-gray-600 {
+  color: var(--text-secondary) !important;
+}
+
+.dark .border-gray-200 {
+  border-color: var(--border-primary) !important;
+}
+
+.dark .border-gray-200\/60 {
+  border-color: rgba(var(--border-primary-rgb, 51, 65, 85), 0.6) !important;
+}
+
+.dark .border-gray-200\/80 {
+  border-color: rgba(var(--border-primary-rgb, 51, 65, 85), 0.8) !important;
+}
+
+.dark .border-gray-200\/50 {
+  border-color: rgba(var(--border-primary-rgb, 51, 65, 85), 0.5) !important;
+}
+
+.dark .bg-gray-50 {
+  background-color: var(--bg-secondary) !important;
+}
+
+.dark .bg-gray-100 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+.dark .bg-gray-200 {
+  background-color: var(--bg-tertiary) !important;
+}
+
+.dark .hover\:bg-gray-200:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+.dark .hover\:bg-indigo-50:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+.dark .from-white\/90 {
+  --tw-gradient-from: var(--bg-card) !important;
+  --tw-gradient-to: transparent !important;
+}
+
+.dark .to-white\/70 {
+  --tw-gradient-to: var(--bg-card) !important;
+}
+
+/* Additional dark mode text utilities */
+.dark .text-gray-700 {
+  color: var(--text-primary) !important;
+}
+
+.dark .text-gray-800 {
+  color: var(--text-primary) !important;
+}
+
+.dark .text-gray-900 {
+  color: var(--text-primary) !important;
+}
+
+/* Dark mode for vue-datepicker-next */
+.dark :deep(.dp__calendar) {
+  background-color: var(--bg-card) !important;
+}
+
+.dark :deep(.dp__calendar_header_item) {
+  color: var(--text-primary) !important;
+}
+
+.dark :deep(.dp__cell_inner) {
+  color: var(--text-primary) !important;
+}
+
+.dark :deep(.dp__cell_inner:hover) {
+  background-color: var(--bg-tertiary) !important;
+}
+
+.dark :deep(.dp__month_year_wrap) {
+  color: var(--text-primary) !important;
+}
+
+.dark :deep(.dp__arrow_top) {
+  border-bottom-color: var(--bg-card) !important;
+}
+
+.dark :deep(.dp__arrow_bottom) {
+  border-top-color: var(--bg-card) !important;
+}
+
+/* Element Plus Dark Mode */
+.dark .el-menu {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-primary) !important;
+}
+
+.dark .el-menu-item {
+  color: var(--text-secondary) !important;
+}
+
+.dark .el-menu-item:hover {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark .el-menu-item.is-active {
+  color: var(--accent-primary) !important;
+  background-color: var(--bg-tertiary) !important;
+}
+
+.dark .el-sub-menu__title {
+  color: var(--text-secondary) !important;
+}
+
+.dark .el-sub-menu__title:hover {
+  color: var(--text-primary) !important;
+}
+
+.dark .el-sub-menu .el-menu-item {
+  color: var(--text-secondary) !important;
+}
+
+.dark .el-sub-menu .el-menu-item:hover {
+  color: var(--text-primary) !important;
+}
+
+.dark .el-sub-menu .el-menu-item.is-active {
+  color: var(--accent-primary) !important;
+}
+
+.dark .el-input__inner {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark .el-input__inner::placeholder {
+  color: var(--text-muted) !important;
+}
+
+.dark .el-select .el-input__inner {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark .el-button {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark .el-button--primary {
+  background-color: var(--accent-primary) !important;
+  border-color: var(--accent-primary) !important;
+  color: var(--text-inverse) !important;
+}
+
+.dark .el-card {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark .el-table {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark .el-table th {
+  background-color: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark .el-table td {
+  border-color: var(--border-primary) !important;
+}
+
+.dark .el-dialog {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark .el-dialog__header {
+  border-bottom-color: var(--border-primary) !important;
+}
+
+.dark .el-dialog__title {
+  color: var(--text-primary) !important;
+}
+
+.dark .el-dropdown-menu {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-primary) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dark .el-dropdown-menu__item {
+  color: var(--text-primary) !important;
+}
+
+.dark .el-dropdown-menu__item:hover {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Element Plus Select Dropdown Dark Mode */
+.dark .el-select-dropdown {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-primary) !important;
+}
+
+.dark .el-select-dropdown__item {
+  color: var(--text-primary) !important;
+}
+
+.dark .el-select-dropdown__item:hover {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+.dark .el-select-dropdown__item.selected {
+  background-color: rgba(124, 58, 237, 0.2) !important;
+  color: var(--accent-primary) !important;
+}
+
+.dark .el-select-dropdown__item.hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+/* Element Plus Option Dark Mode */
+.dark .el-option {
+  color: var(--text-primary) !important;
+}
+
+.dark .el-option:hover {
+  background-color: var(--bg-tertiary) !important;
+}
+
+.dark .el-option.is-selected {
+  background-color: rgba(124, 58, 237, 0.2) !important;
+  color: var(--accent-primary) !important;
 }

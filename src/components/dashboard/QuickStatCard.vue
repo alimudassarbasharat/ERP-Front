@@ -12,7 +12,7 @@
     <p class="text-xs font-bold mb-1 sm:mb-2 tracking-wide uppercase relative z-10" :class="stat.textClass">{{ stat.label }}</p>
     <p class="text-sm sm:text-base font-black tracking-tight relative z-10" :class="stat.valueClass">{{ stat.value }}</p>
     <p class="text-xs font-semibold mt-1 relative z-10" :class="stat.changeClass">{{ stat.change }}</p>
-    <div class="mt-2 w-full bg-white/20 rounded-full h-1 relative z-10">
+    <div class="mt-2 w-full bg-white/20 dark:bg-white/10 rounded-full h-1 relative z-10">
       <div class="h-1 rounded-full transition-all duration-300" :class="stat.progressClass" :style="{ width: stat.percentage + '%' }"></div>
     </div>
   </div>

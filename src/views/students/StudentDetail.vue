@@ -10,11 +10,44 @@
           </div>
           <div class="text-center">
             <p class="text-gray-600 font-medium text-lg mb-1">Loading Student Details</p>
-            <p class="text-gray-500 text-sm font-normal">Please wait while we fetch the student information...</p>
+            <p class="text-gray-500 text-sm font-normal">Please wait while fetching details...</p>
             <div class="flex justify-center mt-3 space-x-1">
               <div class="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
               <div class="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
               <div class="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div v-else-if="error || !student" class="w-full max-w-7xl mx-auto">
+      <div class="bg-white rounded-lg shadow-lg p-8 border border-red-200">
+        <div class="flex flex-col items-center justify-center py-12">
+          <div class="relative mb-6">
+            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+              <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.232 13.5c-.77.833-.192 2.5 1.732 2.5z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="text-center">
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">Unable to Load Student Details</h3>
+            <p class="text-gray-600 mb-4">{{ error || 'Student data could not be loaded. Please try again.' }}</p>
+            <div class="flex gap-3 justify-center">
+              <button 
+                @click="goBack"
+                class="px-6 py-2 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-full font-medium transition-colors duration-200"
+              >
+                Go Back
+              </button>
+              <button 
+                @click="fetchStudentDetails"
+                class="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-full font-medium transition-all duration-200"
+              >
+                Retry
+              </button>
             </div>
           </div>
         </div>
@@ -144,7 +177,7 @@
             </div>
             <div class="text-center">
               <p class="text-gray-600 font-medium text-lg mb-1">Loading Tab Data</p>
-              <p class="text-gray-500 text-sm font-normal">Please wait while we load the information...</p>
+              <p class="text-gray-500 text-sm font-normal">Please wait while fetching details...</p>
               <div class="flex justify-center mt-3 space-x-1">
                 <div class="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
                 <div class="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
@@ -1399,7 +1432,10 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { useToast } from 'vue-toastification'
+import api from '@/utils/axios'
 
 // Use centralized axios instance
 const axios = api
@@ -1410,11 +1446,43 @@ const route = useRoute()
 
 // Reactive data
 const loading = ref(true)
+const error = ref(null)
 const student = ref(null)
 const classes = ref([])
 const sections = ref([])
 const activeTab = ref('basic')
 const tabLoading = ref(false)
+
+// Helper functions (defined early for template access)
+const getStudentInitials = () => {
+  if (!student.value) return 'ST'
+  const firstName = student.value.first_name || ''
+  const lastName = student.value.last_name || ''
+  
+  const firstInitial = firstName.charAt(0).toUpperCase()
+  const lastInitial = lastName.charAt(0).toUpperCase()
+  
+  return `${firstInitial}${lastInitial}` || 'ST'
+}
+
+const getProfilePicture = () => {
+  if (student.value?.photo_path) {
+    return student.value.photo_path
+  }
+  return null // Return null to indicate no image, show initials instead
+}
+
+const handleImageError = (event) => {
+  event.target.style.display = 'none'
+  // Show initials instead when image fails to load
+  const parent = event.target.parentElement
+  if (parent) {
+    const initialsDiv = parent.querySelector('.initials-fallback')
+    if (initialsDiv) {
+      initialsDiv.style.display = 'flex'
+    }
+  }
+}
 
 // Tab Configuration
 const tabs = ref([
@@ -1594,11 +1662,27 @@ const vaccinations = ref([
 // Methods
 const fetchStudentDetails = async () => {
   loading.value = true
+  error.value = null
+  
   try {
     const studentId = route.params.id
+    
+    if (!studentId) {
+      throw new Error('Student ID is missing from URL')
+    }
+    
+    console.log('Fetching student details for ID:', studentId)
     const response = await axios.get(`/students/${studentId}`)
+    
     if (response.data.status || response.data.success) {
-      student.value = response.data.result || response.data.data
+      student.value = response.data.result || response.data.data || response.data
+      
+      if (!student.value) {
+        throw new Error('Student data not found in response')
+      }
+      
+      console.log('Student data loaded successfully:', student.value.id)
+      
       // Fetch additional data based on student
       await Promise.all([
         fetchAcademicPerformance(studentId),
@@ -1607,11 +1691,21 @@ const fetchStudentDetails = async () => {
         fetchAssignments(studentId)
       ])
     } else {
-      toast.error(response.data.message || 'Failed to fetch student details')
+      const errorMsg = response.data.message || 'Failed to fetch student details'
+      error.value = errorMsg
+      toast.error(errorMsg)
+      console.error('API returned error:', response.data)
     }
-  } catch (error) {
-    console.error('Error fetching student details:', error)
-    toast.error(error.response?.data?.message || 'Failed to fetch student details')
+  } catch (err) {
+    console.error('Error fetching student details:', err)
+    const errorMsg = err.response?.data?.message || err.message || 'Failed to fetch student details. Please try again.'
+    error.value = errorMsg
+    toast.error(errorMsg)
+    
+    // If it's a 404, suggest going back
+    if (err.response?.status === 404) {
+      error.value = 'Student not found. The student may have been deleted or the ID is invalid.'
+    }
   } finally {
     loading.value = false
   }
@@ -1679,36 +1773,6 @@ const fetchSections = async () => {
   }
 }
 
-const getStudentInitials = () => {
-  if (!student.value) return 'ST'
-  const firstName = student.value.first_name || ''
-  const lastName = student.value.last_name || ''
-  
-  const firstInitial = firstName.charAt(0).toUpperCase()
-  const lastInitial = lastName.charAt(0).toUpperCase()
-  
-  return `${firstInitial}${lastInitial}` || 'ST'
-}
-
-const getProfilePicture = () => {
-  if (student.value?.photo_path) {
-    return student.value.photo_path
-  }
-  return null // Return null to indicate no image, show initials instead
-}
-
-const handleImageError = (event) => {
-  event.target.style.display = 'none'
-  // Show initials instead when image fails to load
-  const parent = event.target.parentElement
-  if (parent) {
-    const initialsDiv = parent.querySelector('.initials-fallback')
-    if (initialsDiv) {
-      initialsDiv.style.display = 'flex'
-    }
-  }
-}
-
 const formatDate = (date) => {
   if (!date) return null
   return new Date(date).toLocaleDateString('en-US', {
@@ -1746,8 +1810,24 @@ const changeTab = async (tabKey) => {
   }, 200)
 }
 
+// Watch for route changes (when navigating between students)
+watch(() => route.params.id, async (newId, oldId) => {
+  if (newId && newId !== oldId) {
+    console.log('Route parameter changed, fetching new student:', newId)
+    await fetchStudentDetails()
+  }
+}, { immediate: false })
+
 // Lifecycle
 onMounted(async () => {
+  // Validate route parameter
+  if (!route.params.id) {
+    error.value = 'Student ID is missing from URL'
+    loading.value = false
+    toast.error('Invalid student ID')
+    return
+  }
+  
   await Promise.all([
     fetchStudentDetails(),
     fetchClasses(),

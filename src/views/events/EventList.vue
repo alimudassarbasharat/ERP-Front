@@ -823,7 +823,7 @@ const duplicateEvent = async (event) => {
     }
     delete duplicatedEvent.id
     
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/events/store`, duplicatedEvent)
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/events/add`, duplicatedEvent)
     if (response.data.success || response.data.status) {
       toast.success('Event duplicated successfully!')
     await fetchEvents()

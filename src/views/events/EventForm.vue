@@ -425,7 +425,7 @@ const handleSubmit = async () => {
         if (isEdit.value) {
       response = await axios.post(`${import.meta.env.VITE_API_URL}/events/update/${route.params.id}`, eventData)
         } else {
-      response = await axios.post(`${import.meta.env.VITE_API_URL}/events/store`, eventData)
+      response = await axios.post(`${import.meta.env.VITE_API_URL}/events/add`, eventData)
         }
     
     if (response.data.success || response.data.status) {

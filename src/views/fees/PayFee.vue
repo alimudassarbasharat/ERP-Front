@@ -1480,10 +1480,15 @@
   </template>
   
   <script setup>
+  import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
   import { useToast } from 'vue-toastification'
+  import api from '@/utils/axios'
+  import UiCard from '@/components/UiCard.vue'
+  import LoadingStudents from '@/components/LoadingStudents.vue'
+  import UiTable from '@/components/UiTable.vue'
 
   const toast = useToast()
-const selectedStudent = ref(null)
+  const selectedStudent = ref(null)
   const editableDiscount = ref(0)
   const editableLateFee = ref(0)
   const partialAmount = ref(0)

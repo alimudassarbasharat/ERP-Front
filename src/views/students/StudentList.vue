@@ -121,6 +121,16 @@
         <div class="flex justify-end mt-3">
           <div class="flex items-center gap-2">
             <button 
+              type="button"
+              @click="clearFilters"
+              class="h-9 px-6 bg-white hover:bg-white text-gray-900 text-sm font-medium rounded-full border border-gray-200 transition-all duration-300 shadow-sm hover:shadow-md transform origin-left hover:scale-105 flex items-center gap-2"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+              Clear
+            </button>
+            <button 
               type="submit"
               class="h-9 px-6 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-medium rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-sm hover:shadow-md transform origin-left hover:scale-105 flex items-center gap-2"
             >
@@ -165,7 +175,7 @@
           </span>
           <input
             v-model="searchQuery"
-            @keyup.enter="handleSearch"
+            @input="handleQuickSearch"
             type="text"
             placeholder="QUICK SEARCH"
             class="w-full border-0 bg-transparent pl-10 pr-0 py-2 text-gray-900 font-medium text-xs tracking-wider uppercase focus:ring-0 focus:outline-none transition placeholder:text-gray-600 placeholder:font-medium placeholder:opacity-100 placeholder:text-xs shadow-none"
@@ -179,40 +189,18 @@
       <div class="h-[2px] w-full bg-purple-200 mb-4"></div>
     </div>
 
-    <!-- Loader -->
-    <div v-if="loading || filtersLoading" class="relative z-10 w-full">
+    <!-- Loader for Filters -->
+    <div v-if="filtersLoading" class="relative z-10 w-full">
       <div class="border border-gray-200 rounded-xl p-8 bg-white/40 shadow-sm">
-        <div class="flex flex-col items-center justify-center py-12">
-          <!-- Modern Loading Animation -->
-          <div class="relative mb-6">
-            <div class="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
-            <div class="absolute inset-0 w-16 h-16 border-4 border-transparent border-r-indigo-500 rounded-full animate-ping opacity-20"></div>
-          </div>
-          <div class="text-center">
-            <p class="text-gray-600 font-medium text-lg mb-1">{{ filtersLoading ? 'Loading Filters' : 'Loading Students' }}</p>
-            <p class="text-gray-500 text-sm font-normal">Please wait while we fetch the data...</p>
-            <div class="flex justify-center mt-3 space-x-1">
-              <div class="w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
-              <div class="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
-              <div class="w-2 h-2 bg-purple-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
-            </div>
-          </div>
-        </div>
+        <TableLoader message="Loading Filters..." />
       </div>
     </div>
 
     <!-- Students Table -->
     <div v-else class="relative z-10 w-full">
-                  <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
         <!-- Table Loading State -->
-        <div v-if="loading" class="p-8">
-          <div class="flex flex-col items-center justify-center py-12">
-            <div class="relative mb-6">
-              <div class="w-12 h-12 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
-            </div>
-            <p class="text-gray-600 font-medium">Loading table data...</p>
-          </div>
-        </div>
+        <TableLoader v-if="loading" message="Loading Students..." />
         
         <!-- Table Content -->
         <div v-else class="overflow-x-auto">
@@ -278,7 +266,7 @@
 
                   <td class="py-2 px-2 text-gray-900 font-normal text-xs #ffffffspace-nowrap">
                     <div class="text-xs text-gray-900">
-                      {{ sections.find(s => s.id === student.section_id)?.name || '-' }}
+                      {{ student.section_name || sections.find(s => s.id === student.section_id)?.name || '-' }}
                     </div>
                   </td>
                   <td class="py-2 px-2 text-gray-900 font-normal text-xs #ffffffspace-nowrap">
@@ -371,7 +359,7 @@
                         <div class="space-y-3 text-xs">
                           <div class="flex justify-between pb-2 border-b-2 border-purple-200">
                             <span class="text-gray-600">Section:</span>
-                            <span class="font-medium">{{ sections.find(s => s.id === student.section_id)?.name || 'N/A' }}</span>
+                            <span class="font-medium">{{ student.section_name || sections.find(s => s.id === student.section_id)?.name || 'N/A' }}</span>
                           </div>
                           <div class="flex justify-between pb-2 border-b-2 border-green-200">
                             <span class="text-gray-600">Roll Number:</span>
@@ -442,61 +430,17 @@
               </div>
             </div>
           </div>
-        </div>
-        </div>
-      </div>
 
-    <!-- Pagination Section (separate from table) -->
-    <div v-if="!loading && !filtersLoading && students.length > 0" class="relative z-10 w-full mt-8">
-      <!-- Pagination Summary -->
-      <div class="flex flex-row items-center justify-between mb-4">
-        <div class="text-gray-600 text-sm font-medium px-2">
-          Showing {{ (currentPage - 1) * pageSize + 1 }}
-          to {{ Math.min(currentPage * pageSize, total) }}
-          of {{ total }} entries
-        </div>
-        <div class="flex items-center gap-4">
-          <label class="text-sm text-gray-600 font-medium flex items-center gap-1">
-            Per page:
-            <select v-model="pageSize" @change="handleCurrentChange(1)" class="rounded-md border border-purple-200 bg-white px-2 py-1 text-xs font-semibold text-purple-700 focus:ring-2 focus:ring-purple-300">
-              <option v-for="size in [10, 20, 50, 100]" :key="size" :value="size">{{ size }}</option>
-            </select>
-          </label>
-          <label class="text-sm text-gray-600 font-medium flex items-center gap-1 mr-3">
-            Go to page:
-            <input v-model.number="pageInput" type="number" min="1" :max="totalPages" class="w-16 rounded-md border border-purple-200 px-2 py-1 text-xs font-semibold text-purple-700 focus:ring-2 focus:ring-purple-300" @keyup.enter="goToPage(pageInput)" />
-            <button @click="goToPage(pageInput)" class="ml-1 px-2 py-1 rounded-md bg-purple-500 text-white text-xs font-semibold hover:bg-purple-600 transition-all flex items-center gap-1">
-              <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-              </svg>
-              Go
-            </button>
-          </label>
-        </div>
-      </div>
-
-      <!-- Pagination Controls -->
-      <div class="flex justify-center">
-        <div class="flex items-center gap-2">
-          <button
-            class="w-9 h-9 flex items-center justify-center rounded-lg bg-purple-50 text-purple-500 text-xl font-bold shadow-sm transition-all duration-200 hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-300 disabled:opacity-40 disabled:cursor-not-allowed"
-            :disabled="currentPage === 1"
-            @click="handleCurrentChange(currentPage - 1)"
-            aria-label="Previous"
-          >
-            <span>&larr;</span>
-          </button>
-          <span class="w-9 h-9 flex items-center justify-center rounded-lg bg-purple-600 text-white text-base font-bold shadow-md">
-            {{ currentPage }}
-          </span>
-          <button
-            class="w-9 h-9 flex items-center justify-center rounded-lg bg-purple-50 text-purple-500 text-xl font-bold shadow-sm transition-all duration-200 hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-purple-300 disabled:opacity-40 disabled:cursor-not-allowed"
-            :disabled="currentPage === totalPages"
-            @click="handleCurrentChange(currentPage + 1)"
-            aria-label="Next"
-          >
-            <span>&rarr;</span>
-          </button>
+          <!-- Pagination inside list div -->
+          <Pagination
+            v-if="students.length > 0"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :total="total"
+            :show="!loading && !filtersLoading"
+            @page-change="handleCurrentChange"
+            @page-size-change="handlePageSizeChange"
+          />
         </div>
       </div>
     </div>
@@ -567,7 +511,7 @@
                 <div class="text-sm text-gray-600">Roll Number</div>
               </div>
               <div class="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg">
-                <div class="text-2xl font-bold text-green-600">{{ selectedStudentDetails.section?.name || sections.find(s => s.id === selectedStudentDetails.section_id)?.name || 'N/A' }}</div>
+                <div class="text-2xl font-bold text-green-600">{{ selectedStudentDetails.section_name || selectedStudentDetails.section?.name || sections.find(s => s.id === selectedStudentDetails.section_id)?.name || 'N/A' }}</div>
                 <div class="text-sm text-gray-600">Section</div>
               </div>
             </div>
@@ -611,7 +555,7 @@
               <div class="space-y-3">
                 <div class="flex justify-between">
                   <span class="text-gray-600">Section:</span>
-                  <span class="font-medium">{{ selectedStudentDetails.section?.name || sections.find(s => s.id === selectedStudentDetails.section_id)?.name || 'N/A' }}</span>
+                  <span class="font-medium">{{ selectedStudentDetails.section_name || selectedStudentDetails.section?.name || sections.find(s => s.id === selectedStudentDetails.section_id)?.name || 'N/A' }}</span>
                 </div>
                 <div class="flex justify-between">
                   <span class="text-gray-600">Admission Date:</span>
@@ -721,15 +665,25 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import { useToast } from 'vue-toastification'
 import { View, Edit, Delete, ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
 import api from '@/utils/axios'
-import LoadingStudents from '@/components/LoadingStudents.vue'
+import TableLoader from '@/components/TableLoader.vue'
+import Pagination from '@/components/Pagination.vue'
 import CompactDatePicker from '@/components/CompactDatePicker.vue'
+import { useAuthStore } from '@/stores/auth'
 
 // Use centralized axios instance
 const axios = api
 
 const router = useRouter()
 const toast = useToast()
+const authStore = useAuthStore()
 const loading = ref(false)
+
+// Get merchant_id from auth store
+const getMerchantId = () => {
+  const user = authStore.user
+  if (!user) return null
+  return user.merchant_id || user.admin?.merchant_id || null
+}
 const filtersLoading = ref(false)
 const searchQuery = ref('')
 const selectedSection = ref('')
@@ -748,6 +702,7 @@ const selectedStudentDetails = ref(null)
 const loadingDetails = ref(false)
 const pageInput = ref(1)
 const expandedStudents = ref({})
+const searchTimeout = ref(null)
 
 // Table columns configuration
 const tableColumns = [
@@ -852,7 +807,15 @@ const fetchStudents = async () => {
 const fetchSections = async () => {
   filtersLoading.value = true
   try {
-    const sectionRes = await axios.get(`${import.meta.env.VITE_API_URL}/sections`)
+    const merchantId = getMerchantId()
+    const params = {}
+    
+    // Add merchant_id if available (though TenantScope should handle it automatically)
+    if (merchantId) {
+      params.merchant_id = merchantId
+    }
+    
+    const sectionRes = await axios.get('/sections', { params })
     if (sectionRes.data.success && Array.isArray(sectionRes.data.result)) {
       sections.value = sectionRes.data.result.map(section => ({
         id: section.id,
@@ -874,15 +837,57 @@ const handleSearch = () => {
   fetchStudents()
 }
 
+// Debounced quick search - calls API as user types
+const handleQuickSearch = () => {
+  // Clear existing timeout
+  if (searchTimeout.value) {
+    clearTimeout(searchTimeout.value)
+  }
+  
+  // Reset to page 1 when searching
+  currentPage.value = 1
+  
+  // Set new timeout to call API after 500ms of no typing
+  searchTimeout.value = setTimeout(() => {
+    fetchStudents()
+  }, 500)
+}
+
+const clearFilters = () => {
+  // Clear search timeout if exists
+  if (searchTimeout.value) {
+    clearTimeout(searchTimeout.value)
+    searchTimeout.value = null
+  }
+  
+  // Reset all filter values
+  searchQuery.value = ''
+  selectedSection.value = ''
+  selectedStatus.value = 'active'
+  selectedDate.value = ''
+  
+  // Reset pagination
+  currentPage.value = 1
+  
+  // Reload students with cleared filters
+  fetchStudents()
+}
+
 const handleCurrentChange = (val) => {
   currentPage.value = val
+  fetchStudents()
+}
+
+const handlePageSizeChange = (newPageSize) => {
+  pageSize.value = newPageSize
+  currentPage.value = 1
   fetchStudents()
 }
 
 const handleAddStudent = () => {
   try {
     console.log('Navigating to add student page...')
-    router.push('/students/add')
+    router.push({ name: 'AddStudent' })
   } catch (error) {
     console.error('Error navigating to add student:', error)
     toast.error('Failed to navigate to add student page')
@@ -896,7 +901,10 @@ const handleEdit = (student) => {
       return
     }
     console.log('Navigating to edit student:', student.id)
-    router.push(`/students/edit/${student.id}`)
+    router.push({ 
+      name: 'EditStudent', 
+      params: { id: student.id } 
+    })
   } catch (error) {
     console.error('Error navigating to edit student:', error)
     toast.error('Failed to navigate to edit student page')
@@ -904,7 +912,19 @@ const handleEdit = (student) => {
 }
 
 const handleView = (student) => {
-  router.push(`/students/${student.id}`)
+  try {
+    if (!student || !student.id) {
+      toast.error('Invalid student data')
+      return
+    }
+    router.push({ 
+      name: 'StudentDetail', 
+      params: { id: student.id } 
+    })
+  } catch (error) {
+    console.error('Error navigating to view student:', error)
+    toast.error('Failed to navigate to student detail page')
+  }
 }
 
 const handleDelete = async (student) => {

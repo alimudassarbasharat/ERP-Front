@@ -4,7 +4,7 @@ import { useToast } from 'vue-toastification'
 </script>
 
 <template>
-  <el-config-provider :locale="en">
+  <el-config-provider>
     <router-view></router-view>
   </el-config-provider>
 </template>

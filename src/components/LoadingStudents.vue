@@ -18,9 +18,9 @@
         
         <!-- Progress Dots -->
         <div class="flex justify-center space-x-2">
-          <div class="w-2 h-2 bg-indigo-600 rounded-full animate-bounce"></div>
-          <div class="w-2 h-2 bg-purple-600 rounded-full animate-bounce animation-delay-100"></div>
-          <div class="w-2 h-2 bg-pink-600 rounded-full animate-bounce animation-delay-200"></div>
+          <div class="w-3 h-3 bg-indigo-600 rounded-full dot-bounce"></div>
+          <div class="w-3 h-3 bg-purple-600 rounded-full dot-bounce animation-delay-100"></div>
+          <div class="w-3 h-3 bg-pink-600 rounded-full dot-bounce animation-delay-200"></div>
         </div>
       </div>
     </div>
@@ -42,7 +42,7 @@ defineProps({
 
 <style scoped>
 .animation-delay-100 {
-  animation-delay: 0.1s;
+  animation-delay: 0.15s;
 }
 
 .animation-delay-150 {
@@ -50,12 +50,27 @@ defineProps({
 }
 
 .animation-delay-200 {
-  animation-delay: 0.2s;
+  animation-delay: 0.3s;
+}
+
+.dot-bounce {
+  animation: dotBounce 1.4s ease-in-out infinite;
 }
 
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes dotBounce {
+  0%, 80%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  40% {
+    transform: translateY(-12px) scale(1.1);
+    opacity: 0.8;
   }
 }
 

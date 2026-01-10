@@ -44,7 +44,7 @@
           Loading users...
         </div>
 
-        <div v-else-if="filteredUsers.length === 0" class="no-users">
+        <div v-else-if="!filteredUsers || filteredUsers.length === 0" class="no-users">
           <i class="fas fa-users"></i>
           <p>No users found</p>
         </div>
@@ -69,10 +69,11 @@ export default {
     const loading = ref(false)
 
     const filteredUsers = computed(() => {
+      if (!users.value || !Array.isArray(users.value)) return []
       if (!searchQuery.value) return users.value
       return users.value.filter(user => 
-        user.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchQuery.value.toLowerCase())
+        user?.name?.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+        user?.email?.toLowerCase().includes(searchQuery.value.toLowerCase())
       )
     })
 
@@ -80,29 +81,55 @@ export default {
       loading.value = true
       try {
         const response = await axios.get('/users')
-        users.value = response.data.data
+        if (response.data?.success) {
+          users.value = Array.isArray(response.data?.result) ? response.data.result : []
+        } else {
+          users.value = []
+        }
       } catch (error) {
         console.error('Failed to load users:', error)
         toast.error('Failed to load users')
+        users.value = []
       } finally {
         loading.value = false
       }
     }
 
     const startDirectMessage = async (user) => {
+      if (!user || !user.id) {
+        toast.error('Invalid user selected')
+        return
+      }
+
       try {
-        const response = await axios.post('/api/channels', {
-          name: `DM with ${user.name}`,
-          type: 'direct',
-          member_ids: [user.id]
+        const response = await axios.post('/direct-messages/conversations', {
+          user_ids: [parseInt(user.id)]
         })
         
-        toast.success('Direct message started')
-        emit('created', response.data.data)
-        emit('close')
+        if (response.data?.success) {
+          toast.success('Direct message started')
+          emit('created', response.data.data)
+          emit('close')
+        } else {
+          toast.error(response.data?.message || 'Failed to start direct message')
+        }
       } catch (error) {
         console.error('Failed to start direct message:', error)
-        toast.error(error.response?.data?.message || 'Failed to start direct message')
+        const errorData = error.response?.data
+        let errorMessage = 'Failed to start direct message'
+        
+        if (errorData?.errors?.user_ids) {
+          errorMessage = Array.isArray(errorData.errors.user_ids) 
+            ? errorData.errors.user_ids[0] 
+            : errorData.errors.user_ids
+        } else if (errorData?.message) {
+          errorMessage = errorData.message
+        } else if (errorData?.errors) {
+          const firstError = Object.values(errorData.errors)[0]
+          errorMessage = Array.isArray(firstError) ? firstError[0] : firstError
+        }
+        
+        toast.error(errorMessage)
       }
     }
 

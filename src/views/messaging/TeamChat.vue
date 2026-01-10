@@ -510,10 +510,7 @@
 
 <script>
 import axios from 'axios'
-import Echo from 'laravel-echo'
-import Pusher from 'pusher-js'
-
-window.Pusher = Pusher
+import { getEcho } from '@/utils/echo'
 
 import { format, isToday, isYesterday, formatDistanceToNow } from 'date-fns'
 
@@ -527,7 +524,7 @@ export default {
       showConversationInfo: false,
       
       // Workspace
-      workspaceName: 'Student ERP',
+      workspaceName: 'Techify',
       currentUser: {
         id: null,
         name: '',
@@ -641,21 +638,7 @@ export default {
     
     setupEcho() {
       try {
-        this.echo = new Echo({
-          broadcaster: 'pusher',
-          key: import.meta.env.VITE_PUSHER_APP_KEY || 'local',
-          cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER || 'mt1',
-          wsHost: import.meta.env.VITE_PUSHER_HOST || undefined,
-          wsPort: import.meta.env.VITE_PUSHER_PORT || 443,
-          wssPort: import.meta.env.VITE_PUSHER_PORT || 443,
-          forceTLS: import.meta.env.VITE_PUSHER_SCHEME === 'https',
-          enabledTransports: ['ws', 'wss'],
-          auth: {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token') || ''}`
-            }
-          }
-        })
+        this.echo = getEcho()
       } catch (error) {
         console.warn('Real-time messaging not configured. Messages will need manual refresh.', error)
         // Continue without real-time - app will still work with manual refresh
@@ -666,11 +649,10 @@ export default {
     async loadConversations() {
       try {
         // Load channels
-        const channelsResponse = await axios.get('/api/channels')
+        const channelsResponse = await axios.get('/channels')
         this.channels = channelsResponse.data.data.joined_channels
         
-        // Load direct messages
-        const dmsResponse = await axios.get('/api/direct-messages/conversations')
+        const dmsResponse = await axios.get('/direct-messages/conversations')
         this.directMessages = dmsResponse.data.data
         
         // Auto-select first channel if none selected
@@ -760,7 +742,7 @@ export default {
       this.messages = []
       
       try {
-        const response = await axios.get(`/api/channels/${this.activeConversation.id}`)
+        const response = await axios.get(`/channels/${this.activeConversation.id}`)
         this.messages = response.data.data.messages.data
         this.messagesPagination = response.data.data.messages
         this.groupMessagesByDate()
@@ -817,11 +799,11 @@ export default {
       try {
         let response
         if (this.activeConversation.type === 'channel') {
-          response = await axios.post(`/api/messages/channels/${this.activeConversation.id}`, formData, {
+          response = await axios.post(`/messages/channels/${this.activeConversation.id}`, formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
           })
         } else {
-          response = await axios.post(`/api/direct-messages/conversations/${this.activeConversation.id}/messages`, formData, {
+          response = await axios.post(`/direct-messages/conversations/${this.activeConversation.id}/messages`, formData, {
             headers: { 'Content-Type': 'multipart/form-data' }
           })
         }
@@ -924,7 +906,7 @@ export default {
     // Create channel
     async createChannel() {
       try {
-        const response = await axios.post('/api/channels', {
+        const response = await axios.post('/channels', {
           name: this.newChannel.name,
           description: this.newChannel.description,
           type: this.newChannel.isPrivate ? 'private' : 'public'

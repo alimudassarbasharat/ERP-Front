@@ -108,11 +108,16 @@ const handleLoginError = (error) => {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   overflow-y: auto;
   padding: 0;
+  transition: background 0.3s ease;
+}
+
+.dark .login-container {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 30%, #4338ca 70%, #4f46e5 100%);
 }
 
 /* Main Card - Full Screen on Desktop */
 .login-card {
-  background: #FFFFFF;
+  background: var(--bg-card, #FFFFFF);
   border-radius: 32px;
   width: 90vw;
   max-width: 1100px;
@@ -124,16 +129,27 @@ const handleLoginError = (error) => {
   overflow: hidden;
   position: relative;
   margin: auto;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dark .login-card {
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
 }
 
 /* Illustration Section */
 .illustration-section {
   position: relative;
-  background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+  background: var(--bg-secondary, linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%));
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 60px 40px;
+  overflow: hidden;
+  transition: background 0.3s ease;
+}
+
+.dark .illustration-section {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
 }
 
 /* Form Section */
@@ -143,6 +159,11 @@ const handleLoginError = (error) => {
   align-items: center;
   justify-content: center;
   padding: 60px 40px;
+  transition: background 0.3s ease;
+}
+
+.dark .form-section {
+  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 50%, #7c3aed 100%);
 }
 
 .form-wrapper {

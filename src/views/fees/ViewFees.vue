@@ -1,256 +1,171 @@
 <template>
-  <div class="view-fees">
-    <div class="page-header">
-      <h2>View Fees</h2>
+  <PageShell 
+    title="View Fees"
+    :breadcrumbs="[
+      { label: 'Fee Management', route: '/fees' },
+      { label: 'View Fees' }
+    ]"
+  >
+    <!-- Filters Section -->
+    <div class="w-full mb-4">
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+        <div class="flex flex-wrap items-center gap-4">
+          <el-input
+            v-model="searchQuery"
+            placeholder="Search fees..."
+            class="flex-1 min-w-[300px]"
+            clearable
+          >
+            <template #prefix>
+              <el-icon><Search /></el-icon>
+            </template>
+          </el-input>
+          <el-select
+            v-model="selectedClass"
+            placeholder="All Classes"
+            clearable
+            class="w-[200px]"
+          >
+            <el-option
+              v-for="cls in classes"
+              :key="cls"
+              :label="cls"
+              :value="cls"
+            />
+          </el-select>
+          <el-select
+            v-model="selectedType"
+            placeholder="All Types"
+            clearable
+            class="w-[200px]"
+          >
+            <el-option label="Tuition Fee" value="tuition" />
+            <el-option label="Examination Fee" value="examination" />
+            <el-option label="Library Fee" value="library" />
+            <el-option label="Transport Fee" value="transport" />
+            <el-option label="Other" value="other" />
+          </el-select>
+        </div>
+      </div>
     </div>
 
-    <div class="filters-section">
-      <div class="search-box">
-        <input 
-          type="text" 
-          v-model="searchQuery" 
-          placeholder="Search fees..."
-          @input="filterFees"
+    <!-- Fees Table -->
+    <div class="w-full mb-4">
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <el-table
+          :data="filteredFees"
+          stripe
+          style="width: 100%"
+          :empty-text="'No fees found'"
         >
-      </div>
-      <div class="filter-options">
-        <select v-model="selectedClass" @change="filterFees">
-          <option value="">All Classes</option>
-          <option v-for="class in classes" :key="class" :value="class">
-            {{ class }}
-          </option>
-        </select>
-        <select v-model="selectedType" @change="filterFees">
-          <option value="">All Types</option>
-          <option value="tuition">Tuition Fee</option>
-          <option value="examination">Examination Fee</option>
-          <option value="library">Library Fee</option>
-          <option value="transport">Transport Fee</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="fees-table">
-      <table>
-        <thead>
-          <tr>
-            <th>Fee Name</th>
-            <th>Type</th>
-            <th>Class</th>
-            <th>Amount</th>
-            <th>Due Date</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="fee in filteredFees" :key="fee.id">
-            <td>{{ fee.name }}</td>
-            <td>{{ fee.type }}</td>
-            <td>{{ fee.class }}</td>
-            <td>₹{{ fee.amount }}</td>
-            <td>{{ formatDate(fee.dueDate) }}</td>
-            <td>
-              <span :class="['status-badge', fee.status.toLowerCase()]">
-                {{ fee.status }}
-              </span>
-            </td>
-            <td>
-              <div class="action-buttons">
-                <button class="edit-btn" @click="editFee(fee)">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button class="delete-btn" @click="deleteFee(fee)">
-                  <i class="fas fa-trash"></i>
-                </button>
+          <el-table-column prop="name" label="Fee Name" />
+          <el-table-column prop="type" label="Type" />
+          <el-table-column prop="class" label="Class" />
+          <el-table-column prop="amount" label="Amount">
+            <template #default="{ row }">
+              {{ formatCurrency(row.amount) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="dueDate" label="Due Date">
+            <template #default="{ row }">
+              {{ formatDate(row.dueDate) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="status" label="Status">
+            <template #default="{ row }">
+              <StatusChip
+                :label="row.status"
+                :status="row.status.toLowerCase() === 'active' ? 'success' : 'warning'"
+              />
+            </template>
+          </el-table-column>
+          <el-table-column label="Actions" width="120">
+            <template #default="{ row }">
+              <div class="flex items-center gap-2">
+                <el-button text type="primary" size="small" @click="editFee(row)">
+                  <el-icon><Edit /></el-icon>
+                </el-button>
+                <el-button text type="danger" size="small" @click="deleteFee(row)">
+                  <el-icon><Delete /></el-icon>
+                </el-button>
               </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </div>
-  </div>
+  </PageShell>
 </template>
 
-<script>
+<script setup>
+import { ref, computed } from 'vue'
 import { useToast } from 'vue-toastification'
-export default {
-  name: 'ViewFees',
-  data() {
-    return {
-      searchQuery: '',
-      selectedClass: '',
-      selectedType: '',
-      classes: [
-        'Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5',
-        'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10',
-        'Class 11', 'Class 12'
-      ],
-      fees: [
-        {
-          id: 1,
-          name: 'Monthly Tuition Fee',
-          type: 'tuition',
-          class: 'Class 10',
-          amount: 5000,
-          dueDate: '2024-04-15',
-          status: 'Active'
-        },
-        {
-          id: 2,
-          name: 'Annual Examination Fee',
-          type: 'examination',
-          class: 'Class 12',
-          amount: 2000,
-          dueDate: '2024-05-01',
-          status: 'Pending'
-        }
-      ]
-    }
+import { Search, Edit, Delete } from '@element-plus/icons-vue'
+import PageShell from '@/components/common/PageShell.vue'
+import StatusChip from '@/components/common/StatusChip.vue'
+
+const toast = useToast()
+
+const searchQuery = ref('')
+const selectedClass = ref('')
+const selectedType = ref('')
+const classes = ref([
+  'Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5',
+  'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10',
+  'Class 11', 'Class 12'
+])
+
+const fees = ref([
+  {
+    id: 1,
+    name: 'Monthly Tuition Fee',
+    type: 'tuition',
+    class: 'Class 10',
+    amount: 5000,
+    dueDate: '2024-04-15',
+    status: 'Active'
   },
-  computed: {
-    filteredFees() {
-      return this.fees.filter(fee => {
-        const matchesSearch = fee.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-        const matchesClass = !this.selectedClass || fee.class === this.selectedClass
-        const matchesType = !this.selectedType || fee.type === this.selectedType
-        return matchesSearch && matchesClass && matchesType
-      })
-    }
-  },
-  methods: {
-    filterFees() {
-      // Filtering is handled by computed property
-    },
-    formatDate(date) {
-      return new Date(date).toLocaleDateString('en-IN')
-    },
-    editFee(fee) {
-      // TODO: Implement edit functionality
-      console.log('Edit fee:', fee)
-    },
-    deleteFee(fee) {
-      // TODO: Implement delete functionality
-      if (confirm('Are you sure you want to delete this fee?')) {
-        console.log('Delete fee:', fee)
-      }
-    }
+  {
+    id: 2,
+    name: 'Annual Examination Fee',
+    type: 'examination',
+    class: 'Class 12',
+    amount: 2000,
+    dueDate: '2024-05-01',
+    status: 'Pending'
   }
+])
+
+const filteredFees = computed(() => {
+  return fees.value.filter(fee => {
+    const matchesSearch = fee.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+    const matchesClass = !selectedClass.value || fee.class === selectedClass.value
+    const matchesType = !selectedType.value || fee.type === selectedType.value
+    return matchesSearch && matchesClass && matchesType
+  })
+})
+
+const formatDate = (date) => {
+  return new Date(date).toLocaleDateString('en-IN')
+}
+
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat('en-PK', {
+    style: 'currency',
+    currency: 'PKR',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  }).format(amount || 0)
+}
+
+const editFee = (fee) => {
+  toast.info('Edit functionality coming soon')
+  console.log('Edit fee:', fee)
+}
+
+const deleteFee = (fee) => {
+  // TODO: Implement delete with confirmation
+  toast.info('Delete functionality coming soon')
+  console.log('Delete fee:', fee)
 }
 </script>
-
-<style scoped>
-.view-fees {
-  padding: 20px;
-}
-
-.page-header {
-  margin-bottom: 30px;
-}
-
-.page-header h2 {
-  color: #1e293b;
-  margin: 0;
-}
-
-.filters-section {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 30px;
-}
-
-.search-box input {
-  width: 300px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.filter-options {
-  display: flex;
-  gap: 15px;
-}
-
-.filter-options select {
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-  min-width: 150px;
-}
-
-.fees-table {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-th, td {
-  padding: 15px;
-  text-align: left;
-  border-bottom: 1px solid #eee;
-}
-
-th {
-  background-color: #f8fafc;
-  font-weight: 600;
-  color: #1e293b;
-}
-
-.status-badge {
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.status-badge.active {
-  background-color: #f1f5f9;
-  color: #10b981;
-}
-
-.status-badge.pending {
-  background-color: #ffffff7e6;
-  color: #f59e0b;
-}
-
-.action-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-.edit-btn,
-.delete-btn {
-  padding: 6px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.edit-btn {
-  background-color: #f1f5f9;
-  color: #3b82f6;
-}
-
-.delete-btn {
-  background-color: #ffffff1f0;
-  color: #ef4444;
-}
-
-.edit-btn:hover {
-  background-color: #f1f5f9;
-}
-
-.delete-btn:hover {
-  background-color: #f1f5f9;
-}
-</style> 

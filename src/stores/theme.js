@@ -69,17 +69,15 @@ export const useThemeStore = defineStore('theme', () => {
     })
   }
 
-  // Initialize on store creation
-  if (typeof window !== 'undefined') {
-    initializeTheme()
-    watchSystemTheme()
-  }
+  // Don't initialize automatically - let main.js call initializeTheme() after Pinia is installed
+  // This prevents "getActivePinia()" error
 
   return {
     isDark,
     theme,
     toggleTheme,
     setTheme,
-    initializeTheme
+    initializeTheme,
+    watchSystemTheme
   }
 }) 

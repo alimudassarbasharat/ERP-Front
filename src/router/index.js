@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '../layouts/MainLayout.vue'
 import ManageExams from '@/views/exams/ManageExams.vue'
 import AddMarksheetSubjectWise from '@/views/exams/AddMarksheetSubjectWise.vue'
+import { useSessionGuard } from '@/composables/useSessionGuard'
 
 const routes = [
   {
@@ -39,10 +40,10 @@ const routes = [
       },
       {
         path: 'admin',
-        name: 'Admin',
         children: [
           {
             path: '',
+            name: 'Admin',
             redirect: '/admin/list'
           },
           {
@@ -67,10 +68,10 @@ const routes = [
       },
       {
         path: 'faculty',
-        name: 'Faculty',
         children: [
           {
             path: '',
+            name: 'Faculty',
             redirect: '/faculty/list'
           },
           {
@@ -107,16 +108,11 @@ const routes = [
         meta: { requiresAuth: true }
       },
       {
-        path: 'slack',
-        name: 'SlackIntegration',
-        component: () => import('../views/slack/SlackIntegration.vue'),
-      },
-      {
         path: 'finance',
-        name: 'Finance',
         children: [
           {
             path: '',
+            name: 'Finance',
             redirect: '/finance/fees'
           },
           {
@@ -179,16 +175,17 @@ const routes = [
       },
       {
         path: 'students',
-        name: 'Students',
         children: [
           {
             path: '',
+            name: 'Students',
             redirect: '/students/list'
           },
           {
             path: 'list',
             name: 'StudentList',
-            component: () => import('../views/students/StudentList.vue')
+            component: () => import('../views/students/StudentList.vue'),
+            meta: { requiresSession: true }
           },
           {
             path: 'add',
@@ -220,7 +217,11 @@ const routes = [
           {
             path: 'attendance',
             name: 'Attendance',
-            component: () => import('../views/students/Attendance.vue')
+            component: () => import('../views/students/Attendance.vue'),
+            meta: {
+              title: 'Student Attendance',
+              requiresAuth: true
+            }
           },
           {
             path: 'registration',
@@ -287,10 +288,10 @@ const routes = [
       },
       {
         path: 'facility',
-        name: 'Facility',
         children: [
           {
             path: '',
+            name: 'Facility',
             redirect: '/facility/list'
           },
           {
@@ -307,10 +308,10 @@ const routes = [
       },
       {
         path: 'events',
-        name: 'Events',
         children: [
           {
             path: '',
+            name: 'Events',
             redirect: '/events/calendar'
           },
           {
@@ -341,11 +342,29 @@ const routes = [
       },
       {
         path: 'settings',
-        name: 'Settings',
         children: [
           {
             path: '',
-            redirect: '/settings/general'
+            name: 'Settings',
+            redirect: '/settings/school-profile'
+          },
+          {
+            path: 'school-profile',
+            name: 'SchoolProfile',
+            component: () => import('../views/settings/SchoolProfile.vue'),
+            meta: {
+              title: 'School Profile',
+              requiresAuth: true
+            }
+          },
+          {
+            path: 'sessions',
+            name: 'SessionManagement',
+            component: () => import('../views/settings/SessionManagement.vue'),
+            meta: {
+              title: 'Session Management',
+              requiresAuth: true
+            }
           },
           {
             path: 'general',
@@ -372,11 +391,6 @@ const routes = [
             path: 'sections',
             name: 'ClassSections',
             component: () => import('../views/classes/ClassSections.vue')
-          },
-          {
-            path: 'subjects',
-            name: 'ClassSubjects',
-            component: () => import('../views/classes/ClassSubjects.vue')
           }
         ]
       },
@@ -389,51 +403,209 @@ const routes = [
       {
         path: 'exams',
         name: 'Exams',
+        redirect: '/exams/add-marksheet-landing',
         children: [
+          // ============================================
+          // LEVEL-1 LANDING PAGES (ONLY 3 MAIN SECTIONS)
+          // ============================================
           {
-            path: 'add-marksheet',
-            name: 'AddMarksheet',
-            component: () => import('../views/exams/AddMarksheet.vue')
+            path: 'add-marksheet-landing',
+            name: 'AddMarksheetLanding',
+            component: () => import('../views/exams/AddMarksheetLanding.vue'),
+            meta: { title: 'Add Marksheet', requiresAuth: true }
+          },
+          {
+            path: 'academic-landing',
+            name: 'AcademicLanding',
+            component: () => import('../views/exams/AcademicLanding.vue'),
+            meta: { title: 'Academic', requiresAuth: true }
+          },
+          {
+            path: 'create-paper-landing',
+            name: 'CreatePaperLanding',
+            component: () => import('../views/exams/CreatePaperLanding.vue'),
+            meta: { title: 'Create Paper', requiresAuth: true }
+          },
+          
+          // ============================================
+          // ADD MARKSHEET SECTION (Level-2 Pages)
+          // ============================================
+          {
+            path: 'marksheet-subject-wise',
+            name: 'MarksheetSubjectWise',
+            component: () => import('../views/exams/MarksheetSubjectWise.vue'),
+            meta: { title: 'Subject-wise Marksheet', requiresAuth: true }
+          },
+          {
+            path: 'marksheet-class-wise',
+            name: 'MarksheetClassWise',
+            component: () => import('../views/exams/MarksheetClassWise.vue'),
+            meta: { title: 'Class-wise Marksheet', requiresAuth: true }
+          },
+          {
+            path: 'marksheet-student-wise',
+            name: 'MarksheetStudentWise',
+            component: () => import('../views/exams/MarksheetStudentWise.vue'),
+            meta: { title: 'Student-wise Marksheet', requiresAuth: true }
+          },
+          {
+            path: 'marksheet-family-wise',
+            name: 'MarksheetFamilyWise',
+            component: () => import('../views/exams/MarksheetFamilyWise.vue'),
+            meta: { title: 'Family-wise Marksheet', requiresAuth: true }
+          },
+          
+          // ============================================
+          // ACADEMIC SECTION (Level-2 Pages)
+          // ============================================
+          {
+            path: 'verify-marks',
+            name: 'VerifyMarks',
+            component: () => import('../views/exams/VerifyMarks.vue'),
+            meta: { title: 'Verify Marks', requiresAuth: true }
+          },
+          {
+            path: 'approve-marks',
+            name: 'ApproveMarks',
+            component: () => import('../views/exams/ApproveMarks.vue'),
+            meta: { title: 'Approve Marks', requiresAuth: true }
+          },
+          {
+            path: 'generate-results',
+            name: 'GenerateResults',
+            component: () => import('../views/exams/GenerateResults.vue'),
+            meta: { title: 'Generate Results', requiresAuth: true }
+          },
+          {
+            path: 'publish-results',
+            name: 'PublishResults',
+            component: () => import('../views/exams/PublishResults.vue'),
+            meta: { title: 'Publish Results', requiresAuth: true }
+          },
+          {
+            path: 'download-marksheets',
+            name: 'DownloadMarksheets',
+            component: () => import('../views/exams/DownloadMarksheets.vue'),
+            meta: { title: 'Download Marksheets', requiresAuth: true }
+          },
+          {
+            path: 'print-marksheets',
+            name: 'PrintMarksheets',
+            component: () => import('../views/exams/PrintMarksheets.vue'),
+            meta: { title: 'Print Marksheets', requiresAuth: true }
+          },
+          {
+            path: 'academic-reports',
+            name: 'AcademicReports',
+            component: () => import('../views/exams/AcademicReports.vue'),
+            meta: { title: 'Academic Reports', requiresAuth: true }
+          },
+          
+          // ============================================
+          // CREATE PAPER SECTION (Level-2 Pages)
+          // ============================================
+          {
+            path: 'create-exam-paper',
+            name: 'CreateExamPaper',
+            component: () => import('../views/exams/CreateExamPaper.vue'),
+            meta: { title: 'Create Exam Paper', requiresAuth: true }
+          },
+          {
+            path: 'datesheet',
+            name: 'DatesheetManagement',
+            component: () => import('../views/exams/DatesheetManagement.vue'),
+            meta: { title: 'Make Datesheet', requiresAuth: true }
+          },
+          {
+            path: 'paper-settings',
+            name: 'PaperSettings',
+            component: () => import('../views/exams/PaperSettings.vue'),
+            meta: { title: 'Paper Settings', requiresAuth: true }
+          },
+          
+          // ============================================
+          // LEGACY ROUTES (Keep for backward compatibility - hidden from sidebar)
+          // ============================================
+          {
+            path: 'center',
+            name: 'ExamCenter',
+            component: () => import('../views/exams/ExamCenter.vue'),
+            meta: { title: 'Exam Center', requiresAuth: true, hidden: true }
+          },
+          {
+            path: 'papers',
+            name: 'ExamPapers',
+            component: () => import('../views/exams/ExamPapers.vue'),
+            meta: { title: 'Papers', requiresAuth: true, hidden: true }
+          },
+          {
+            path: 'papers/:id',
+            name: 'PaperDetail',
+            component: () => import('../views/exams/PaperDetail.vue'),
+            meta: { title: 'Paper Details', requiresAuth: true, hidden: true }
+          },
+          {
+            path: 'marks-entry',
+            name: 'MarksEntry',
+            component: () => import('../views/exams/MarksEntry.vue'),
+            meta: { title: 'Marks Entry', requiresAuth: true, hidden: true }
+          },
+          {
+            path: 'marks-verification',
+            name: 'MarksVerification',
+            component: () => import('../views/exams/MarksVerification.vue'),
+            meta: { title: 'Marks Verification', requiresAuth: true, hidden: true }
+          },
+          {
+            path: 'results',
+            name: 'ExamResults',
+            component: () => import('../views/exams/ExamResults.vue'),
+            meta: { title: 'Results', requiresAuth: true, hidden: true }
+          },
+          {
+            path: 'marksheets',
+            name: 'Marksheets',
+            component: () => import('../views/exams/Marksheets.vue'),
+            meta: { title: 'Marksheets', requiresAuth: true, hidden: true }
+          },
+          {
+            path: 'terms',
+            name: 'ExamTerms',
+            component: () => import('../views/exams/ExamTerms.vue'),
+            meta: { title: 'Exam Terms', requiresAuth: true, hidden: true }
           },
           {
             path: 'view-marksheet',
             name: 'ViewMarksheet',
-            component: () => import('../views/exams/ViewMarksheet.vue')
+            component: () => import('../views/exams/ViewMarksheet.vue'),
+            meta: { hidden: true }
           },
           {
             path: 'mark-report',
             name: 'MarkReport',
-            component: () => import('../views/exams/MarkReport.vue')
+            component: () => import('../views/exams/MarkReport.vue'),
+            meta: { hidden: true }
           },
           {
             path: 'award-list',
             name: 'AwardList',
-            component: () => import('../views/exams/AwardList.vue')
+            component: () => import('../views/exams/AwardList.vue'),
+            meta: { hidden: true }
           },
           {
             path: 'manage',
             name: 'ManageExams',
-            component: ManageExams
-          },
-          {
-            path: 'add-marksheet-subjectwise',
-            name: 'AddMarksheetSubjectWise',
-            component: AddMarksheetSubjectWise
+            component: ManageExams,
+            meta: { hidden: true }
           }
         ]
       },
       {
         path: 'messaging',
         name: 'Messaging',
-        component: () => import('../views/messaging/TeamChat.vue'),
+        component: () => import('../views/messaging/MessagingApp.vue'),
         meta: { requiresAuth: true }
       },
-      {
-        path: 'slack',
-        name: 'SlackIntegration',
-        component: () => import('../views/slack/SlackIntegration.vue'),
-        meta: { requiresAuth: true }
-      }
     ]
   },
   {
@@ -464,31 +636,148 @@ const router = createRouter({
   routes
 })
 
-// Navigation guard
-router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.getItem('user')
-  
-  // If route requires auth and user is not authenticated
-  if (to.meta.requiresAuth && !isAuthenticated) {
-    // Store the attempted URL to redirect back after login
-    next({ 
-      name: 'Login',
-      query: { redirect: to.fullPath }
-    })
-  }
-  // If route requires guest (login page) and user is authenticated
-  else if (to.meta.requiresGuest && isAuthenticated) {
-    // Only redirect to dashboard if explicitly trying to access login page
-    if (to.name === 'Login') {
-      next({ name: 'Dashboard' })
-    } else {
-      next()
+// Router guard - Check authentication, onboarding, and session requirement
+router.beforeEach(async (to, from, next) => {
+  // Import stores dynamically to avoid circular dependencies
+  try {
+    const { useAuthStore } = await import('@/stores/auth')
+    const { useSessionStore } = await import('@/stores/session')
+    const authStore = useAuthStore()
+    const sessionStore = useSessionStore()
+    const isAuthenticated = localStorage.getItem('user') || authStore.isAuthenticated
+    
+    // If route requires auth and user is not authenticated
+    if (to.meta.requiresAuth && !isAuthenticated) {
+      // Store the attempted URL to redirect back after login
+      next({ 
+        name: 'Login',
+        query: { redirect: to.fullPath }
+      })
+      return
     }
-  }
-  // Otherwise proceed normally
-  else {
+    
+    // If route requires guest (login page) and user is authenticated
+    if (to.meta.requiresGuest && isAuthenticated) {
+      // Only redirect to dashboard if explicitly trying to access login page
+      if (to.name === 'Login') {
+        next({ name: 'Dashboard' })
+        return
+      }
+    }
+    
+    // Check if route requires authentication
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+    
+    if (requiresAuth && !authStore.isAuthenticated) {
+      // Redirect to login with return URL
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+      return
+    }
+    
+    // Onboarding checks for authenticated users
+    if (isAuthenticated) {
+      // Routes that don't require onboarding completion
+      // CRITICAL FIX: Include ALL Settings routes to prevent forced redirects
+      const onboardingRoutes = [
+        'SchoolProfile', 
+        'SessionManagement', 
+        'GeneralSettings',      // ✅ ALLOW General Settings
+        'NotificationSettings', // ✅ ALLOW Notification Settings
+        'Login', 
+        'Logout',
+        'Profile',              // ✅ ALLOW User Profile
+        'Messaging'             // ✅ ALLOW Messaging (school admins need access)
+      ]
+      
+      // Skip onboarding checks for onboarding routes and public routes
+      if (!onboardingRoutes.includes(to.name)) {
+        try {
+          // Check onboarding status
+          const api = (await import('@/utils/axios')).default
+          const response = await api.get('/settings/school/onboarding-status')
+          
+          if (response.data.success) {
+            const { profile_complete, has_active_session, next_step } = response.data.data
+            
+            // Redirect to school profile if not complete
+            // ONLY for dashboard/main routes, NOT for settings
+            if (!profile_complete && to.name !== 'SchoolProfile' && !to.path.startsWith('/settings/')) {
+              next({ name: 'SchoolProfile' })
+              return
+            }
+            
+            // Redirect to session management if profile complete but no session
+            // ONLY for dashboard/main routes, NOT for settings
+            // CRITICAL FIX: Don't block settings pages!
+            if (profile_complete && !has_active_session && 
+                to.name !== 'SessionManagement' && 
+                !to.path.startsWith('/settings/')) {
+              // Only redirect if trying to access main app routes (dashboard, classes, etc.)
+              const mainAppRoutes = ['Dashboard', 'ClassList', 'StudentList', 'TeacherList', 'ExamCenter']
+              if (mainAppRoutes.includes(to.name) || to.name === 'Home') {
+                next({ name: 'SessionManagement' })
+                return
+              }
+            }
+          }
+        } catch (error) {
+          // If onboarding check fails, allow navigation (don't block user)
+          console.warn('Onboarding check failed:', error)
+        }
+      }
+    }
+    
+    // =====================================================
+    // SESSION REQUIREMENT CHECK (Centralized)
+    // =====================================================
+    // Check if route requires session (via meta or path matching)
+    const requiresSession = to.meta.requiresSession || isSessionRequiredRoute(to.path)
+    
+    if (requiresSession && isAuthenticated) {
+      // Initialize session store if needed
+      if (!sessionStore.currentSession && !sessionStore.isLoading) {
+        await sessionStore.loadCurrentSession()
+      }
+      
+      // Check if session exists
+      if (!sessionStore.hasActiveSession) {
+        // Show session required alert
+        const { showSessionRequiredAlert } = useSessionGuard()
+        await showSessionRequiredAlert()
+        next(false) // Abort navigation
+        return
+      }
+    }
+    
+    next()
+  } catch (error) {
+    // If store fails to load, allow navigation (fallback)
+    console.error('Router guard error:', error)
     next()
   }
 })
 
-export default router 
+/**
+ * Helper: Check if path requires session
+ * Matches common module paths
+ */
+function isSessionRequiredRoute(path) {
+  const sessionRequiredPaths = [
+    '/students',
+    '/classes',
+    '/exams',
+    '/fees',
+    '/attendance',
+    '/reports',
+    '/faculty',
+    '/facility',
+    '/events'
+  ]
+  
+  return sessionRequiredPaths.some(module => path.startsWith(module))
+}
+
+export default router

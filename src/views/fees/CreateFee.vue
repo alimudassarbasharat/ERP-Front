@@ -1,212 +1,150 @@
 <template>
-  <div class="create-fee">
-    <div class="page-header">
-      <h2>Create New Fee</h2>
+  <PageShell 
+    title="Create New Fee"
+    :breadcrumbs="[
+      { label: 'Fee Management', route: '/fees' },
+      { label: 'Create Fee' }
+    ]"
+  >
+    <div class="w-full mb-4">
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 max-w-2xl mx-auto">
+        <el-form
+          :model="feeData"
+          label-width="120px"
+          label-position="top"
+          @submit.prevent="submitFee"
+        >
+          <el-form-item label="Fee Name" required>
+            <el-input
+              v-model="feeData.name"
+              placeholder="Enter fee name"
+              size="large"
+            />
+          </el-form-item>
+
+          <el-form-item label="Fee Type" required>
+            <el-select
+              v-model="feeData.type"
+              placeholder="Select fee type"
+              size="large"
+              class="w-full"
+            >
+              <el-option label="Tuition Fee" value="tuition" />
+              <el-option label="Examination Fee" value="examination" />
+              <el-option label="Library Fee" value="library" />
+              <el-option label="Transport Fee" value="transport" />
+              <el-option label="Other" value="other" />
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="Amount" required>
+            <el-input-number
+              v-model="feeData.amount"
+              placeholder="Enter amount"
+              :min="0"
+              :precision="2"
+              size="large"
+              class="w-full"
+            />
+          </el-form-item>
+
+          <el-form-item label="Due Date" required>
+            <el-date-picker
+              v-model="feeData.dueDate"
+              type="date"
+              placeholder="Select due date"
+              size="large"
+              class="w-full"
+              format="YYYY-MM-DD"
+              value-format="YYYY-MM-DD"
+            />
+          </el-form-item>
+
+          <el-form-item label="Description">
+            <el-input
+              v-model="feeData.description"
+              type="textarea"
+              :rows="3"
+              placeholder="Enter fee description"
+            />
+          </el-form-item>
+
+          <el-form-item label="Class" required>
+            <el-select
+              v-model="feeData.class"
+              placeholder="Select class"
+              size="large"
+              class="w-full"
+            >
+              <el-option
+                v-for="cls in classes"
+                :key="cls"
+                :label="cls"
+                :value="cls"
+              />
+            </el-select>
+          </el-form-item>
+
+          <el-form-item>
+            <div class="flex gap-3">
+              <ActionButton
+                label="Create Fee"
+                :icon="CircleCheck"
+                variant="primary"
+                @click="submitFee"
+              />
+              <ActionButton
+                label="Reset"
+                variant="secondary"
+                @click="resetForm"
+              />
+            </div>
+          </el-form-item>
+        </el-form>
+      </div>
     </div>
-    
-    <div class="fee-form-container">
-      <form @submit.prevent="submitFee" class="fee-form">
-        <div class="form-group">
-          <label for="feeName">Fee Name</label>
-          <input 
-            type="text" 
-            id="feeName" 
-            v-model="feeData.name" 
-            placeholder="Enter fee name"
-            required
-          >
-        </div>
-
-        <div class="form-group">
-          <label for="feeType">Fee Type</label>
-          <select id="feeType" v-model="feeData.type" required>
-            <option value="">Select fee type</option>
-            <option value="tuition">Tuition Fee</option>
-            <option value="examination">Examination Fee</option>
-            <option value="library">Library Fee</option>
-            <option value="transport">Transport Fee</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="amount">Amount</label>
-          <input 
-            type="number" 
-            id="amount" 
-            v-model="feeData.amount" 
-            placeholder="Enter amount"
-            required
-          >
-        </div>
-
-        <div class="form-group">
-          <label for="dueDate">Due Date</label>
-          <CompactDatePicker 
-            v-model="feeData.dueDate"
-            placeholder=""
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="description">Description</label>
-          <textarea 
-            id="description" 
-            v-model="feeData.description" 
-            placeholder="Enter fee description"
-            rows="3"
-          ></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="class">Class</label>
-          <select id="class" v-model="feeData.class" required>
-            <option value="">Select class</option>
-            <option v-for="class in classes" :key="class" :value="class">
-              {{ class }}
-            </option>
-          </select>
-        </div>
-
-        <div class="form-actions">
-          <button type="submit" class="submit-btn">Create Fee</button>
-          <button type="button" class="cancel-btn" @click="resetForm">Reset</button>
-        </div>
-      </form>
-    </div>
-  </div>
+  </PageShell>
 </template>
 
-<script>
-import CompactDatePicker from '@/components/CompactDatePicker.vue'
+<script setup>
+import { ref } from 'vue'
+import { useToast } from 'vue-toastification'
+import { CircleCheck } from '@element-plus/icons-vue'
+import PageShell from '@/components/common/PageShell.vue'
+import ActionButton from '@/components/common/ActionButton.vue'
 
-export default {
-  name: 'CreateFee',
-  components: {
-    CompactDatePicker
-  },
-  data() {
-    return {
-      feeData: {
-        name: '',
-        type: '',
-        amount: '',
-        dueDate: '',
-        description: '',
-        class: ''
-      },
-      classes: [
-        'Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5',
-        'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10',
-        'Class 11', 'Class 12'
-      ]
-    }
-  },
-  methods: {
-    submitFee() {
-      // TODO: Implement API call to create fee
-      console.log('Fee data:', this.feeData)
-      // Reset form after successful submission
-      this.resetForm()
-    },
-    resetForm() {
-      this.feeData = {
-        name: '',
-        type: '',
-        amount: '',
-        dueDate: '',
-        description: '',
-        class: ''
-      }
-    }
+const toast = useToast()
+
+const feeData = ref({
+  name: '',
+  type: '',
+  amount: null,
+  dueDate: '',
+  description: '',
+  class: ''
+})
+
+const classes = ref([
+  'Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5',
+  'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10',
+  'Class 11', 'Class 12'
+])
+
+const submitFee = () => {
+  // TODO: Implement API call to create fee
+  toast.success('Fee created successfully')
+  console.log('Fee data:', feeData.value)
+  resetForm()
+}
+
+const resetForm = () => {
+  feeData.value = {
+    name: '',
+    type: '',
+    amount: null,
+    dueDate: '',
+    description: '',
+    class: ''
   }
 }
 </script>
-
-<style scoped>
-.create-fee {
-  padding: 20px;
-}
-
-.page-header {
-  margin-bottom: 30px;
-}
-
-.page-header h2 {
-  color: #1e293b;
-  margin: 0;
-}
-
-.fee-form-container {
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.fee-form {
-  background-color: #ffffff;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  color: #1e293b;
-  font-weight: 500;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.form-group textarea {
-  resize: vertical;
-}
-
-.form-actions {
-  display: flex;
-  gap: 15px;
-  margin-top: 30px;
-}
-
-.submit-btn,
-.cancel-btn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background-color 0.3s;
-}
-
-.submit-btn {
-  background-color: #10b981;
-  color: #ffffff;
-}
-
-.submit-btn:hover {
-  background-color: #10b981;
-}
-
-.cancel-btn {
-  background-color: #f8fafc;
-  color: #1e293b;
-  border: 1px solid #ddd;
-}
-
-.cancel-btn:hover {
-  background-color: #f1f5f9;
-}
-</style> 

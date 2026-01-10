@@ -146,17 +146,22 @@ export default {
     const loading = ref(false)
 
     const filteredUsers = computed(() => {
+      if (!users.value || !Array.isArray(users.value)) return []
       if (!memberSearch.value) return users.value
       return users.value.filter(user => 
-        user.name.toLowerCase().includes(memberSearch.value.toLowerCase()) ||
-        user.email.toLowerCase().includes(memberSearch.value.toLowerCase())
+        user?.name?.toLowerCase().includes(memberSearch.value.toLowerCase()) ||
+        user?.email?.toLowerCase().includes(memberSearch.value.toLowerCase())
       )
     })
 
     const loadUsers = async () => {
       try {
         const response = await axios.get('/users')
-        users.value = response.data.data
+        if (response.data?.success) {
+          users.value = Array.isArray(response.data?.result) ? response.data.result : []
+        } else {
+          users.value = []
+        }
       } catch (error) {
         console.error('Failed to load users:', error)
         toast.error('Failed to load users')
@@ -196,7 +201,7 @@ export default {
       
       loading.value = true
       try {
-        const response = await axios.post('/api/channels', {
+        const response = await axios.post('/channels', {
           ...form,
           member_ids: selectedMembers.value
         })

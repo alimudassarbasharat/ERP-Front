@@ -1,6 +1,6 @@
 <template>
   <!-- Modern Profile Page with Beautiful Design -->
-  <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 relative overflow-hidden">
+  <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative overflow-hidden" style="background: var(--bg-primary);">
     <!-- Background Pattern -->
     <div class="absolute inset-0 opacity-30">
       <div class="absolute top-0 left-0 w-96 h-96 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl animate-blob"></div>
@@ -11,20 +11,20 @@
     <div class="relative z-10 container mx-auto px-4 py-8">
       <!-- Page Header -->
       <div class="text-center mb-12">
-        <h1 class="text-5xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 bg-clip-text text-transparent mb-4">
+        <h1 class="text-5xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 dark:from-purple-400 dark:via-pink-400 dark:to-indigo-400 bg-clip-text text-transparent mb-4">
           Profile Settings
         </h1>
-        <p class="w-full">
+        <p class="w-full text-gray-600 dark:text-gray-300">
           Manage your account settings and personal information
         </p>
         </div>
 
       <!-- Main Content Card -->
       <div class="w-full">
-        <div class="bg-white/90 backdrop-blur-sm rounded-xl shadow-2xl border border-gray-200/50 overflow-hidden">
+        <div class="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 overflow-hidden">
           
           <!-- Tab Navigation -->
-          <div class="border-b border-gray-200 bg-white/50">
+          <div class="border-b border-gray-200 dark:border-gray-700 bg-white/50 dark:bg-gray-800/50">
             <nav class="flex space-x-8 px-8 pt-6">
               <button
                 v-for="tab in tabs"
@@ -33,8 +33,8 @@
                 :class="[
                   'pb-4 px-1 text-sm font-semibold border-b-2 transition-all duration-300 cursor-pointer',
                   activeTab === tab.id
-                    ? 'border-purple-500 text-purple-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-900 hover:border-gray-200'
+                    ? 'border-purple-500 dark:border-purple-400 text-purple-600 dark:text-purple-400'
+                    : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:border-gray-200 dark:hover:border-gray-600'
                 ]"
               >
                 <div class="flex items-center gap-2">
@@ -63,21 +63,21 @@
               <!-- Header -->
               <div class="flex items-center justify-between">
                 <div>
-                  <h3 class="text-2xl font-bold text-gray-900">Profile & Security Settings</h3>
-                  <p class="text-gray-600 mt-1">Manage your personal information and account security</p>
+                  <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Profile & Security Settings</h3>
+                  <p class="text-gray-600 dark:text-gray-300 mt-1">Manage your personal information and account security</p>
                 </div>
               </div>
 
               <form @submit.prevent="saveProfile" class="space-y-8">
                 <!-- Photo Section -->
-                <div class="bg-purple-50 rounded-lg p-6">
+                <div class="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-6">
                   <div class="flex items-center gap-3 mb-6">
-                    <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-8 h-8 bg-purple-100 dark:bg-purple-900/50 rounded-lg flex items-center justify-center">
+                      <svg class="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                       </svg>
                     </div>
-                    <h4 class="text-lg font-semibold text-gray-900">Profile Photo</h4>
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Profile Photo</h4>
                   </div>
 
                   <div class="flex items-center gap-6">
@@ -88,7 +88,7 @@
                         <div class="absolute -inset-1 bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 rounded-full opacity-75 group-hover:opacity-100 animate-pulse"></div>
                         
                         <!-- Avatar Container -->
-                        <div class="relative bg-white rounded-full p-1 group-hover:scale-105 transition-all duration-500">
+                        <div class="relative bg-white dark:bg-gray-700 rounded-full p-1 group-hover:scale-105 transition-all duration-500">
                           <img 
                             :src="photoPreview || form.avatar || defaultAvatar" 
                             alt="Profile Photo"
@@ -96,7 +96,7 @@
                           />
                           
                           <!-- Floating Camera Badge -->
-                          <div class="absolute -bottom-1 -right-1 w-7 h-7 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center border-3 border-gray-200 shadow-lg group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 animate-bounce-slow">
+                          <div class="absolute -bottom-1 -right-1 w-7 h-7 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center border-3 border-gray-200 dark:border-gray-600 shadow-lg group-hover:scale-110 group-hover:shadow-xl transition-all duration-300 animate-bounce-slow">
                             <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -110,7 +110,7 @@
                     </div>
 
                     <!-- Premium Upload Button -->
-                    <div class="flex-1">
+                    <div class="flex-1 relative">
                       <input 
                         ref="fileInput"
                         type="file" 
@@ -141,18 +141,18 @@
                           
                           <!-- Enhanced Text Content -->
                           <div class="text-left flex-1">
-                            <p class="text-sm font-bold text-transparent bg-gradient-to-r from-purple-700 to-pink-700 bg-clip-text group-hover:from-purple-800 group-hover:to-pink-800 transition-all duration-300">
+                            <p class="text-sm font-bold text-transparent bg-gradient-to-r from-purple-700 to-pink-700 dark:from-purple-400 dark:to-pink-400 bg-clip-text group-hover:from-purple-800 group-hover:to-pink-800 dark:group-hover:from-purple-300 dark:group-hover:to-pink-300 transition-all duration-300">
                               Upload new photo
                             </p>
-                            <p class="text-xs text-gray-500 group-hover:text-gray-600 transition-colors duration-300">
+                            <p class="text-xs text-gray-500 dark:text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-300">
                               ✨ PNG, JPG up to 2MB
                             </p>
                           </div>
                           
                           <!-- Floating Arrow -->
                           <div class="ml-auto">
-                            <div class="w-8 h-8 bg-white/50 rounded-lg flex items-center justify-center group-hover:bg-white/80 group-hover:scale-110 transition-all duration-300 shadow-sm">
-                              <svg class="w-4 h-4 text-purple-600 group-hover:text-purple-700 group-hover:translate-x-0.5 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-8 h-8 bg-white/50 dark:bg-gray-700/50 rounded-lg flex items-center justify-center group-hover:bg-white/80 dark:group-hover:bg-gray-600/80 group-hover:scale-110 transition-all duration-300 shadow-sm">
+                              <svg class="w-4 h-4 text-purple-600 dark:text-purple-400 group-hover:text-purple-700 dark:group-hover:text-purple-300 group-hover:translate-x-0.5 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                               </svg>
                             </div>
@@ -177,18 +177,18 @@
                         :class="[
                           'absolute inset-0 rounded-xl border-2 border-dashed transition-all duration-500 z-10',
                           isDragOver 
-                            ? 'border-purple-400 bg-purple-100 bg-opacity-80 scale-105 pointer-events-auto' 
+                            ? 'border-purple-400 dark:border-purple-500 bg-purple-100 dark:bg-purple-900/50 bg-opacity-80 scale-105 pointer-events-auto' 
                             : 'border-transparent bg-transparent pointer-events-none'
                         ]"
                       >
                         <div v-if="isDragOver" class="absolute inset-0 flex items-center justify-center rounded-xl">
-                          <div class="text-center bg-white rounded-lg p-4 shadow-lg">
+                          <div class="text-center bg-white dark:bg-gray-800 rounded-lg p-4 shadow-lg">
                             <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2 animate-bounce">
                               <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
                               </svg>
                             </div>
-                            <p class="text-sm font-semibold text-purple-700">Drop your photo here!</p>
+                            <p class="text-sm font-semibold text-purple-700 dark:text-purple-300">Drop your photo here!</p>
                           </div>
                         </div>
                       </div>
@@ -197,150 +197,150 @@
                 </div>
 
                 <!-- Personal Info Section -->
-                <div class="bg-blue-50 rounded-lg p-6">
+                <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
                   <div class="flex items-center gap-3 mb-6">
-                    <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/50 rounded-lg flex items-center justify-center">
+                      <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                       </svg>
                     </div>
-                    <h4 class="text-lg font-semibold text-gray-900">Basic Information</h4>
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Basic Information</h4>
                   </div>
 
                   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- First Name -->
                     <div class="flex flex-col w-full">
-                      <label class="mb-2 text-sm font-semibold text-gray-600 uppercase tracking-wider">First Name *</label>
+                      <label class="mb-2 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">First Name *</label>
                       <div class="relative">
                         <input 
                           v-model="form.first_name"
                           type="text" 
                           required
-                          class="h-12 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full"
+                          class="h-12 border-0 bg-transparent px-0 text-sm font-light text-gray-600 dark:text-gray-300 focus:ring-0 focus:outline-none w-full placeholder-gray-400 dark:placeholder-gray-500"
                           placeholder="Enter your first name"
                         />
-                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
+                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 dark:bg-purple-700 pointer-events-none"></div>
                       </div>
                     </div>
 
                     <!-- Last Name -->
                     <div class="flex flex-col w-full">
-                      <label class="mb-2 text-sm font-semibold text-gray-600 uppercase tracking-wider">Last Name</label>
+                      <label class="mb-2 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Last Name</label>
                       <div class="relative">
                         <input 
                           v-model="form.last_name"
                           type="text" 
-                          class="h-12 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full"
+                          class="h-12 border-0 bg-transparent px-0 text-sm font-light text-gray-600 dark:text-gray-300 focus:ring-0 focus:outline-none w-full placeholder-gray-400 dark:placeholder-gray-500"
                           placeholder="Enter your last name"
                         />
-                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
+                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 dark:bg-purple-700 pointer-events-none"></div>
                       </div>
                     </div>
 
                     <!-- Email -->
                     <div class="flex flex-col w-full">
-                      <label class="mb-2 text-sm font-semibold text-gray-600 uppercase tracking-wider">Email Address *</label>
+                      <label class="mb-2 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Email Address *</label>
                       <div class="relative">
                         <input 
                           v-model="form.email"
                           type="email" 
                           required
-                          class="h-12 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full"
+                          class="h-12 border-0 bg-transparent px-0 text-sm font-light text-gray-600 dark:text-gray-300 focus:ring-0 focus:outline-none w-full placeholder-gray-400 dark:placeholder-gray-500"
                           placeholder="Enter your email address"
                         />
-                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
+                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 dark:bg-purple-700 pointer-events-none"></div>
                       </div>
                     </div>
 
                     <!-- Role -->
                     <div class="flex flex-col w-full">
-                      <label class="mb-2 text-sm font-semibold text-gray-600 uppercase tracking-wider">Role</label>
+                      <label class="mb-2 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Role</label>
                       <div class="relative">
                         <select 
                           v-model="form.role"
-                          class="h-12 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full appearance-none pr-8"
+                          class="h-12 border-0 bg-transparent dark:bg-transparent px-0 text-sm font-light text-gray-600 dark:text-gray-300 focus:ring-0 focus:outline-none w-full appearance-none pr-8"
                         >
-                          <option value="Admin">Administrator</option>
-                          <option value="Teacher">Teacher</option>
-                          <option value="Student">Student</option>
-                          <option value="Staff">Staff Member</option>
+                          <option value="Admin" class="dark:bg-gray-800 dark:text-gray-300">Administrator</option>
+                          <option value="Teacher" class="dark:bg-gray-800 dark:text-gray-300">Teacher</option>
+                          <option value="Student" class="dark:bg-gray-800 dark:text-gray-300">Student</option>
+                          <option value="Staff" class="dark:bg-gray-800 dark:text-gray-300">Staff Member</option>
                         </select>
                         <div class="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none">
-                          <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                          <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m0 0l-5-5m5 5l5-5"/>
                           </svg>
                         </div>
-                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
+                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 dark:bg-purple-700 pointer-events-none"></div>
                       </div>
                     </div>
 
                     <!-- Phone -->
                     <div class="flex flex-col w-full">
-                      <label class="mb-2 text-sm font-semibold text-gray-600 uppercase tracking-wider">Phone Number</label>
+                      <label class="mb-2 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Phone Number</label>
                       <div class="relative">
                         <input 
                           v-model="form.phone"
                           type="tel" 
-                          class="h-12 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full"
+                          class="h-12 border-0 bg-transparent px-0 text-sm font-light text-gray-600 dark:text-gray-300 focus:ring-0 focus:outline-none w-full placeholder-gray-400 dark:placeholder-gray-500"
                           placeholder="Enter your phone number"
                         />
-                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
+                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 dark:bg-purple-700 pointer-events-none"></div>
                       </div>
                     </div>
 
                     <!-- Country -->
                     <div class="flex flex-col w-full">
-                      <label class="mb-2 text-sm font-semibold text-gray-600 uppercase tracking-wider">Country</label>
+                      <label class="mb-2 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Country</label>
                       <div class="relative">
                         <select 
                           v-model="form.country"
-                          class="h-12 border-0 bg-transparent px-0 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full appearance-none pr-8"
+                          class="h-12 border-0 bg-transparent dark:bg-transparent px-0 text-sm font-light text-gray-600 dark:text-gray-300 focus:ring-0 focus:outline-none w-full appearance-none pr-8"
                         >
-                          <option value="Pakistan">Pakistan</option>
-                          <option value="United States">United States</option>
-                          <option value="United Kingdom">United Kingdom</option>
-                          <option value="India">India</option>
-                          <option value="Canada">Canada</option>
-                          <option value="Australia">Australia</option>
+                          <option value="Pakistan" class="dark:bg-gray-800 dark:text-gray-300">Pakistan</option>
+                          <option value="United States" class="dark:bg-gray-800 dark:text-gray-300">United States</option>
+                          <option value="United Kingdom" class="dark:bg-gray-800 dark:text-gray-300">United Kingdom</option>
+                          <option value="India" class="dark:bg-gray-800 dark:text-gray-300">India</option>
+                          <option value="Canada" class="dark:bg-gray-800 dark:text-gray-300">Canada</option>
+                          <option value="Australia" class="dark:bg-gray-800 dark:text-gray-300">Australia</option>
                         </select>
                         <div class="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none">
-                          <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                          <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14m0 0l-5-5m5 5l5-5"/>
                           </svg>
                         </div>
-                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
+                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 dark:bg-purple-700 pointer-events-none"></div>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <!-- Password Security Section -->
-                <div class="bg-red-50 rounded-lg p-6">
+                <div class="bg-red-50 dark:bg-red-900/20 rounded-lg p-6">
                   <div class="flex items-center gap-3 mb-6">
-                    <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                      <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div class="w-8 h-8 bg-red-100 dark:bg-red-900/50 rounded-lg flex items-center justify-center">
+                      <svg class="w-4 h-4 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
                       </svg>
                     </div>
-                    <h4 class="text-lg font-semibold text-gray-900">Password & Security</h4>
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Password & Security</h4>
                   </div>
 
                   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <!-- Current Password -->
                     <div class="flex flex-col w-full">
-                      <label class="mb-2 text-sm font-semibold text-gray-600 uppercase tracking-wider">Current Password *</label>
+                      <label class="mb-2 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Current Password *</label>
                       <div class="relative">
                         <input 
                           v-model="passwordForm.currentPassword"
                           :type="showCurrentPassword ? 'text' : 'password'" 
                           autocomplete="current-password"
-                          class="h-12 border-0 bg-transparent px-0 pr-10 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full"
+                          class="h-12 border-0 bg-transparent px-0 pr-10 text-sm font-light text-gray-600 dark:text-gray-300 focus:ring-0 focus:outline-none w-full placeholder-gray-400 dark:placeholder-gray-500"
                           placeholder="Enter your current password"
                         />
                         <button
                           type="button"
                           @click="toggleCurrentPassword"
-                          class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-purple-600 focus:outline-none transition-colors duration-200 p-1"
+                          class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 focus:outline-none transition-colors duration-200 p-1"
                         >
                           <!-- Eye Open Icon -->
                           <svg v-if="showCurrentPassword" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -353,25 +353,25 @@
                             <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z"/>
                           </svg>
                         </button>
-                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
+                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 dark:bg-purple-700 pointer-events-none"></div>
                       </div>
                     </div>
 
                     <!-- New Password -->
                     <div class="flex flex-col w-full">
-                      <label class="mb-2 text-sm font-semibold text-gray-600 uppercase tracking-wider">New Password *</label>
+                      <label class="mb-2 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">New Password *</label>
                       <div class="relative">
                         <input 
                           v-model="passwordForm.newPassword"
                           :type="showNewPassword ? 'text' : 'password'" 
                           autocomplete="new-password"
-                          class="h-12 border-0 bg-transparent px-0 pr-10 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full"
+                          class="h-12 border-0 bg-transparent px-0 pr-10 text-sm font-light text-gray-600 dark:text-gray-300 focus:ring-0 focus:outline-none w-full placeholder-gray-400 dark:placeholder-gray-500"
                           placeholder="Enter your new password"
                         />
                         <button
                           type="button"
                           @click="toggleNewPassword"
-                          class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-purple-600 focus:outline-none transition-colors duration-200 p-1"
+                          class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 focus:outline-none transition-colors duration-200 p-1"
                         >
                           <!-- Eye Open Icon -->
                           <svg v-if="showNewPassword" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -384,25 +384,25 @@
                             <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z"/>
                           </svg>
                         </button>
-                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
+                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 dark:bg-purple-700 pointer-events-none"></div>
                       </div>
                     </div>
 
                     <!-- Confirm Password -->
                     <div class="flex flex-col w-full lg:col-span-2">
-                      <label class="mb-2 text-sm font-semibold text-gray-600 uppercase tracking-wider">Confirm Password *</label>
+                      <label class="mb-2 text-sm font-semibold text-gray-600 dark:text-gray-300 uppercase tracking-wider">Confirm Password *</label>
                       <div class="relative">
                         <input 
                           v-model="passwordForm.confirmPassword"
                           :type="showConfirmPassword ? 'text' : 'password'" 
                           autocomplete="new-password"
-                          class="h-12 border-0 bg-transparent px-0 pr-10 text-sm font-light text-gray-600 focus:ring-0 focus:outline-none w-full"
+                          class="h-12 border-0 bg-transparent px-0 pr-10 text-sm font-light text-gray-600 dark:text-gray-300 focus:ring-0 focus:outline-none w-full placeholder-gray-400 dark:placeholder-gray-500"
                           placeholder="Confirm your new password"
                         />
                         <button
                           type="button"
                           @click="toggleConfirmPassword"
-                          class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-purple-600 focus:outline-none transition-colors duration-200 p-1"
+                          class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400 focus:outline-none transition-colors duration-200 p-1"
                         >
                           <!-- Eye Open Icon -->
                           <svg v-if="showConfirmPassword" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -415,9 +415,9 @@
                             <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z"/>
                           </svg>
                         </button>
-                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 pointer-events-none"></div>
+                        <div class="absolute left-0 right-0 bottom-0 h-[2px] bg-purple-200 dark:bg-purple-700 pointer-events-none"></div>
                       </div>
-                      <p class="text-xs text-gray-500 mt-2">💡 Minimum 8 characters with numbers and special characters</p>
+                      <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">💡 Minimum 8 characters with numbers and special characters</p>
                     </div>
 
                     <!-- Password Change Button -->
@@ -444,11 +444,11 @@
       </div>
 
                 <!-- Profile Form Actions -->
-                <div class="flex flex-row gap-3 justify-end pt-8 border-t border-gray-200">
+                <div class="flex flex-row gap-3 justify-end pt-8 border-t border-gray-200 dark:border-gray-700">
                   <button 
                     type="button"
                     @click="resetForm"
-                    class="h-10 w-24 rounded-full border-2 border-navy-300 text-sm font-bold text-gray-600 bg-white hover:bg-navy-50 hover:border-navy-400 hover:text-gray-900 transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
+                    class="h-10 w-24 rounded-full border-2 border-navy-300 dark:border-gray-600 text-sm font-bold text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-navy-50 dark:hover:bg-gray-700 hover:border-navy-400 dark:hover:border-gray-500 hover:text-gray-900 dark:hover:text-white transition-all duration-300 transform hover:scale-105 flex items-center justify-center gap-2"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
@@ -483,31 +483,31 @@
               <!-- Header -->
               <div class="flex items-center justify-between">
                 <div>
-                  <h3 class="text-2xl font-bold text-gray-900">Notification Preferences</h3>
-                  <p class="text-gray-600 mt-1">Manage how you receive notifications</p>
+                  <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Notification Preferences</h3>
+                  <p class="text-gray-600 dark:text-gray-300 mt-1">Manage how you receive notifications</p>
                 </div>
               </div>
 
               <!-- Notification Settings -->
-              <div class="bg-yellow-50 rounded-lg p-6">
+              <div class="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-6">
                 <div class="flex items-center gap-3 mb-6">
-                  <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div class="w-8 h-8 bg-yellow-100 dark:bg-yellow-900/50 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-yellow-600 dark:text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4.828 7l2.828 2.828M3 10h8m-8 4h8m-4 4h8m-4-8H3m18 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                   </div>
-                  <h4 class="text-lg font-semibold text-gray-900">Communication Preferences</h4>
+                  <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Communication Preferences</h4>
                 </div>
 
                 <div class="space-y-4">
-                  <div v-for="setting in notificationSettings" :key="setting.key" class="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200 hover:border-purple-200 transition-colors duration-300">
+                  <div v-for="setting in notificationSettings" :key="setting.key" class="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-purple-200 dark:hover:border-purple-600 transition-colors duration-300">
                     <div class="flex items-center gap-3">
                       <div :class="['w-6 h-6 rounded-full flex items-center justify-center', setting.colorClass]">
                         <div :class="['w-2 h-2 rounded-full', setting.dotClass]"></div>
                       </div>
                       <div>
-                        <h6 class="font-medium text-gray-900">{{ setting.title }}</h6>
-                        <p class="text-xs text-gray-500">{{ setting.description }}</p>
+                        <h6 class="font-medium text-gray-900 dark:text-white">{{ setting.title }}</h6>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">{{ setting.description }}</p>
                       </div>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
@@ -519,7 +519,7 @@
               </div>
 
               <!-- Form Actions -->
-              <div class="flex flex-row gap-3 justify-end pt-8 border-t border-gray-200">
+              <div class="flex flex-row gap-3 justify-end pt-8 border-t border-gray-200 dark:border-gray-700">
                 <button 
                   type="button"
                   @click="resetNotificationForm"
@@ -556,20 +556,20 @@
               <!-- Header -->
               <div class="flex items-center justify-between">
                 <div>
-                  <h3 class="text-2xl font-bold text-gray-900">Team Management</h3>
-                  <p class="text-gray-600 mt-1">Manage your team members and permissions</p>
+                  <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Team Management</h3>
+                  <p class="text-gray-600 dark:text-gray-300 mt-1">Manage your team members and permissions</p>
                 </div>
               </div>
 
               <!-- Coming Soon Card -->
-              <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-12 text-center">
-                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-lg p-12 text-center">
+                <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/50 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg class="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"/>
                   </svg>
                 </div>
-                <h4 class="text-xl font-bold text-gray-900 mb-2">Team Management Coming Soon</h4>
-                <p class="w-full">
+                <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Team Management Coming Soon</h4>
+                <p class="w-full text-gray-600 dark:text-gray-300">
                   Advanced team management features are under development. You'll be able to manage team members, roles, and permissions here.
                 </p>
               </div>
@@ -915,58 +915,13 @@ const goToLogin = () => {
   background-color: #ffffff;
 }
 
-/* Navy color scheme */
-.text-gray-600 {
-  color: #64748b;
+/* Dark mode support for bg-white/90 */
+.dark .bg-white\/90 {
+  background-color: rgba(31, 41, 55, 0.9);
 }
 
-.text-gray-600 {
-  color: #64748b;
-}
-
-.text-gray-900 {
-  color: #1e293b;
-}
-
-.text-gray-900 {
-  color: #1e293b;
-}
-
-.text-gray-600 {
-  color: #64748b;
-}
-
-.text-gray-900 {
-  color: #1e293b;
-}
-
-.text-navy-300 {
-  color: #94a3b8;
-}
-
-.border-navy-300 {
-  border-color: #94a3b8;
-}
-
-.border-navy-400 {
-  border-color: #94a3b8;
-}
-
-.bg-navy-50 {
-  background-color: #f8fafc;
-}
-
-.hover\:bg-navy-50:hover {
-  background-color: #f8fafc;
-}
-
-.hover\:border-navy-400:hover {
-  border-color: #94a3b8;
-}
-
-.hover\:text-gray-900:hover {
-  color: #1e293b;
-}
+/* Navy color scheme - Removed hardcoded colors to allow Tailwind dark mode classes to work properly */
+/* These classes are now handled by Tailwind utilities with dark mode support */
 
 /* Gradient backgrounds */
 .bg-gradient-to-br {
@@ -1002,6 +957,13 @@ select:focus,
 textarea:focus {
   outline: 2px solid #a855f7;
   outline-offset: 2px;
+}
+
+/* Dark mode focus styles */
+.dark input:focus,
+.dark select:focus,
+.dark textarea:focus {
+  outline-color: #a78bfa;
 }
 
 /* Custom scrollbar */
@@ -1107,6 +1069,16 @@ select {
   transition: border-color 0.3s ease;
 }
 
+/* Dark mode input styling */
+.dark input[type="text"],
+.dark input[type="email"],
+.dark input[type="tel"],
+.dark input[type="password"],
+.dark select {
+  border-bottom-color: rgba(139, 92, 246, 0.5);
+  color: #e2e8f0;
+}
+
 input[type="text"]:focus,
 input[type="email"]:focus,
 input[type="tel"]:focus,
@@ -1116,21 +1088,19 @@ select:focus {
   outline: none;
 }
 
-/* Section backgrounds */
-.bg-purple-50 {
-  background-color: #f1f5f9;
+/* Dark mode focus styling */
+.dark input[type="text"]:focus,
+.dark input[type="email"]:focus,
+.dark input[type="tel"]:focus,
+.dark input[type="password"]:focus,
+.dark select:focus {
+  border-bottom-color: #a78bfa;
 }
 
-.bg-blue-50 {
-  background-color: #f1f5f9;
-}
-
-.bg-red-50 {
-  background-color: #f1f5f9;
-}
+/* Section backgrounds - Removed to allow Tailwind dark mode classes to work */
 
 .bg-yellow-50 {
-  background-color: #ffffffbeb;
+  background-color: #fefce8;
 }
 
 /* Animation classes */

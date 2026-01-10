@@ -1,0 +1,1 @@
+import{H as r,a as o,o as c}from"./index-xvPUEXLW.js";const n={__name:"Redirect",setup(a){const e=useRouter();return r(),onMounted(()=>{const t=e.currentRoute.value.query.redirect||"/";e.replace(t)}),(t,s)=>(c(),o("div"))}};export{n as default};

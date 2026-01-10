@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class', // Enable class-based dark mode
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
@@ -17,7 +18,10 @@ export default {
     'hover:bg-purple-200',
     'bg-yellow-100',
     'text-yellow-600',
-    'hover:bg-yellow-200'
+    'hover:bg-yellow-200',
+    'dark:bg-gray-800',
+    'dark:text-white',
+    'dark:bg-gray-900'
   ],
   theme: {
     extend: {
@@ -51,6 +55,32 @@ export default {
           800: '#6b21a8',
           900: '#581c87',
           950: '#3b0764',
+        },
+        'pink': {
+          50: '#fdf2f8',
+          100: '#fce7f3',
+          200: '#fbcfe8',
+          300: '#f9a8d4',
+          400: '#f472b6',
+          500: '#ec4899',
+          600: '#db2777',
+          700: '#be185d',
+          800: '#9f1239',
+          900: '#831843',
+          950: '#500724',
+        },
+        'rose': {
+          50: '#fff1f2',
+          100: '#ffe4e6',
+          200: '#fecdd3',
+          300: '#fda4af',
+          400: '#fb7185',
+          500: '#f43f5e',
+          600: '#e11d48',
+          700: '#be123c',
+          800: '#9f1239',
+          900: '#881337',
+          950: '#4c0519',
         }
       }
     },

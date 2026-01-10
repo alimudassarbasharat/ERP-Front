@@ -1,8 +1,11 @@
 <template>
   <div 
-    class="relative overflow-hidden rounded-xl border border-gray-200/80 bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
+    class="group relative overflow-hidden rounded-xl border border-gray-200/80 dark:border-gray-700/80 bg-gradient-to-br from-white/90 to-white/70 dark:from-gray-800/90 dark:to-gray-800/70 backdrop-blur-xl p-4 sm:p-5 shadow-sm hover:shadow-md hover:scale-[1.02] transition-all duration-300 cursor-pointer"
     @click="$emit('click', stat)"
   >
+    <!-- Animated gradient overlay on hover -->
+    <div class="absolute inset-0 bg-gradient-to-br from-indigo-50/0 via-purple-50/0 to-pink-50/0 dark:from-indigo-900/0 dark:via-purple-900/0 dark:to-pink-900/0 group-hover:from-indigo-50/20 group-hover:via-purple-50/15 group-hover:to-pink-50/20 dark:group-hover:from-indigo-900/20 dark:group-hover:via-purple-900/15 dark:group-hover:to-pink-900/20 transition-all duration-500 pointer-events-none"></div>
+    <div class="relative z-10">
     <div class="flex items-start gap-3">
       <!-- Icon Container -->
       <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center flex-shrink-0" :class="iconBgClass">
@@ -18,14 +21,15 @@
       
       <!-- Content -->
       <div class="flex-1 min-w-0">
-        <p class="text-[10px] sm:text-xs font-semibold text-gray-500 tracking-wide uppercase mb-1">{{ stat.label }}</p>
-        <p class="text-base sm:text-lg font-black text-gray-900 tracking-tight mb-1.5">
+        <p class="text-[10px] sm:text-xs font-semibold text-gray-500 dark:text-gray-300 tracking-wide uppercase mb-1">{{ stat.label }}</p>
+        <p class="text-base sm:text-lg font-black text-gray-900 dark:text-white tracking-tight mb-1.5">
           {{ formattedValue }}
         </p>
         <div class="flex items-center gap-1.5">
           <span class="text-[10px] font-bold px-2 py-0.5 rounded-full" :class="badgeClass">{{ stat.change }}</span>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </template>

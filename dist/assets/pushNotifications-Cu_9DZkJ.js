@@ -1,0 +1,1 @@
+async function e(){if("serviceWorker"in navigator)try{return await navigator.serviceWorker.register("/sw.js",{scope:"/"})}catch(r){return console.error("[Push] Service Worker registration failed:",r),null}return null}async function i(r){return console.warn("[Push] VAPID_PUBLIC_KEY not configured"),null}export{e as registerServiceWorker,i as subscribeToPushNotifications};
