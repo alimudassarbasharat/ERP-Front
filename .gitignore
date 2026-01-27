@@ -9,9 +9,16 @@ lerna-debug.log*
 
 node_modules
 .DS_Store
+dist
 dist-ssr
 coverage
 *.local
+
+# Build outputs
+build
+.output
+.vite
+.cache
 
 # Environment variables
 .env
@@ -34,3 +41,16 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+# OS
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+.eslintcache
+
+# Package manager lock files (optional - uncomment if needed)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml

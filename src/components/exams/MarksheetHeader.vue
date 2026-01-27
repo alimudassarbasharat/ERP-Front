@@ -97,10 +97,6 @@
           </button>
         </slot>
       </div>
-      </div>
-    </div>
-  </div>
-</template>
     </div>
 
     <!-- Optional: Summary Stats Bar -->
