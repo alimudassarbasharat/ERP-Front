@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '../layouts/MainLayout.vue'
 import ManageExams from '@/views/exams/ManageExams.vue'
 import AddMarksheetSubjectWise from '@/views/exams/AddMarksheetSubjectWise.vue'
-import { useSessionGuard } from '@/composables/useSessionGuard'
+// useSessionGuard loaded dynamically in beforeEach to avoid circular dep: router -> session -> axios -> auth
 
 const routes = [
   {
@@ -744,7 +744,7 @@ router.beforeEach(async (to, from, next) => {
       
       // Check if session exists
       if (!sessionStore.hasActiveSession) {
-        // Show session required alert
+        const { useSessionGuard } = await import('@/composables/useSessionGuard')
         const { showSessionRequiredAlert } = useSessionGuard()
         await showSessionRequiredAlert()
         next(false) // Abort navigation
