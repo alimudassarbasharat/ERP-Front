@@ -11,7 +11,9 @@ const distPath = path.join(__dirname, 'dist')
 // index.html MUST NOT be cached (prevents build mismatch / old JS chunks)
 app.use((req, res, next) => {
   if (req.path === '/' || req.path.endsWith('index.html')) {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate')
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
+    res.setHeader('Pragma', 'no-cache')
+    res.setHeader('Expires', '0')
   }
   next()
 })

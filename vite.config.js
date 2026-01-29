@@ -50,16 +50,13 @@ export default defineConfig({
       transformMixedEsModules: true
     },
     chunkSizeWarningLimit: 600,
-    // Set to true to debug "Cannot access before initialization" (unminified build)
-    // minify: false,
+    // Minify OFF: prevents "Cannot access 'j4' before initialization" in production
+    minify: false,
     rollupOptions: {
       output: {
-        // Single vendor chunk so Vue + Element Plus load in one order (avoids circular ref in prod)
         manualChunks(id) {
           if (id.includes('node_modules')) return 'vendor'
-        },
-        format: 'es',
-        generatedCode: { constBindings: true }
+        }
       }
     }
   },
@@ -73,5 +70,9 @@ export default defineConfig({
     fs: {
       strict: false
     }
+  },
+  preview: {
+    port: 4173,
+    host: true
   }
 })
