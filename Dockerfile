@@ -5,9 +5,9 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Install dependencies (npm ci for reproducibility; fallback to npm install if lock file out of sync)
+# Install dependencies (include devDependencies for build: tailwindcss, vite, etc.)
 COPY package.json package-lock.json* ./
-RUN npm ci || npm install --no-audit --no-fund
+RUN npm ci --include=dev || npm install --include=dev --no-audit --no-fund
 
 # Copy source and build
 COPY . .
