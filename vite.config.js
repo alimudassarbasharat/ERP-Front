@@ -43,7 +43,10 @@ export default defineConfig({
     chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
-        // No manualChunks - custom splitting caused "Cannot access before initialization" with Vue/Element Plus
+        // Single vendor chunk to avoid "Cannot access before initialization" (Vue/Element Plus circular ref when split)
+        manualChunks(id) {
+          if (id.includes('node_modules')) return 'vendor'
+        }
       }
     }
   },
