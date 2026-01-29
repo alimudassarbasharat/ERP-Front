@@ -2,6 +2,8 @@ import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import tailwindcss from 'tailwindcss'
+import autoprefixer from 'autoprefixer'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -16,16 +18,18 @@ export default defineConfig({
     })
   ],
   css: {
-    postcss: './postcss.config.cjs'
+    postcss: {
+      plugins: [tailwindcss(), autoprefixer()]
+    }
   },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
-    dedupe: ['vue']
+    dedupe: ['vue', 'dayjs']
   },
   optimizeDeps: {
-    include: ['vue', 'vue-router', 'pinia', 'vue-datepicker-next', 'chart.js'],
+    include: ['vue', 'vue-router', 'pinia', 'vue-datepicker-next', 'chart.js', 'dayjs'],
     exclude: ['@vuepic/vue-datepicker'],
     esbuildOptions: {
       target: 'esnext'
@@ -33,12 +37,23 @@ export default defineConfig({
   },
   build: {
     commonjsOptions: {
-      include: [/node_modules/],
+      include: [/node_modules/, /dayjs/],
       transformMixedEsModules: true
     },
+    chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
-        manualChunks: undefined
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('vue') || id.includes('pinia') || id.includes('@vue')) return 'vue-vendor'
+            if (id.includes('element-plus') || id.includes('@element-plus')) return 'element-plus'
+            if (id.includes('chart.js') || id.includes('echarts') || id.includes('apexcharts')) return 'charts'
+            if (id.includes('lodash')) return 'lodash'
+            if (id.includes('axios')) return 'axios'
+            if (id.includes('dayjs') || id.includes('date-fns')) return 'date-utils'
+            return 'vendor'
+          }
+        }
       }
     }
   },

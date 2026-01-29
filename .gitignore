@@ -42,7 +42,8 @@ build
 
 *.tsbuildinfo
 
-# OS
+# OS (nul = Windows reserved device name)
+nul
 Thumbs.db
 
 # Temporary files
