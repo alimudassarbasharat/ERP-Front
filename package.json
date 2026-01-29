@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm ci && npm run clean && vite build",
+    "clean": "rimraf dist",
     "preview": "vite preview --host",
     "start": "node server.js"
   },
@@ -58,6 +59,7 @@
     "@rollup/rollup-win32-x64-msvc": "^4.57.0"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": "18.20.3",
+    "npm": "10.x"
   }
 }
