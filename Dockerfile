@@ -20,15 +20,15 @@ FROM node:20-alpine AS runner
 
 WORKDIR /app
 
-# Copy built assets from builder
+# Copy built assets and Express server
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/server.js ./server.js
 
-# Install only serve for static hosting (lightweight)
-RUN npm init -y && npm install serve
+# Install only express (no cache on index.html = no build mismatch)
+RUN npm init -y && npm install express
 
 # Railway provides PORT at runtime
 ENV PORT=3000
 EXPOSE 3000
 
-# Serve SPA (Railway sets PORT; serve listens on all interfaces by default)
-CMD ["sh", "-c", "npx serve@latest -s dist -l ${PORT:-3000}"]
+CMD ["node", "server.js"]
