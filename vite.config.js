@@ -43,17 +43,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 600,
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('vue') || id.includes('pinia') || id.includes('@vue')) return 'vue-vendor'
-            if (id.includes('element-plus') || id.includes('@element-plus')) return 'element-plus'
-            if (id.includes('chart.js') || id.includes('echarts') || id.includes('apexcharts')) return 'charts'
-            if (id.includes('lodash')) return 'lodash'
-            if (id.includes('axios')) return 'axios'
-            if (id.includes('dayjs') || id.includes('date-fns')) return 'date-utils'
-            return 'vendor'
-          }
-        }
+        // No manualChunks - custom splitting caused "Cannot access before initialization" with Vue/Element Plus
       }
     }
   },
