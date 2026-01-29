@@ -5,9 +5,9 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Install dependencies (package-lock.json for reproducible build)
+# Install dependencies (npm ci for reproducibility; fallback to npm install if lock file out of sync)
 COPY package.json package-lock.json* ./
-RUN npm ci
+RUN npm ci || npm install --no-audit --no-fund
 
 # Copy source and build
 COPY . .
