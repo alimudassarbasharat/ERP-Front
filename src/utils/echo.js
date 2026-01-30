@@ -69,7 +69,7 @@ const initializeEcho = () => {
   connectionState = 'connecting'
 
   initializationPromise = new Promise((resolve, reject) => {
-    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://erp-back-f0xb.onrender.com'
     const reverbHost = import.meta.env.VITE_REVERB_HOST || 'localhost'
     const reverbPort = import.meta.env.VITE_REVERB_PORT || '8080'
     const reverbKey = import.meta.env.VITE_REVERB_APP_KEY || 'your-reverb-key'
