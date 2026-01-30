@@ -26,7 +26,7 @@ app.use(express.static(distPath, {
 }));
 
 // SPA fallback
-app.get("*", (_, res) => {
+app.get("/*", (_, res) => {
   res.sendFile(path.join(distPath, "index.html"));
 });
 
