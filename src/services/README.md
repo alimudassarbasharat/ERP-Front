@@ -45,7 +45,7 @@ All services use the axios instance configured in `@/utils/axios.js` which:
 - Sets base URL from environment variables
 
 ### Base URL
-Default: `http://localhost:8000/api`  
+Default: `https://erp-back-f0xb.onrender.com/api`  
 Configure via: `VITE_API_URL` environment variable
 
 ## Error Handling

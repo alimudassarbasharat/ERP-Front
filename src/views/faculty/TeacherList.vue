@@ -527,7 +527,7 @@ const tableColumns = [
   { key: 'actions', label: 'Actions' }
 ]
 
-const API_BASE_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000'
+const API_BASE_URL = import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://erp-back-f0xb.onrender.com'
 
 // Photo dialog
 const photoDialogVisible = ref(false)

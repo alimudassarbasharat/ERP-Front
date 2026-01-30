@@ -973,7 +973,7 @@ const getProfilePicture = (student) => {
       return student.profile_picture
     }
     // If it's a relative path, construct the full URL
-    return `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/storage/${student.profile_picture}`
+    return `${import.meta.env.VITE_API_URL || 'https://erp-back-f0xb.onrender.com'}/storage/${student.profile_picture}`
   }
   return null // Return null to indicate no image, show initials instead
 }

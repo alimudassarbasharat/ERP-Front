@@ -14,7 +14,7 @@ try {
 }
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://erp-back-f0xb.onrender.com/api',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
