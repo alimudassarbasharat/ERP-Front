@@ -25,8 +25,8 @@ app.use(express.static(distPath, {
   index: false
 }));
 
-// SPA fallback
-app.get("/*", (_, res) => {
+// SPA fallback: use middleware so we don't hit path-to-regexp's strict route syntax
+app.use((req, res) => {
   res.sendFile(path.join(distPath, "index.html"));
 });
 
